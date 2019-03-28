@@ -46,8 +46,7 @@ class _LoginFormState extends State<LoginForm> {
 
         return new Scaffold(
           body: new Stack(
-              children: <Widget>[
-             
+            children: <Widget>[
               Positioned(
                 width: 400.0,
                 top: MediaQuery.of(context).size.height / 5,
@@ -74,34 +73,31 @@ class _LoginFormState extends State<LoginForm> {
                   ],
                 ),
               ),
-                ClipPath(
-                 child: Container(
-                   
-                   color: Colors.indigo.withOpacity(0.8),
-                 ),
-                 clipper: GetClipper()
-               ),
+              ClipRect(
+                child: Container(
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    heightFactor: 0.5,
+                  ),
+                  color: Colors.indigo.withOpacity(0.8),
+                ),
+              ),
               SingleChildScrollView(
-                
                 padding: EdgeInsets.fromLTRB(15.0, 385.0, 0.0, 0.0),
                 child: TextField(
-                   decoration: InputDecoration(
+                  decoration: InputDecoration(
                       labelText: 'Enter your number',
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.green))),
                 ),
-                
               ),
               Container(
                 height: 40.0,
-                child: Material(
-
-                ),
+                child: Material(),
               )
             ],
-
           ),
         );
 
@@ -151,10 +147,10 @@ class GetClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = new Path();
-     path.lineTo(500, 500);
-     path.lineTo(-500, 500);
-     path.lineTo(-500, 0);
-     
+    path.lineTo(500, 500);
+    path.lineTo(-500, 500);
+    path.lineTo(-500, 0);
+
     path.close();
     return path;
   }
