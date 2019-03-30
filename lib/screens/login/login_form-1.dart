@@ -21,12 +21,12 @@ class LoginForm1 extends StatefulWidget {
 }
 
 class _LoginForm1State extends State<LoginForm1> {
-
-  
-  var cust = false;
-
+  TextEditingController _textEditingController = TextEditingController();
+  bool _isTextFieldVisible = true;
+  bool _canShowButton = false;
+  bool _otpShowButton = false;
   final _mobileController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _otpController = TextEditingController();
   LoginBloc get _loginBloc => widget.loginBloc;
   // final mobilenumber = TextField(
   //    controller: _usernameController,
@@ -130,50 +130,85 @@ class _LoginForm1State extends State<LoginForm1> {
                 ),
               ),
               ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 420),
-                children: <Widget>[
-                  TextFormField(
-                   // cursorColor: Colors.white,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please Enter some Text';
-                      }
-                    },
-                    maxLength: 10,
-                    inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly
-                    ],
-                    autovalidate: true,
-                    decoration: InputDecoration(
-                      labelText: 'Mobile',
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 420),
+                  children: <Widget>[
+                    _isTextFieldVisible
+                        ? TextFormField(
+                            // cursorColor: Colors.white,
+                            // validator: (val) => val.length < 10
+                            //     ? 'Number should be in 10-digits'
+                            //     : null,
+                             validator: (value) {
+                               if (value.isEmpty) {
+                                 return 'Please Enter some Text';
+                               }
+                             },
+                            maxLength: 10,
+                            inputFormatters: [
+                              WhitelistingTextInputFormatter.digitsOnly,
+                            ],
+                            autovalidate: true,
+                            decoration: InputDecoration(
+                              labelText: 'Mobile',
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.green)),
+                              hintText: 'Enter your Mobile Number',
+                              //  hintStyle:TextStyle(color:Colors.white),
+                            ),
+                            controller: _mobileController,
+                          )
+                        : TextFormField(
+                          // validator: (val) => val.length < 4 ? 'Number Should be 4 digits' : null,
+                          maxLength: 4,
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter.digitsOnly,
+                          ],
+                            decoration: InputDecoration(labelText: 'OTP',
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                            ),
+                            hintText: 'Enter your otp'
+                            ),
+                            controller: _otpController,
+                          ),
+                    _isTextFieldVisible
+                        ? RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40.0),
+                            ),
+                            child: Text(
+                              'Next'),
+                              textColor: Colors.white,
+                            color: Colors.black.withOpacity(0.8),
+                            onPressed: () {
+                              setState(() {
+                                _isTextFieldVisible = !_isTextFieldVisible;
+                              });
+                            }
+
+                            // textColor: Colors.white,
+                            )
+                   : RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40.0),
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)),
-                      hintText: 'Enter your Mobile Number',
-                      //  hintStyle:TextStyle(color:Colors.white),
+                      color: Colors.black.withOpacity(0.8),
+                      onPressed:
+                          state is! LoginLoading ? _onLoginButtonPressed : null,
+                      child: Text('Login'),
+                      textColor: Colors.white,
                     ),
-                    controller: _mobileController,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                    width: 20.0,
-                  ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                    ),
-                    color: Colors.black.withOpacity(0.8),
-                    onPressed:
-                      
-                    state is! LoginLoading ? _onLoginButtonPressed : null,
-                    child: Text('Next'),
-                    textColor: Colors.white,
-                  ),
-                ],
-              )
+                    SizedBox(
+                      height: 0.0,
+                    )
+                  ])
               // Container(
               //   padding: EdgeInsets.fromLTRB(10.0, 135, 0.0, 0.0),
               //   height: 40.0,
@@ -239,7 +274,7 @@ class _LoginForm1State extends State<LoginForm1> {
   _onLoginButtonPressed() {
     _loginBloc.dispatch(LoginButtonPressed(
       mobile: _mobileController.text,
-      password: _passwordController.text,
+      password: _otpController.text,
     ));
   }
 }
