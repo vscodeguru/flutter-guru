@@ -135,6 +135,7 @@ class _LoginForm1State extends State<LoginForm1> {
                   children: <Widget>[
                     _isTextFieldVisible
                         ? TextFormField(
+                          keyboardType: TextInputType.number,
                             // cursorColor: Colors.white,
                             // validator: (val) => val.length < 10
                             //     ? 'Number should be in 10-digits'
