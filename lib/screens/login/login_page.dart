@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_guru/screens/login/index.dart';
+import 'package:flutter_guru/screens/login/login_form-3.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       // appBar: AppBar(
       //   title: Text('Login'),
       // ),
-      body: LoginForm1(
+      body: LoginForm3(
         authenticationBloc: _authenticationBloc,
         loginBloc: _loginBloc,
       ),
