@@ -70,9 +70,11 @@ class _LoginCardState extends State<LoginCard>
       opacity: animation.value,
       child: SizedBox(
         height: deviceSize.height / 2 - 20,
-        width: deviceSize.width * 0.85,
+        width: deviceSize.width * 1.00,
         child: new Card(
-            color: Colors.white, elevation: 2.0, child: loginBuilder()),
+            color: Colors.white, elevation: 2.0, child: loginBuilder(
+            ),
+            ),
       ),
     );
   }

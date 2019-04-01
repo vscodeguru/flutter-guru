@@ -22,9 +22,10 @@ class LoginForm1 extends StatefulWidget {
 
 class _LoginForm1State extends State<LoginForm1> {
   TextEditingController _textEditingController = TextEditingController();
+  String _mobile;
+  bool _autoValidate = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isTextFieldVisible = true;
-  bool _canShowButton = false;
-  bool _otpShowButton = false;
   final _mobileController = TextEditingController();
   final _otpController = TextEditingController();
   LoginBloc get _loginBloc => widget.loginBloc;
@@ -132,24 +133,31 @@ class _LoginForm1State extends State<LoginForm1> {
               ListView(
                   shrinkWrap: true,
                   padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 420),
+            //    child:Column(
                   children: <Widget>[
                     _isTextFieldVisible
                         ? TextFormField(
-                          keyboardType: TextInputType.number,
+                            key: _formKey,
+                            keyboardType: TextInputType.number,
                             // cursorColor: Colors.white,
                             // validator: (val) => val.length < 10
                             //     ? 'Number should be in 10-digits'
                             //     : null,
-                             validator: (value) {
-                               if (value.isEmpty) {
-                                 return 'Please Enter some Text';
-                               }
-                             },
+                            autovalidate:  _autoValidate,
+                              
+                            validator: validateMobile,
+                            onSaved: (String value){
+                              print('Number is saved');
+                            },
+                            // onSaved: (String value) {
+                            //   setState(() {
+                            //     _mobile = value;
+                            //   });
+                            // },
                             maxLength: 10,
                             inputFormatters: [
                               WhitelistingTextInputFormatter.digitsOnly,
                             ],
-                            autovalidate: true,
                             decoration: InputDecoration(
                               labelText: 'Mobile',
                               labelStyle: TextStyle(
@@ -163,30 +171,32 @@ class _LoginForm1State extends State<LoginForm1> {
                             controller: _mobileController,
                           )
                         : TextFormField(
-                          // validator: (val) => val.length < 4 ? 'Number Should be 4 digits' : null,
-                          maxLength: 4,
-                          inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly,
-                          ],
-                            decoration: InputDecoration(labelText: 'OTP',
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green)
-                            ),
-                            hintText: 'Enter your otp'
-                            ),
+                            keyboardType: TextInputType.number,
+                            // validator: (val) => val.length < 4 ? 'Number Should be 4 digits' : null,
+                            maxLength: 4,
+                            inputFormatters: [
+                              WhitelistingTextInputFormatter.digitsOnly,
+                            ],
+                            decoration: InputDecoration(
+                                labelText: 'OTP',
+                                labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.green)),
+                                hintText: 'Enter your otp'),
                             controller: _otpController,
                           ),
                     _isTextFieldVisible
                         ? RaisedButton(
+                         //  padding: EdgeInsets.only(left: 20.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40.0),
                             ),
-                            child: Text(
-                              'Next'),
-                              textColor: Colors.white,
+                            child: Text('Next'),
+                            
+                            textColor: Colors.white,
                             color: Colors.black.withOpacity(0.8),
                             onPressed: () {
                               setState(() {
@@ -196,20 +206,23 @@ class _LoginForm1State extends State<LoginForm1> {
 
                             // textColor: Colors.white,
                             )
-                   : RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                      ),
-                      color: Colors.black.withOpacity(0.8),
-                      onPressed:
-                          state is! LoginLoading ? _onLoginButtonPressed : null,
-                      child: Text('Login'),
-                      textColor: Colors.white,
-                    ),
+                        : RaisedButton(
+                          padding: EdgeInsets.only(right: 20.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40.0),
+                            ),
+                            color: Colors.black.withOpacity(0.8),
+                            onPressed: state is! LoginLoading
+                                ? _onLoginButtonPressed
+                                : null,
+                            child: Text('Login'),
+                            textColor: Colors.white,
+                          ),
                     SizedBox(
                       height: 0.0,
                     )
                   ])
+              
               // Container(
               //   padding: EdgeInsets.fromLTRB(10.0, 135, 0.0, 0.0),
               //   height: 40.0,
@@ -264,6 +277,50 @@ class _LoginForm1State extends State<LoginForm1> {
         // );
       },
     );
+  }
+// void _validateInputs() {
+//   if (_formKey.currentState.validate()) {
+// //    If all data are correct then save data to out variables
+//     _formKey.currentState.save();
+//   } else {
+// //    If all data are not valid then start auto validation.
+//     setState(() {
+//       _autoValidate = true;
+//     });
+//   }
+// }
+void _submitform(){
+ if(!_formKey.currentState.validate()){
+   return;
+ }
+  _formKey..currentState.save();
+  final Map<String, dynamic> product = {
+      'Mobile':_mobile
+  } ;
+}
+  // _sendToServer() {
+  //   if (_formKey.currentState.validate()) {
+  //     print('mobile $_mobile');
+
+  //     _formKey.currentState.save();
+  //   } else {
+  //     setState(() {
+  //       _validate = true;
+  //     });
+  //   }
+  // }
+
+  String validateMobile(String value) {
+    String patttern = r'(^[0-9]*$)';
+    RegExp regExp = new RegExp(patttern);
+    if (value.length == 0) {
+      return "Mobile is Required";
+    } else if (value.length != 10) {
+      return "Mobile number must 10 digits";
+    } else if (!regExp.hasMatch(value)) {
+      return "Mobile Number must be digits";
+    }
+    return null;
   }
 
   void _onWidgetDidBuild(Function callback) {

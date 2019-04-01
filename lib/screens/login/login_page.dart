@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       // appBar: AppBar(
       //   title: Text('Login'),
       // ),
-      body: LoginForm3(
+      body: LoginForm1(
         authenticationBloc: _authenticationBloc,
         loginBloc: _loginBloc,
       ),
