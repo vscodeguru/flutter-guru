@@ -79,9 +79,10 @@ class _LoginForm1State extends State<LoginForm1> {
         }
 
         return new Scaffold(
-          backgroundColor: Colors.white24.withOpacity(0.8),
+          backgroundColor: Colors.grey[300].withOpacity(0.7),
           body: new Stack(
             children: <Widget>[
+            
               ClipPath(
                 child: Container(
                   color: Colors.black26.withOpacity(0.8),
@@ -89,16 +90,17 @@ class _LoginForm1State extends State<LoginForm1> {
                 clipper: GetClipper(),
               ),
               Positioned(
+                
                 width: 350.0,
                 top: MediaQuery.of(context).size.height / 4,
                 child: Column(
                   children: <Widget>[
+                    
                     // CircleAvatar(
                     //   backgroundImage: AssetImage('assets/300_3.jpg'),
                     //   radius: 60.0,
                     // )
                     Container(
-                      alignment: Alignment.bottomRight,
                       width: 130.0,
                       height: 130.0,
                       decoration: BoxDecoration(
@@ -114,6 +116,7 @@ class _LoginForm1State extends State<LoginForm1> {
                   ],
                 ),
               ),
+             
               Container(
                 child: Stack(
                   children: <Widget>[
@@ -130,11 +133,11 @@ class _LoginForm1State extends State<LoginForm1> {
                   ],
                 ),
               ),
-              ListView(
-                  shrinkWrap: true,
+
+              SingleChildScrollView(
+                
                   padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 420),
-            //    child:Column(
-                  children: <Widget>[
+                  child: Column(children: <Widget>[
                     _isTextFieldVisible
                         ? TextFormField(
                             key: _formKey,
@@ -143,10 +146,10 @@ class _LoginForm1State extends State<LoginForm1> {
                             // validator: (val) => val.length < 10
                             //     ? 'Number should be in 10-digits'
                             //     : null,
-                            autovalidate:  _autoValidate,
-                              
+                            autovalidate: _autoValidate,
+
                             validator: validateMobile,
-                            onSaved: (String value){
+                            onSaved: (String value) {
                               print('Number is saved');
                             },
                             // onSaved: (String value) {
@@ -190,12 +193,17 @@ class _LoginForm1State extends State<LoginForm1> {
                           ),
                     _isTextFieldVisible
                         ? RaisedButton(
-                         //  padding: EdgeInsets.only(left: 20.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40.0),
-                            ),
-                            child: Text('Next'),
                             
+                            padding: EdgeInsets.only(
+                                top: 15.0,
+                                bottom: 15.0,
+                                left: 55.0,
+                                right: 55.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40.0),
+                            ),
+                          
+                            child: Text('Next'),
                             textColor: Colors.white,
                             color: Colors.black.withOpacity(0.8),
                             onPressed: () {
@@ -203,11 +211,16 @@ class _LoginForm1State extends State<LoginForm1> {
                                 _isTextFieldVisible = !_isTextFieldVisible;
                               });
                             }
-
+                            
                             // textColor: Colors.white,
                             )
+                            
                         : RaisedButton(
-                          padding: EdgeInsets.only(right: 20.0),
+                            padding: EdgeInsets.only(
+                                top: 15.0,
+                                bottom: 15.0,
+                                left: 55.0,
+                                right: 55.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40.0),
                             ),
@@ -220,33 +233,39 @@ class _LoginForm1State extends State<LoginForm1> {
                           ),
                     SizedBox(
                       height: 0.0,
-                    )
+                    ),
+                //    Positioned(
+                //     child: Container(
+                      
+                //     ),
+                //  )
                   ])
-              
-              // Container(
-              //   padding: EdgeInsets.fromLTRB(10.0, 135, 0.0, 0.0),
-              //   height: 40.0,
-              //   child: Material(
-              //     borderRadius: BorderRadius.circular(20.0),
-              //     shadowColor: Colors.greenAccent,
-              //     color: Colors.green,
-              //     elevation: 7.0,
-              //     child: RaisedButton(
-              //       shape:RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(20.0),
-              //       ),
-              //       color: Colors.green,
-              //       onPressed: (){
 
-              //       },
-              //       child: Center(
-              //         child: Text(
-              //           'Submit'
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // )
+                  // Container(
+                  //   padding: EdgeInsets.fromLTRB(10.0, 135, 0.0, 0.0),
+                  //   height: 40.0,
+                  //   child: Material(
+                  //     borderRadius: BorderRadius.circular(20.0),
+                  //     shadowColor: Colors.greenAccent,
+                  //     color: Colors.green,
+                  //     elevation: 7.0,
+                  //     child: RaisedButton(
+                  //       shape:RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(20.0),
+                  //       ),
+                  //       color: Colors.green,
+                  //       onPressed: (){
+
+                  //       },
+                  //       child: Center(
+                  //         child: Text(
+                  //           'Submit'
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  ),
+                   // )
             ],
           ),
         );
@@ -278,6 +297,7 @@ class _LoginForm1State extends State<LoginForm1> {
       },
     );
   }
+
 // void _validateInputs() {
 //   if (_formKey.currentState.validate()) {
 // //    If all data are correct then save data to out variables
@@ -289,15 +309,13 @@ class _LoginForm1State extends State<LoginForm1> {
 //     });
 //   }
 // }
-void _submitform(){
- if(!_formKey.currentState.validate()){
-   return;
- }
-  _formKey..currentState.save();
-  final Map<String, dynamic> product = {
-      'Mobile':_mobile
-  } ;
-}
+  void _submitform() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey..currentState.save();
+    final Map<String, dynamic> product = {'Mobile': _mobile};
+  }
   // _sendToServer() {
   //   if (_formKey.currentState.validate()) {
   //     print('mobile $_mobile');
@@ -352,3 +370,4 @@ class GetClipper extends CustomClipper<Path> {
     return true;
   }
 }
+

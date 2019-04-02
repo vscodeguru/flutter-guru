@@ -16,48 +16,26 @@ class _LoginCardState extends State<LoginCard>
 
   Widget loginBuilder() => StreamBuilder<bool>(
         initialData: false,
+        
         builder: (context, snapshot) => Form(
+
               child: Padding(
-                padding: const EdgeInsets.all(18.0),
+                
+                padding: const EdgeInsets.all(0),
                 child: SingleChildScrollView(
                   child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      new TextField(
-                        onChanged: (phone) => phoneNumber = phone,
-                        enabled: !snapshot.data,
-                        style:
-                            new TextStyle(fontSize: 15.0, color: Colors.black),
-                      ),
-                      new SizedBox(
-                        height: 10.0,
-                      ),
-                      snapshot.data == false
-                          ? new Offstage()
-                          : new TextField(
-                              onChanged: (myotp) => otp = myotp,
-                              keyboardType: TextInputType.number,
-                              style: new TextStyle(
-                                  fontSize: 15.0, color: Colors.black),
-                              obscureText: true,
-                            ),
-                      new SizedBox(
-                        height: 30.0,
-                      ),
                       Container(
-                        child: snapshot.data == false
-                            ? new GradientButton(
-                                text: "get_otp",
-                                onPressed: () {},
-                              )
-                            : new GradientButton(
-                                onPressed: () {}, text: "login"),
-                      ),
-                      snapshot.data == true
-                          ? new FlatButton(
-                              child: Text("resend_otp"), onPressed: () => {})
-                          : new Container()
+                        
+                       color: Colors.black,
+                        height: deviceSize.height / 2,
+                        child: ClipPath(
+                          child: Container(
+                         color: Colors.white.withOpacity(0.8),
+                          ),
+                          clipper: GetClipper(),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -71,10 +49,7 @@ class _LoginCardState extends State<LoginCard>
       child: SizedBox(
         height: deviceSize.height / 2 - 20,
         width: deviceSize.width * 1.00,
-        child: new Card(
-            color: Colors.white, elevation: 2.0, child: loginBuilder(
-            ),
-            ),
+        child: loginBuilder(),
       ),
     );
   }
@@ -142,5 +117,23 @@ class GradientButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+
+class GetClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = new Path();
+    path.lineTo(0, 180);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
   }
 }
