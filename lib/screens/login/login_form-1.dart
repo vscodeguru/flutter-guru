@@ -133,7 +133,7 @@ class _LoginForm1State extends State<LoginForm1> {
               ListView(
                   shrinkWrap: true,
                   padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 420),
-            //    child:Column(
+                  //    child:Column(
                   children: <Widget>[
                     _isTextFieldVisible
                         ? TextFormField(
@@ -143,10 +143,10 @@ class _LoginForm1State extends State<LoginForm1> {
                             // validator: (val) => val.length < 10
                             //     ? 'Number should be in 10-digits'
                             //     : null,
-                            autovalidate:  _autoValidate,
-                              
+                            autovalidate: _autoValidate,
+
                             validator: validateMobile,
-                            onSaved: (String value){
+                            onSaved: (String value) {
                               print('Number is saved');
                             },
                             // onSaved: (String value) {
@@ -190,12 +190,11 @@ class _LoginForm1State extends State<LoginForm1> {
                           ),
                     _isTextFieldVisible
                         ? RaisedButton(
-                         //  padding: EdgeInsets.only(left: 20.0),
+                            //  padding: EdgeInsets.only(left: 20.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40.0),
                             ),
                             child: Text('Next'),
-                            
                             textColor: Colors.white,
                             color: Colors.black.withOpacity(0.8),
                             onPressed: () {
@@ -207,7 +206,7 @@ class _LoginForm1State extends State<LoginForm1> {
                             // textColor: Colors.white,
                             )
                         : RaisedButton(
-                          padding: EdgeInsets.only(right: 20.0),
+                            padding: EdgeInsets.only(right: 20.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40.0),
                             ),
@@ -222,7 +221,7 @@ class _LoginForm1State extends State<LoginForm1> {
                       height: 0.0,
                     )
                   ])
-              
+
               // Container(
               //   padding: EdgeInsets.fromLTRB(10.0, 135, 0.0, 0.0),
               //   height: 40.0,
@@ -278,6 +277,7 @@ class _LoginForm1State extends State<LoginForm1> {
       },
     );
   }
+
 // void _validateInputs() {
 //   if (_formKey.currentState.validate()) {
 // //    If all data are correct then save data to out variables
@@ -289,15 +289,13 @@ class _LoginForm1State extends State<LoginForm1> {
 //     });
 //   }
 // }
-void _submitform(){
- if(!_formKey.currentState.validate()){
-   return;
- }
-  _formKey..currentState.save();
-  final Map<String, dynamic> product = {
-      'Mobile':_mobile
-  } ;
-}
+  void _submitform() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey..currentState.save();
+    final Map<String, dynamic> product = {'Mobile': _mobile};
+  }
   // _sendToServer() {
   //   if (_formKey.currentState.validate()) {
   //     print('mobile $_mobile');
@@ -341,8 +339,11 @@ class GetClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = new Path();
-    path.lineTo(0, 330);
-    path.lineTo(560, 0);
+    path.moveTo(0, size.height * 0.3);
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+
+    path.lineTo(0, size.height);
     path.close();
     return path;
   }

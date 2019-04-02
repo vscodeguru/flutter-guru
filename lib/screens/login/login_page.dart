@@ -40,11 +40,11 @@ class _LoginPageState extends State<LoginPage> {
       // appBar: AppBar(
       //   title: Text('Login'),
       // ),
-      // body: LoginForm3(
-      //   authenticationBloc: _authenticationBloc,
-      //   loginBloc: _loginBloc,
-      // ),
-      body: LoginForm4(),
+      body: LoginForm3(
+        authenticationBloc: _authenticationBloc,
+        loginBloc: _loginBloc,
+      ),
+      // body: LoginForm4(),
     );
   }
 

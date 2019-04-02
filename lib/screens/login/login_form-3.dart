@@ -39,19 +39,99 @@ class _LoginForm3State extends State<LoginForm3> {
           });
         }
         return Scaffold(
-          body: Stack(
-            children: <Widget>[
-              new Positioned(
-                top: 0,
-                child: new Image.asset('assets/300_3.jpg'),
-              ),
-              new Positioned(
-                bottom: 0,
-                child: Stack(
-                  children: <Widget>[LoginWidgets()],
+          body: Container(
+            //color: Color(0xccc7c7),
+            decoration: BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [Colors.white70, Colors.black12],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 50,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: AssetImage('assets/300_3.jpg'),
+                            radius: 60.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Welcome",
+                              style: TextStyle(
+                                fontSize: 28,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "Loren Ipsum",
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              )
-            ],
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 25),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Container(
+                      padding: EdgeInsets.all(15),
+                      //margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      child: Stack(
+                        children: <Widget>[
+                          ClipPath(
+                            child: Container(
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black45,
+                                      blurRadius: 7.0,
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(15),
+                                    bottomLeft: Radius.circular(15),
+                                  )
+                                  //border: Border.all(color: Colors.blueAccent),
+                                  ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  TextField(),
+                                  RaisedButton(
+                                    child: Text('Prabakaran'),
+                                    onPressed: () {},
+                                  )
+                                ],
+                              ),
+                            ),
+                            clipper: GetClipper(),
+                          ),
+                          //Positioned(child: ,)
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },
