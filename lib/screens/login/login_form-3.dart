@@ -125,24 +125,24 @@ class _LoginForm3State extends State<LoginForm3> {
                                         ],
                                         decoration: InputDecoration(
                                           contentPadding:
-                                              const EdgeInsets.all(8.0),
+                                              const EdgeInsets.all(13.0),
                                           hintText: 'Enter your Mobile Number',
                                            fillColor: Colors.grey[400],
                                            filled: true,
-                                          // border: OutlineInputBorder(
-                                          //   borderSide: BorderSide(
-                                          //     color: Colors.grey
-                                          //   ),
-                                          //   borderRadius: BorderRadius.all(
-                                          //     Radius.circular(40.0),
-                                          //   ),
-                                          // ),
+                                           border: OutlineInputBorder(
+                                             borderSide: BorderSide(
+                                               color: Colors.grey[400]
+                                             ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0),
+                                             ),
+                                           ),
                                          focusedBorder: OutlineInputBorder(
                                            borderSide: BorderSide(
                                              color: Colors.grey
                                              ),
                                              borderRadius: BorderRadius.all(
-                                              Radius.circular(40.0),
+                                              Radius.circular(20.0),
                                             )
                                            )
                                         ),
