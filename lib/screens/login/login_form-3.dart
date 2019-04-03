@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_guru/screens/login/index.dart';
@@ -110,12 +111,45 @@ class _LoginForm3State extends State<LoginForm3> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
+                                    
+                                   // SizedBox(height: 10.0),
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextField(),
+                                      padding: EdgeInsets.only(
+                                          top: 40.0, left: 45.0, right: 45.0),
+                                      child: TextField(
+                                        
+                                        maxLength: 10,
+                                        inputFormatters: [
+                                          WhitelistingTextInputFormatter
+                                              .digitsOnly,
+                                        ],
+                                        decoration: InputDecoration(
+                                          contentPadding:
+                                              const EdgeInsets.all(8.0),
+                                          hintText: 'Enter your Mobile Number',
+                                           fillColor: Colors.grey[400],
+                                           filled: true,
+                                          // border: OutlineInputBorder(
+                                          //   borderSide: BorderSide(
+                                          //     color: Colors.grey
+                                          //   ),
+                                          //   borderRadius: BorderRadius.all(
+                                          //     Radius.circular(40.0),
+                                          //   ),
+                                          // ),
+                                         focusedBorder: OutlineInputBorder(
+                                           borderSide: BorderSide(
+                                             color: Colors.grey
+                                             ),
+                                             borderRadius: BorderRadius.all(
+                                              Radius.circular(40.0),
+                                            )
+                                           )
+                                        ),
+                                      ),
                                     ),
                                     SizedBox(
-                                      height: 58,
+                                      height: 40,
                                     ),
                                   ],
                                 ),
@@ -135,23 +169,45 @@ class _LoginForm3State extends State<LoginForm3> {
                               Stack(
                                 children: <Widget>[
                                   Positioned(
-                                    top: MediaQuery.of(context).size.width*0.075,
-                                    left: MediaQuery.of(context).size.width*0.045,
-                                    child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Center(child: Container(color: Colors.black,height: 3,width: MediaQuery.of(context).size.width * 0.75,)),
-                                    ],
-                                  )),
+                                      top: MediaQuery.of(context).size.width *
+                                          0.075,
+                                      left: MediaQuery.of(context).size.width *
+                                          0.045,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Center(
+                                              child: Container(
+                                            color: Colors.black,
+                                            height: 3,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.75,
+                                          )),
+                                        ],
+                                      )),
                                   Positioned(
-                                    top: MediaQuery.of(context).size.width*0.075,
-                                    left: MediaQuery.of(context).size.width*0.045,
-                                    child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Center(child: Container(color: Colors.black,height: 3,width: MediaQuery.of(context).size.width * 0.75,)),
-                                    ],
-                                  )),
+                                      top: MediaQuery.of(context).size.width *
+                                          0.075,
+                                      left: MediaQuery.of(context).size.width *
+                                          0.045,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Center(
+                                              child: Container(
+                                            color: Colors.black,
+                                            height: 3,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.75,
+                                          )),
+                                        ],
+                                      )),
                                   Center(
                                     child: RaisedButton(
                                         shape: RoundedRectangleBorder(
