@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_guru/screens/dashboard/index.dart';
 import 'package:flutter_guru/screens/login/index.dart';
@@ -21,8 +22,11 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 void main() {
-  BlocSupervisor().delegate = SimpleBlocDelegate();
-  runApp(App(userRepository: UserRepository()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    BlocSupervisor().delegate = SimpleBlocDelegate();
+    runApp(App(userRepository: UserRepository()));
+  });
 }
 
 class App extends StatefulWidget {

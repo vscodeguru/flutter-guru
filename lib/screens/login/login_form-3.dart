@@ -52,41 +52,14 @@ class _LoginForm3State extends State<LoginForm3> {
               children: <Widget>[
                 Positioned(
                   top: 50,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundImage: AssetImage('assets/300_3.jpg'),
-                            radius: 60.0,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Welcome",
-                              style: TextStyle(
-                                fontSize: 28,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "Loren Ipsum",
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: _buildTopContainer(context),
                 ),
                 Positioned(
                   bottom: 0,
                   child: Container(
                     padding: EdgeInsets.only(bottom: 25),
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.6,
                     child: Container(
                       padding: EdgeInsets.all(30),
                       //margin: EdgeInsets.all(5),
@@ -109,47 +82,54 @@ class _LoginForm3State extends State<LoginForm3> {
                                   color: Colors.white,
                                 ),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
-                                    
-                                   // SizedBox(height: 10.0),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                    ),
+                                    Text(
+                                      'Enter your Mobile Number',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.035,
+                                    ),
                                     Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 40.0, left: 45.0, right: 45.0),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 25),
                                       child: TextField(
-                                        
                                         maxLength: 10,
                                         inputFormatters: [
                                           WhitelistingTextInputFormatter
                                               .digitsOnly,
                                         ],
+                                        keyboardType: TextInputType.phone,
                                         decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.all(13.0),
-                                          hintText: 'Enter your Mobile Number',
-                                           fillColor: Colors.grey[400],
-                                           filled: true,
-                                           border: OutlineInputBorder(
-                                             borderSide: BorderSide(
-                                               color: Colors.grey[400]
-                                             ),
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(20.0),
-                                             ),
-                                           ),
-                                         focusedBorder: OutlineInputBorder(
-                                           borderSide: BorderSide(
-                                             color: Colors.grey
-                                             ),
-                                             borderRadius: BorderRadius.all(
-                                              Radius.circular(20.0),
-                                            )
-                                           )
-                                        ),
+                                            contentPadding:
+                                                const EdgeInsets.all(13.0),
+                                            hintText:
+                                                'Enter your Mobile Number',
+                                            fillColor: Colors.grey[400],
+                                            filled: true,
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.grey[400]),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0),
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(20.0),
+                                                ))),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 40,
                                     ),
                                   ],
                                 ),
@@ -163,34 +143,14 @@ class _LoginForm3State extends State<LoginForm3> {
                                 child: CircleAvatar(
                                   backgroundImage:
                                       AssetImage('assets/300_3.jpg'),
-                                  radius: 45.0,
+                                  radius:
+                                      MediaQuery.of(context).size.width * 0.13,
                                 ),
                               ),
                               Stack(
                                 children: <Widget>[
                                   Positioned(
-                                      top: MediaQuery.of(context).size.width *
-                                          0.075,
-                                      left: MediaQuery.of(context).size.width *
-                                          0.045,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Center(
-                                              child: Container(
-                                            color: Colors.black,
-                                            height: 3,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.75,
-                                          )),
-                                        ],
-                                      )),
-                                  Positioned(
-                                      top: MediaQuery.of(context).size.width *
-                                          0.075,
+                                      bottom: 17,
                                       left: MediaQuery.of(context).size.width *
                                           0.045,
                                       child: Column(
@@ -236,6 +196,36 @@ class _LoginForm3State extends State<LoginForm3> {
           ),
         );
       },
+    );
+  }
+
+  Container _buildTopContainer(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CircleAvatar(
+            backgroundImage: AssetImage('assets/300_3.jpg'),
+            radius: 60.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Welcome",
+              style: TextStyle(
+                fontSize: 28,
+              ),
+            ),
+          ),
+          Text(
+            "Loren Ipsum",
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
