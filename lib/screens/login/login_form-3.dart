@@ -282,7 +282,11 @@ class _LoginForm3State extends State<LoginForm3> {
               suffixIcon: IconButton(
                   icon: Icon(Icons.refresh),
                   tooltip: 'Resend OTP',
-                  onPressed: () {}),
+                  onPressed: () {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('ReSend OTP'),
+                    ));
+                  }),
               border: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey[400]),
                   borderRadius: BorderRadius.all(
