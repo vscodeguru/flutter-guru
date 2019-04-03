@@ -23,7 +23,8 @@ class LoginForm3 extends StatefulWidget {
 
 class _LoginForm3State extends State<LoginForm3> {
   LoginBloc get _loginBloc => widget.loginBloc;
-
+  final PageController _loginPageControl = new PageController();
+  bool _showOtpButtons = false;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginEvent, LoginState>(
@@ -81,56 +82,12 @@ class _LoginForm3State extends State<LoginForm3> {
                                       bottomRight: Radius.circular(10)),
                                   color: Colors.white,
                                 ),
-                                child: Column(
+                                child: PageView(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  controller: _loginPageControl,
                                   children: <Widget>[
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.2,
-                                    ),
-                                    Text(
-                                      'Enter your Mobile Number',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.035,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 25),
-                                      child: TextField(
-                                        maxLength: 10,
-                                        inputFormatters: [
-                                          WhitelistingTextInputFormatter
-                                              .digitsOnly,
-                                        ],
-                                        keyboardType: TextInputType.phone,
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.all(13.0),
-                                            hintText:
-                                                'Enter your Mobile Number',
-                                            fillColor: Colors.grey[400],
-                                            filled: true,
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey[400]),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20.0),
-                                              ),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.grey),
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(20.0),
-                                                ))),
-                                      ),
-                                    ),
+                                    _buildPhoneNumberContent(context),
+                                    _buildOtpContent(context)
                                   ],
                                 ),
                               ),
@@ -169,18 +126,28 @@ class _LoginForm3State extends State<LoginForm3> {
                                         ],
                                       )),
                                   Center(
-                                    child: RaisedButton(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
-                                        ),
-                                        child: Text('Next'),
-                                        textColor: Colors.white,
-                                        color: Colors.black,
-                                        onPressed: () {}
+                                    child: (!_showOtpButtons)
+                                        ? RaisedButton(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(40.0),
+                                            ),
+                                            child: Text('Next'),
+                                            textColor: Colors.white,
+                                            color: Colors.black,
+                                            onPressed: () {
+                                              setState(() {
+                                                this._showOtpButtons = true;
+                                              });
+                                              _loginPageControl.nextPage(
+                                                  duration: Duration(
+                                                      milliseconds: 350),
+                                                  curve: Curves.linear);
+                                            }
 
-                                        // textColor: Colors.white,
-                                        ),
+                                            // textColor: Colors.white,
+                                            )
+                                        : _buildOtpButtonContent(),
                                   ),
                                 ],
                               ),
@@ -196,6 +163,139 @@ class _LoginForm3State extends State<LoginForm3> {
           ),
         );
       },
+    );
+  }
+
+  Row _buildOtpButtonContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        RaisedButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40.0),
+            ),
+            child: Text('Go Back'),
+            textColor: Colors.white,
+            color: Colors.black,
+            onPressed: () {
+              setState(() {
+                this._showOtpButtons = false;
+              });
+              _loginPageControl.previousPage(
+                  duration: Duration(milliseconds: 350), curve: Curves.linear);
+            }
+
+            // textColor: Colors.white,
+            ),
+        RaisedButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40.0),
+            ),
+            child: Text('Login'),
+            textColor: Colors.white,
+            color: Colors.black,
+            onPressed: () {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text('Login Clicked'),
+                action: SnackBarAction(
+                  label: 'Done',
+                  onPressed: () {},
+                ),
+              ));
+            }
+
+            // textColor: Colors.white,
+            ),
+      ],
+    );
+  }
+
+  Column _buildPhoneNumberContent(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.2,
+        ),
+        Text(
+          'Enter your Mobile Number',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.035,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: TextField(
+            maxLength: 10,
+            inputFormatters: [
+              WhitelistingTextInputFormatter.digitsOnly,
+            ],
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(13.0),
+                hintText: 'Enter your Mobile Number',
+                fillColor: Colors.grey[400],
+                filled: true,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey[400]),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ))),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column _buildOtpContent(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.2,
+        ),
+        Text(
+          'Enter OTP Code',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.035,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: TextField(
+            maxLength: 10,
+            inputFormatters: [
+              WhitelistingTextInputFormatter.digitsOnly,
+            ],
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(13.0),
+              hintText: 'Enter OTP Code',
+              fillColor: Colors.grey[400],
+              filled: true,
+              suffixIcon: IconButton(
+                  icon: Icon(Icons.refresh),
+                  tooltip: 'Resend OTP',
+                  onPressed: () {}),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey[400]),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  )),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
