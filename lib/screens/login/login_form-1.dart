@@ -82,7 +82,6 @@ class _LoginForm1State extends State<LoginForm1> {
           backgroundColor: Colors.grey[300].withOpacity(0.7),
           body: new Stack(
             children: <Widget>[
-            
               ClipPath(
                 child: Container(
                   color: Colors.black26.withOpacity(0.8),
@@ -90,12 +89,10 @@ class _LoginForm1State extends State<LoginForm1> {
                 clipper: GetClipper(),
               ),
               Positioned(
-                
                 width: 350.0,
                 top: MediaQuery.of(context).size.height / 4,
                 child: Column(
                   children: <Widget>[
-                    
                     // CircleAvatar(
                     //   backgroundImage: AssetImage('assets/300_3.jpg'),
                     //   radius: 60.0,
@@ -116,7 +113,7 @@ class _LoginForm1State extends State<LoginForm1> {
                   ],
                 ),
               ),
-             
+
               Container(
                 child: Stack(
                   children: <Widget>[
@@ -135,8 +132,7 @@ class _LoginForm1State extends State<LoginForm1> {
               ),
 
               SingleChildScrollView(
-                
-                  padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 420),
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 430),
                   child: Column(children: <Widget>[
                     _isTextFieldVisible
                         ? TextFormField(
@@ -193,16 +189,14 @@ class _LoginForm1State extends State<LoginForm1> {
                           ),
                     _isTextFieldVisible
                         ? RaisedButton(
-                            
                             padding: EdgeInsets.only(
                                 top: 15.0,
                                 bottom: 15.0,
                                 left: 55.0,
                                 right: 55.0),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40.0),
+                              borderRadius: BorderRadius.circular(40.0),
                             ),
-                          
                             child: Text('Next'),
                             textColor: Colors.white,
                             color: Colors.black.withOpacity(0.8),
@@ -211,10 +205,9 @@ class _LoginForm1State extends State<LoginForm1> {
                                 _isTextFieldVisible = !_isTextFieldVisible;
                               });
                             }
-                            
+
                             // textColor: Colors.white,
                             )
-                            
                         : RaisedButton(
                             padding: EdgeInsets.only(
                                 top: 15.0,
@@ -234,11 +227,11 @@ class _LoginForm1State extends State<LoginForm1> {
                     SizedBox(
                       height: 0.0,
                     ),
-                //    Positioned(
-                //     child: Container(
-                      
-                //     ),
-                //  )
+                    //    Positioned(
+                    //     child: Container(
+
+                    //     ),
+                    //  )
                   ])
 
                   // Container(
@@ -265,7 +258,21 @@ class _LoginForm1State extends State<LoginForm1> {
                   //     ),
                   //   ),
                   ),
-                   // )
+              // )
+              Positioned(
+                bottom: 300,
+                child: Container(
+                  height: 400,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 100,
+                        color: Colors.blue
+                      )
+                    )
+                  ),
+                ),
+              )
             ],
           ),
         );
@@ -370,4 +377,3 @@ class GetClipper extends CustomClipper<Path> {
     return true;
   }
 }
-
