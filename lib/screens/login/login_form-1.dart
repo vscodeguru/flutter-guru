@@ -130,10 +130,11 @@ class _LoginForm1State extends State<LoginForm1> {
                   ],
                 ),
               ),
-
               SingleChildScrollView(
-                  padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 430),
-                  child: Column(children: <Widget>[
+                //  shrinkWrap: true,
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 420),
+                    child:Column(
+                  children: <Widget>[
                     _isTextFieldVisible
                         ? TextFormField(
                             key: _formKey,
@@ -256,27 +257,17 @@ class _LoginForm1State extends State<LoginForm1> {
                   //         ),
                   //       ),
                   //     ),
-                  //   ),
-                  ),
-              // )
-              Positioned(
-                bottom: 300,
-                child: Container(
-                  height: 400,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 100,
-                        color: Colors.blue
-                      )
-                    )
-                  ),
-                ),
-              )
+                  ),    //   ),
             ],
-          ),
-        );
+            ),
 
+              // )
+        
+            
+          );
+      }
+        );
+      
         // return Form(
         //   child: Column(
         //     children: [
@@ -301,8 +292,7 @@ class _LoginForm1State extends State<LoginForm1> {
         //     ],
         //   ),
         // );
-      },
-    );
+      
   }
 
 // void _validateInputs() {
@@ -366,8 +356,11 @@ class GetClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = new Path();
-    path.lineTo(0, 330);
-    path.lineTo(560, 0);
+ //   path.moveTo(0, size.height * 0.3);
+    path.lineTo(0, 350);
+    path.lineTo(500, 0);
+
+ //   path.lineTo(0, size.height);
     path.close();
     return path;
   }

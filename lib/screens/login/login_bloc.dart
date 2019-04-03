@@ -8,7 +8,7 @@ import 'package:flutter_guru/utils/authentication/index.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
   final AuthenticationBloc authenticationBloc;
-
+  
   LoginBloc({
     @required this.userRepository,
     @required this.authenticationBloc,

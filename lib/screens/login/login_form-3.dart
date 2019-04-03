@@ -39,98 +39,234 @@ class _LoginForm3State extends State<LoginForm3> {
           });
         }
         return Scaffold(
-          body: Stack(
-            children: <Widget>[
-              new Positioned(
-                top: 0,
-                child: new Image.asset('assets/300_3.jpg'),
-              ),
-              new Positioned(
-                bottom: 0,
-                child: Stack(
-                  children: <Widget>[LoginWidgets()],
+          body: Container(
+            //color: Color(0xccc7c7),
+            decoration: BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [Colors.white70, Colors.black12],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 50,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: AssetImage('assets/300_3.jpg'),
+                            radius: 60.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Welcome",
+                              style: TextStyle(
+                                fontSize: 28,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "Loren Ipsum",
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              )
-            ],
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 25),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Container(
+                      padding: EdgeInsets.all(30),
+                      //margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      child: Stack(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 20),
+                            child: ClipShadowPath(
+                              clipper: GetClipper(),
+                              shadow:
+                                  Shadow(blurRadius: 20, color: Colors.black),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10)),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextField(),
+                                    ),
+                                    SizedBox(
+                                      height: 58,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Center(
+                                child: CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/300_3.jpg'),
+                                  radius: 45.0,
+                                ),
+                              ),
+                              Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    top: MediaQuery.of(context).size.width*0.075,
+                                    left: MediaQuery.of(context).size.width*0.045,
+                                    child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Center(child: Container(color: Colors.black,height: 3,width: MediaQuery.of(context).size.width * 0.75,)),
+                                    ],
+                                  )),
+                                  Positioned(
+                                    top: MediaQuery.of(context).size.width*0.075,
+                                    left: MediaQuery.of(context).size.width*0.045,
+                                    child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Center(child: Container(color: Colors.black,height: 3,width: MediaQuery.of(context).size.width * 0.75,)),
+                                    ],
+                                  )),
+                                  Center(
+                                    child: RaisedButton(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(40.0),
+                                        ),
+                                        child: Text('Next'),
+                                        textColor: Colors.white,
+                                        color: Colors.black,
+                                        onPressed: () {}
+
+                                        // textColor: Colors.white,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },
     );
   }
+}
 
-  _loginbody() => SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[loginheader(), loginFields()],
-        ),
-      );
-  loginheader() => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          FlutterLogo(
-            colors: Colors.green,
-            size: 80.0,
-          ),
-          SizedBox(
-            height: 30.0,
-          ),
-          Text("Welcome",
-              style:
-                  TextStyle(fontWeight: FontWeight.w700, color: Colors.green))
-        ],
-      );
+class GetClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = new Path();
+    path.moveTo(0, size.height * 0.38);
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
 
-  loginFields() => Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-              child: TextField(
-                maxLines: 1,
-                decoration: InputDecoration(
-                  hintText: "Enter your username",
-                  labelText: "Username",
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-              child: TextField(
-                maxLines: 1,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: "Enter your password",
-                  labelText: "Password",
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 30.0),
-              width: double.infinity,
-              child: RaisedButton(
-                padding: EdgeInsets.all(12.0),
-                shape: StadiumBorder(),
-                child: Text(
-                  "SIGN IN",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: Colors.green,
-                onPressed: () {},
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              "SIGN UP FOR AN ACCOUNT",
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
-      );
+    path.lineTo(0, size.height);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
+
+@immutable
+class ClipShadowPath extends StatelessWidget {
+  final Shadow shadow;
+  final CustomClipper<Path> clipper;
+  final Widget child;
+
+  ClipShadowPath({
+    @required this.shadow,
+    @required this.clipper,
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _ClipShadowShadowPainter(
+        clipper: this.clipper,
+        shadow: this.shadow,
+      ),
+      child: ClipPath(child: child, clipper: this.clipper),
+    );
+  }
+}
+
+class _ClipShadowShadowPainter extends CustomPainter {
+  final Shadow shadow;
+  final CustomClipper<Path> clipper;
+
+  _ClipShadowShadowPainter({@required this.shadow, @required this.clipper});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = shadow.toPaint();
+    canvas.drawPath(clipper.getClip(size), paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class Drawhorizontalline extends CustomPainter {
+  Paint _paint;
+  bool reverse;
+
+  Drawhorizontalline(this.reverse) {
+    _paint = Paint()
+      ..color = Colors.black
+      ..strokeWidth = 1
+      ..strokeCap = StrokeCap.round;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (!reverse) {
+      canvas.drawLine(Offset(0.0, 0.0), Offset(size.width, 0.0), _paint);
+    } else {
+      canvas.drawLine(Offset(-90.0, 0.0), Offset(-10.0, 0.0), _paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
 }
