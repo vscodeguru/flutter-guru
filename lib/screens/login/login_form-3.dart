@@ -42,13 +42,13 @@ class _LoginForm3State extends State<LoginForm3> {
         }
         return Scaffold(
           body: Container(
-            //color: Color(0xccc7c7),
-            decoration: BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [Colors.white70, Colors.black12],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-            ),
+            color: HexColor("#314453"),
+            // decoration: BoxDecoration(
+            //   gradient: new LinearGradient(
+            //       colors: [Color(0x000000), Color(0x000000)],
+            //       begin: Alignment.topCenter,
+            //       end: Alignment.bottomCenter),
+            // ),
             child: Stack(
               children: <Widget>[
                 Positioned(
@@ -73,14 +73,14 @@ class _LoginForm3State extends State<LoginForm3> {
                             padding: EdgeInsets.only(bottom: 20),
                             child: ClipShadowPath(
                               clipper: GetClipper(),
-                              shadow:
-                                  Shadow(blurRadius: 20, color: Colors.black),
+                              shadow: Shadow(
+                                  blurRadius: 20, color: HexColor("#000000")),
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
                                       bottomLeft: Radius.circular(10),
                                       bottomRight: Radius.circular(10)),
-                                  color: Colors.white,
+                                  color: HexColor("#f2f2f2"),
                                 ),
                                 child: PageView(
                                   physics: NeverScrollableScrollPhysics(),
@@ -334,6 +334,18 @@ class _LoginForm3State extends State<LoginForm3> {
   }
 }
 
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
 class GetClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -392,31 +404,5 @@ class _ClipShadowShadowPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
-  }
-}
-
-class Drawhorizontalline extends CustomPainter {
-  Paint _paint;
-  bool reverse;
-
-  Drawhorizontalline(this.reverse) {
-    _paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 1
-      ..strokeCap = StrokeCap.round;
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (!reverse) {
-      canvas.drawLine(Offset(0.0, 0.0), Offset(size.width, 0.0), _paint);
-    } else {
-      canvas.drawLine(Offset(-90.0, 0.0), Offset(-10.0, 0.0), _paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
   }
 }
