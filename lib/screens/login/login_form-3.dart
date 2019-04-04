@@ -58,73 +58,49 @@ class _LoginForm3State extends State<LoginForm3> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    padding: EdgeInsets.only(bottom: 25),
+                    // padding: EdgeInsets.only(bottom: 25),
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: Container(
-                      padding: EdgeInsets.all(30),
+                      // padding: EdgeInsets.all(30),
                       //margin: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                        color: Colors.transparent,
+                        // borderRadius: BorderRadius.all(Radius.circular(15))
+                      ),
                       child: Stack(
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: ClipShadowPath(
-                              clipper: GetClipper(),
-                              shadow: Shadow(
-                                  blurRadius: 20, color: HexColor("#000000")),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10)),
-                                  color: HexColor("#f2f2f2"),
-                                ),
-                                child: PageView(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  controller: _loginPageControl,
-                                  children: <Widget>[
-                                    _buildPhoneNumberContent(context),
-                                    _buildOtpContent(context)
-                                  ],
-                                ),
+                          ClipShadowPath(
+                            clipper: GetClipper(),
+                            shadow: Shadow(
+                                blurRadius: 20, color: HexColor("#171717")),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: HexColor("#f2f2f2"),
+                              ),
+                              child: PageView(
+                                physics: NeverScrollableScrollPhysics(),
+                                controller: _loginPageControl,
+                                children: <Widget>[
+                                  _buildPhoneNumberContent(context),
+                                  _buildOtpContent(context)
+                                ],
                               ),
                             ),
                           ),
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              Center(
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage('assets/300_3.jpg'),
-                                  radius:
-                                      MediaQuery.of(context).size.width * 0.13,
-                                ),
-                              ),
+                              // Center(
+                              //   child: CircleAvatar(
+                              //     backgroundImage:
+                              //         AssetImage('assets/300_3.jpg'),
+                              //     radius:
+                              //         MediaQuery.of(context).size.width * 0.13,
+                              //   ),
+                              // ),
                               Stack(
                                 children: <Widget>[
-                                  Positioned(
-                                      bottom: 17,
-                                      left: MediaQuery.of(context).size.width *
-                                          0.045,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Center(
-                                              child: Container(
-                                            color: Colors.black,
-                                            height: 3,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.75,
-                                          )),
-                                        ],
-                                      )),
                                   Center(
                                     child: (!_showOtpButtons)
                                         ? RaisedButton(
@@ -309,15 +285,23 @@ class _LoginForm3State extends State<LoginForm3> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CircleAvatar(
-            backgroundImage: AssetImage('assets/300_3.jpg'),
-            radius: 60.0,
-          ),
+          Container(
+              width: MediaQuery.of(context).size.width * 0.32,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                //boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]
+              ),
+              padding: EdgeInsets.all(15),
+              child: Image(
+                image: AssetImage('assets/images/logo/UCF.png'),
+              )),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Welcome",
+              "Agent Portal",
               style: TextStyle(
+                color: Colors.white,
                 fontSize: 28,
               ),
             ),
