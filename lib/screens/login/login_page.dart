@@ -37,11 +37,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  
+    return Scaffold(
       // appBar: AppBar(
       //   title: Text('Login'),
       // ),
-      body: LoginForm1(
+      body: LoginForm3(
         authenticationBloc: _authenticationBloc,
         loginBloc: _loginBloc,
       ),

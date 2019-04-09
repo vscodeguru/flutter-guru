@@ -22,9 +22,12 @@ class LoginForm3 extends StatefulWidget {
 }
 
 class _LoginForm3State extends State<LoginForm3> {
+  TextEditingController _textFieldController = TextEditingController();
+
   LoginBloc get _loginBloc => widget.loginBloc;
   final PageController _loginPageControl = new PageController();
   bool _showOtpButtons = false;
+  bool _isTextFieldVisible = true;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginEvent, LoginState>(
@@ -68,6 +71,7 @@ class _LoginForm3State extends State<LoginForm3> {
                         color: Colors.transparent,
                         // borderRadius: BorderRadius.all(Radius.circular(15))
                       ),
+
                       child: Stack(
                         children: <Widget>[
                           ClipShadowPath(
@@ -88,46 +92,64 @@ class _LoginForm3State extends State<LoginForm3> {
                               ),
                             ),
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              // Center(
-                              //   child: CircleAvatar(
-                              //     backgroundImage:
-                              //         AssetImage('assets/300_3.jpg'),
-                              //     radius:
-                              //         MediaQuery.of(context).size.width * 0.13,
-                              //   ),
-                              // ),
-                              Stack(
-                                children: <Widget>[
-                                  Center(
-                                    child: (!_showOtpButtons)
-                                        ? RaisedButton(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(40.0),
-                                            ),
-                                            child: Text('Next'),
-                                            textColor: Colors.white,
-                                            color: Colors.black,
-                                            onPressed: () {
-                                              setState(() {
-                                                this._showOtpButtons = true;
-                                              });
-                                              _loginPageControl.nextPage(
-                                                  duration: Duration(
-                                                      milliseconds: 350),
-                                                  curve: Curves.linear);
-                                            }
+                          Container(
+                            padding: EdgeInsets.only(top: 35),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                _isTextFieldVisible
+                                    ? Center(
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          backgroundImage: AssetImage(
+                                              'assets/smartphone.png'),
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.10,
+                                        ),
+                                      )
+                                    : Center(
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          backgroundImage:
+                                              AssetImage('assets/sm.png'),
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.10,
+                                        ),
+                                      ),
+                                // Stack(
+                                //   children: <Widget>[
+                                //     Center(
+                                //       child: (!_showOtpButtons)
+                                //           ? RaisedButton(
+                                //               shape: RoundedRectangleBorder(
+                                //                 borderRadius:
+                                //                     BorderRadius.circular(40.0),
+                                //               ),
+                                //               child: Text('Next'),
+                                //               textColor: Colors.white,
+                                //               color: Colors.black,
+                                //               onPressed: () {
+                                //                 setState(() {
+                                //                   this._showOtpButtons = true;
+                                //                 });
+                                //                 _loginPageControl.nextPage(
+                                //                     duration: Duration(
+                                //                         milliseconds: 350),
+                                //                     curve: Curves.linear);
+                                //               }
 
-                                            // textColor: Colors.white,
-                                            )
-                                        : _buildOtpButtonContent(),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                //               // textColor: Colors.white,
+                                //               )
+                                //           : _buildOtpButtonContent(),
+                                //     ),
+                                //   ],
+                                // ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -146,42 +168,42 @@ class _LoginForm3State extends State<LoginForm3> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        RaisedButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40.0),
-            ),
-            child: Text('Go Back'),
-            textColor: Colors.white,
-            color: Colors.black,
-            onPressed: () {
-              setState(() {
-                this._showOtpButtons = false;
-              });
-              _loginPageControl.previousPage(
-                  duration: Duration(milliseconds: 350), curve: Curves.linear);
-            }
+        // RaisedButton(
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(40.0),
+        //     ),
+        //     child: Text('Go Back'),
+        //     textColor: Colors.white,
+        //     color: Colors.black,
+        //     onPressed: () {
+        //       setState(() {
+        //         this._showOtpButtons = false;
+        //       });
+        //       _loginPageControl.previousPage(
+        //           duration: Duration(milliseconds: 350), curve: Curves.linear);
+        //     }
 
-            // textColor: Colors.white,
-            ),
-        RaisedButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40.0),
-            ),
-            child: Text('Login'),
-            textColor: Colors.white,
-            color: Colors.black,
-            onPressed: () {
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text('Login Clicked'),
-                action: SnackBarAction(
-                  label: 'Done',
-                  onPressed: () {},
-                ),
-              ));
-            }
+        //     // textColor: Colors.white,
+        //     ),
+        // RaisedButton(
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(40.0),
+        //     ),
+        //     child: Text('Login'),
+        //     textColor: Colors.white,
+        //     color: Colors.black,
+        //     onPressed: () {
+        //       Scaffold.of(context).showSnackBar(SnackBar(
+        //         content: Text('Login Clicked'),
+        //         action: SnackBarAction(
+        //           label: 'Done',
+        //           onPressed: () {},
+        //         ),
+        //       ));
+        //     }
 
-            // textColor: Colors.white,
-            ),
+        //     // textColor: Colors.white,
+        //     ),
       ],
     );
   }
@@ -194,7 +216,10 @@ class _LoginForm3State extends State<LoginForm3> {
         ),
         Text(
           'Enter your Mobile Number',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: HexColor("#314453")),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.035,
@@ -202,29 +227,60 @@ class _LoginForm3State extends State<LoginForm3> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextField(
+            controller: _textFieldController,
             maxLength: 10,
             inputFormatters: [
               WhitelistingTextInputFormatter.digitsOnly,
             ],
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(13.0),
-                hintText: 'Enter your Mobile Number',
-                fillColor: Colors.grey[400],
-                filled: true,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[400]),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
+              contentPadding: const EdgeInsets.all(13.0),
+              hintText: 'Enter your Mobile Number',
+              //  fillColor: Colors.grey[400],
+              //  filled: true,
+              suffixIcon: Icon(
+                Icons.phone_android,
+                color: HexColor("#314453"),
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: HexColor("#314453")),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(25.0),
                 ),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ))),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: HexColor("#314453")),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(25.0),
+                ),
+              ),
+            ),
           ),
         ),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            child: (!_showOtpButtons)
+                ? RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    child: Text('Next'),
+                    textColor: Colors.white,
+                    color: HexColor("#314453"),
+                    onPressed: () {
+                      setState(() {
+                        this._showOtpButtons = false;
+                        _textFieldController.text = "";
+                        _isTextFieldVisible = !_isTextFieldVisible;
+                      });
+                      _loginPageControl.nextPage(
+                          duration: Duration(milliseconds: 350),
+                          curve: Curves.linear);
+                    }
+
+                    // textColor: Colors.white,
+                    )
+                : _buildOtpButtonContent()),
       ],
     );
   }
@@ -237,7 +293,10 @@ class _LoginForm3State extends State<LoginForm3> {
         ),
         Text(
           'Enter OTP Code',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: HexColor("#314453")),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.035,
@@ -245,7 +304,8 @@ class _LoginForm3State extends State<LoginForm3> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextField(
-            maxLength: 10,
+            controller: _textFieldController,
+            maxLength: 4,
             inputFormatters: [
               WhitelistingTextInputFormatter.digitsOnly,
             ],
@@ -253,10 +313,13 @@ class _LoginForm3State extends State<LoginForm3> {
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(13.0),
               hintText: 'Enter OTP Code',
-              fillColor: Colors.grey[400],
-              filled: true,
+              //  fillColor: HexColor("#314453"),
+              // filled: true,
               suffixIcon: IconButton(
-                  icon: Icon(Icons.refresh),
+                  icon: Icon(
+                    Icons.refresh,
+                    color: HexColor("#314453"),
+                  ),
                   tooltip: 'Resend OTP',
                   onPressed: () {
                     Scaffold.of(context).showSnackBar(SnackBar(
@@ -264,16 +327,65 @@ class _LoginForm3State extends State<LoginForm3> {
                     ));
                   }),
               border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[400]),
+                  borderSide: BorderSide(color: HexColor("#314453")),
+                  //   borderSide: BorderSide(color: Colors.grey[400]),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
+                    Radius.circular(25.0),
                   )),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey),
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderSide: BorderSide(color: HexColor("#314453")),
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
             ),
           ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
+                child: Text('Go Back'),
+                textColor: Colors.white,
+                color: HexColor("#314453"),
+                onPressed: () {
+                  setState(() {
+                    _textFieldController.text = "";
+                    _isTextFieldVisible = !_isTextFieldVisible;
+
+                    this._showOtpButtons = false;
+                  });
+                  _loginPageControl.previousPage(
+                      duration: Duration(milliseconds: 350),
+                      curve: Curves.linear);
+                }
+
+                // textColor: Colors.white,
+                ),
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
+                child: Text('Login'),
+                textColor: Colors.white,
+                color: HexColor("#314453"),
+                onPressed: () {
+                  setState(() {
+                    _textFieldController.text = "";
+                  });
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text('Login Clicked'),
+                    action: SnackBarAction(
+                      label: 'Done',
+                      onPressed: () {},
+                    ),
+                  ));
+                }
+
+                // textColor: Colors.white,
+                ),
+          ],
         ),
       ],
     );
@@ -306,12 +418,12 @@ class _LoginForm3State extends State<LoginForm3> {
               ),
             ),
           ),
-          Text(
-            "Loren Ipsum",
-            style: TextStyle(
-              fontSize: 12,
-            ),
-          )
+          // Text(
+          //   "Loren Ipsum",
+          //   style: TextStyle(
+          //     fontSize: 12,
+          //   ),
+          // )
         ],
       ),
     );
