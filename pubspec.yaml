@@ -49,11 +49,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/100_13.jpg
-    - assets/100_14.jpg
-    - assets/300_1.jpg
-    - assets/300_2.jpg
-    - assets/300_3.jpg
+    - assets/images/logo/
+    - assets/
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -81,5 +78,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
-assets:
-    - assets/300_3.jpg

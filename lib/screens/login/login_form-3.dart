@@ -42,13 +42,13 @@ class _LoginForm3State extends State<LoginForm3> {
         }
         return Scaffold(
           body: Container(
-            //color: Color(0xccc7c7),
-            decoration: BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [Colors.white70, Colors.black12],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-            ),
+            color: HexColor("#314453"),
+            // decoration: BoxDecoration(
+            //   gradient: new LinearGradient(
+            //       colors: [Color(0x000000), Color(0x000000)],
+            //       begin: Alignment.topCenter,
+            //       end: Alignment.bottomCenter),
+            // ),
             child: Stack(
               children: <Widget>[
                 Positioned(
@@ -58,73 +58,49 @@ class _LoginForm3State extends State<LoginForm3> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    padding: EdgeInsets.only(bottom: 25),
+                    // padding: EdgeInsets.only(bottom: 25),
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: Container(
-                      padding: EdgeInsets.all(30),
+                      // padding: EdgeInsets.all(30),
                       //margin: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                        color: Colors.transparent,
+                        // borderRadius: BorderRadius.all(Radius.circular(15))
+                      ),
                       child: Stack(
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 20),
-                            child: ClipShadowPath(
-                              clipper: GetClipper(),
-                              shadow:
-                                  Shadow(blurRadius: 20, color: Colors.black),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10)),
-                                  color: Colors.white,
-                                ),
-                                child: PageView(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  controller: _loginPageControl,
-                                  children: <Widget>[
-                                    _buildPhoneNumberContent(context),
-                                    _buildOtpContent(context)
-                                  ],
-                                ),
+                          ClipShadowPath(
+                            clipper: GetClipper(),
+                            shadow: Shadow(
+                                blurRadius: 20, color: HexColor("#171717")),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: HexColor("#f2f2f2"),
+                              ),
+                              child: PageView(
+                                physics: NeverScrollableScrollPhysics(),
+                                controller: _loginPageControl,
+                                children: <Widget>[
+                                  _buildPhoneNumberContent(context),
+                                  _buildOtpContent(context)
+                                ],
                               ),
                             ),
                           ),
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              Center(
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage('assets/300_3.jpg'),
-                                  radius:
-                                      MediaQuery.of(context).size.width * 0.13,
-                                ),
-                              ),
+                              // Center(
+                              //   child: CircleAvatar(
+                              //     backgroundImage:
+                              //         AssetImage('assets/300_3.jpg'),
+                              //     radius:
+                              //         MediaQuery.of(context).size.width * 0.13,
+                              //   ),
+                              // ),
                               Stack(
                                 children: <Widget>[
-                                  Positioned(
-                                      bottom: 17,
-                                      left: MediaQuery.of(context).size.width *
-                                          0.045,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Center(
-                                              child: Container(
-                                            color: Colors.black,
-                                            height: 3,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.75,
-                                          )),
-                                        ],
-                                      )),
                                   Center(
                                     child: (!_showOtpButtons)
                                         ? RaisedButton(
@@ -309,15 +285,23 @@ class _LoginForm3State extends State<LoginForm3> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CircleAvatar(
-            backgroundImage: AssetImage('assets/300_3.jpg'),
-            radius: 60.0,
-          ),
+          Container(
+              width: MediaQuery.of(context).size.width * 0.32,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                //boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]
+              ),
+              padding: EdgeInsets.all(15),
+              child: Image(
+                image: AssetImage('assets/images/logo/UCF.png'),
+              )),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Welcome",
+              "Agent Portal",
               style: TextStyle(
+                color: Colors.white,
                 fontSize: 28,
               ),
             ),
@@ -332,6 +316,18 @@ class _LoginForm3State extends State<LoginForm3> {
       ),
     );
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
 class GetClipper extends CustomClipper<Path> {
@@ -392,31 +388,5 @@ class _ClipShadowShadowPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
-  }
-}
-
-class Drawhorizontalline extends CustomPainter {
-  Paint _paint;
-  bool reverse;
-
-  Drawhorizontalline(this.reverse) {
-    _paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 1
-      ..strokeCap = StrokeCap.round;
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (!reverse) {
-      canvas.drawLine(Offset(0.0, 0.0), Offset(size.width, 0.0), _paint);
-    } else {
-      canvas.drawLine(Offset(-90.0, 0.0), Offset(-10.0, 0.0), _paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
   }
 }
