@@ -190,7 +190,7 @@ class _LoginForm3State extends State<LoginForm3> {
     return Column(
       children: <Widget>[
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.2,
+          height: MediaQuery.of(context).size.height * 0.25,
         ),
         Text(
           'Enter your Mobile Number',
@@ -233,7 +233,7 @@ class _LoginForm3State extends State<LoginForm3> {
     return Column(
       children: <Widget>[
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.2,
+          height: MediaQuery.of(context).size.height * 0.25,
         ),
         Text(
           'Enter OTP Code',
