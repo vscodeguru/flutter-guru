@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_guru/screens/login/index.dart';
-import 'package:flutter_guru/screens/login/widgets/login_background.dart';
-import 'package:flutter_guru/screens/login/widgets/login_widget.dart';
+import 'package:flutter_guru/screens/login/widgets/rounded_textbox.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 
 class LoginForm3 extends StatefulWidget {
@@ -21,8 +20,40 @@ class LoginForm3 extends StatefulWidget {
   State<LoginForm3> createState() => _LoginForm3State();
 }
 
-class _LoginForm3State extends State<LoginForm3> {
+class _LoginForm3State extends State<LoginForm3>
+    with SingleTickerProviderStateMixin {
   TextEditingController _textFieldController = TextEditingController();
+  Color pageThemeColor = HexColor("#314453");
+  AnimationController controller;
+  Animation animation;
+  FocusNode focusNode = FocusNode();
+  @override
+  void initState() {
+    super.initState();
+
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    animation = Tween(begin: 300.0, end: 50.0).animate(controller)
+      ..addListener(() {
+        setState(() {});
+      });
+
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        controller.forward();
+      } else {
+        controller.reverse();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    focusNode.dispose();
+
+    super.dispose();
+  }
 
   LoginBloc get _loginBloc => widget.loginBloc;
   final PageController _loginPageControl = new PageController();
@@ -44,14 +75,9 @@ class _LoginForm3State extends State<LoginForm3> {
           });
         }
         return Scaffold(
+          resizeToAvoidBottomPadding: false,
           body: Container(
-            color: HexColor("#314453"),
-            // decoration: BoxDecoration(
-            //   gradient: new LinearGradient(
-            //       colors: [Color(0x000000), Color(0x000000)],
-            //       begin: Alignment.topCenter,
-            //       end: Alignment.bottomCenter),
-            // ),
+            color: pageThemeColor,
             child: Stack(
               children: <Widget>[
                 Positioned(
@@ -61,17 +87,12 @@ class _LoginForm3State extends State<LoginForm3> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    // padding: EdgeInsets.only(bottom: 25),
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: Container(
-                      // padding: EdgeInsets.all(30),
-                      //margin: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
-                        // borderRadius: BorderRadius.all(Radius.circular(15))
                       ),
-
                       child: Stack(
                         children: <Widget>[
                           ClipShadowPath(
@@ -92,6 +113,7 @@ class _LoginForm3State extends State<LoginForm3> {
                               ),
                             ),
                           ),
+                          SizedBox(height: animation.value),
                           Container(
                             padding: EdgeInsets.only(top: 35),
                             child: Column(
@@ -101,8 +123,8 @@ class _LoginForm3State extends State<LoginForm3> {
                                     ? Center(
                                         child: CircleAvatar(
                                           backgroundColor: Colors.white,
-                                          backgroundImage: AssetImage(
-                                              'assets/smartphone.png'),
+                                          backgroundImage:
+                                              AssetImage('assets/chat.png'),
                                           radius: MediaQuery.of(context)
                                                   .size
                                                   .width *
@@ -112,42 +134,14 @@ class _LoginForm3State extends State<LoginForm3> {
                                     : Center(
                                         child: CircleAvatar(
                                           backgroundColor: Colors.white,
-                                          backgroundImage:
-                                              AssetImage('assets/sm.png'),
+                                          backgroundImage: AssetImage(
+                                              'assets/smartphone.png'),
                                           radius: MediaQuery.of(context)
                                                   .size
                                                   .width *
                                               0.10,
                                         ),
                                       ),
-                                // Stack(
-                                //   children: <Widget>[
-                                //     Center(
-                                //       child: (!_showOtpButtons)
-                                //           ? RaisedButton(
-                                //               shape: RoundedRectangleBorder(
-                                //                 borderRadius:
-                                //                     BorderRadius.circular(40.0),
-                                //               ),
-                                //               child: Text('Next'),
-                                //               textColor: Colors.white,
-                                //               color: Colors.black,
-                                //               onPressed: () {
-                                //                 setState(() {
-                                //                   this._showOtpButtons = true;
-                                //                 });
-                                //                 _loginPageControl.nextPage(
-                                //                     duration: Duration(
-                                //                         milliseconds: 350),
-                                //                     curve: Curves.linear);
-                                //               }
-
-                                //               // textColor: Colors.white,
-                                //               )
-                                //           : _buildOtpButtonContent(),
-                                //     ),
-                                //   ],
-                                // ),
                               ],
                             ),
                           ),
@@ -164,49 +158,12 @@ class _LoginForm3State extends State<LoginForm3> {
     );
   }
 
-  Row _buildOtpButtonContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        // RaisedButton(
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.circular(40.0),
-        //     ),
-        //     child: Text('Go Back'),
-        //     textColor: Colors.white,
-        //     color: Colors.black,
-        //     onPressed: () {
-        //       setState(() {
-        //         this._showOtpButtons = false;
-        //       });
-        //       _loginPageControl.previousPage(
-        //           duration: Duration(milliseconds: 350), curve: Curves.linear);
-        //     }
-
-        //     // textColor: Colors.white,
-        //     ),
-        // RaisedButton(
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.circular(40.0),
-        //     ),
-        //     child: Text('Login'),
-        //     textColor: Colors.white,
-        //     color: Colors.black,
-        //     onPressed: () {
-        //       Scaffold.of(context).showSnackBar(SnackBar(
-        //         content: Text('Login Clicked'),
-        //         action: SnackBarAction(
-        //           label: 'Done',
-        //           onPressed: () {},
-        //         ),
-        //       ));
-        //     }
-
-        //     // textColor: Colors.white,
-        //     ),
-      ],
-    );
-  }
+  // Row _buildOtpButtonContent() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: <Widget>[],
+  //   );
+  // }
 
   Column _buildPhoneNumberContent(BuildContext context) {
     return Column(
@@ -214,47 +171,17 @@ class _LoginForm3State extends State<LoginForm3> {
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.25,
         ),
-        Text(
-          'Enter your Mobile Number',
-          style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: HexColor("#314453")),
-        ),
+        guruLabel('Enter Your Mobile Number', pageThemeColor),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.035,
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
-          child: TextField(
-            controller: _textFieldController,
-            maxLength: 10,
-            inputFormatters: [
-              WhitelistingTextInputFormatter.digitsOnly,
-            ],
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(13.0),
-              hintText: 'Enter your Mobile Number',
-              //  fillColor: Colors.grey[400],
-              //  filled: true,
-              suffixIcon: Icon(
-                Icons.phone_android,
-                color: HexColor("#314453"),
-              ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: HexColor("#314453")),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(25.0),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: HexColor("#314453")),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(25.0),
-                ),
-              ),
-            ),
+          child: guruRoundedText(
+            '',
+            pageThemeColor,
+            Icons.phone_android,
+            _textFieldController,
           ),
         ),
         Padding(
@@ -276,11 +203,8 @@ class _LoginForm3State extends State<LoginForm3> {
                       _loginPageControl.nextPage(
                           duration: Duration(milliseconds: 350),
                           curve: Curves.linear);
-                    }
-
-                    // textColor: Colors.white,
-                    )
-                : _buildOtpButtonContent()),
+                    })
+                : _buildOtpContent),
       ],
     );
   }
@@ -313,8 +237,6 @@ class _LoginForm3State extends State<LoginForm3> {
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(13.0),
               hintText: 'Enter OTP Code',
-              //  fillColor: HexColor("#314453"),
-              // filled: true,
               suffixIcon: IconButton(
                   icon: Icon(
                     Icons.refresh,
@@ -328,7 +250,6 @@ class _LoginForm3State extends State<LoginForm3> {
                   }),
               border: OutlineInputBorder(
                   borderSide: BorderSide(color: HexColor("#314453")),
-                  //   borderSide: BorderSide(color: Colors.grey[400]),
                   borderRadius: BorderRadius.all(
                     Radius.circular(25.0),
                   )),
@@ -337,6 +258,7 @@ class _LoginForm3State extends State<LoginForm3> {
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
             ),
+            focusNode: focusNode,
           ),
         ),
         Row(
@@ -359,10 +281,7 @@ class _LoginForm3State extends State<LoginForm3> {
                   _loginPageControl.previousPage(
                       duration: Duration(milliseconds: 350),
                       curve: Curves.linear);
-                }
-
-                // textColor: Colors.white,
-                ),
+                }),
             RaisedButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40.0),
@@ -381,10 +300,7 @@ class _LoginForm3State extends State<LoginForm3> {
                       onPressed: () {},
                     ),
                   ));
-                }
-
-                // textColor: Colors.white,
-                ),
+                }),
           ],
         ),
       ],
@@ -402,7 +318,6 @@ class _LoginForm3State extends State<LoginForm3> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                //boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]
               ),
               padding: EdgeInsets.all(15),
               child: Image(
@@ -418,12 +333,6 @@ class _LoginForm3State extends State<LoginForm3> {
               ),
             ),
           ),
-          // Text(
-          //   "Loren Ipsum",
-          //   style: TextStyle(
-          //     fontSize: 12,
-          //   ),
-          // )
         ],
       ),
     );

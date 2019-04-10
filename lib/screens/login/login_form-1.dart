@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 
@@ -22,8 +21,8 @@ class LoginForm1 extends StatefulWidget {
 
 class _LoginForm1State extends State<LoginForm1>
     with SingleTickerProviderStateMixin {
-  TextEditingController _textEditingController = TextEditingController();
-  String _mobile;
+  TextEditingController textEditingController = TextEditingController();
+  String mobile;
   bool _autoValidate = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isTextFieldVisible = true;
@@ -254,12 +253,11 @@ class _LoginForm1State extends State<LoginForm1>
 //     });
 //   }
 // }
-  void _submitform() {
+  void submitform() {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey..currentState.save();
-    final Map<String, dynamic> product = {'Mobile': _mobile};
   }
 
   String validateMobile(String value) {

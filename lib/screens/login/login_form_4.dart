@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:flutter_guru/screens/login/index.dart';
-import 'package:flutter_guru/utils/authentication/index.dart';
 
 class LoginForm4 extends StatefulWidget {
   LoginForm4({
@@ -16,7 +10,7 @@ class LoginForm4 extends StatefulWidget {
 }
 
 class _LoginForm4State extends State<LoginForm4> {
-  double ScreenHeight = 0;
+  double screenHeight = 0;
 
   void initState() {
     super.initState();
@@ -24,7 +18,7 @@ class _LoginForm4State extends State<LoginForm4> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenHeight = MediaQuery.of(context).size.height;
+    screenHeight = MediaQuery.of(context).size.height;
     return new Scaffold(
       backgroundColor: Colors.pink,
       body: owais(context),
