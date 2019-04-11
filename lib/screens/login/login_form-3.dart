@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/screens/login/widgets/rounded_textbox.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
@@ -9,35 +8,35 @@ import 'package:flutter_guru/utils/authentication/index.dart';
 class LoginForm3 extends StatefulWidget {
   final LoginBloc loginBloc;
   final AuthenticationBloc authenticationBloc;
-
   LoginForm3({
     Key key,
     @required this.loginBloc,
     @required this.authenticationBloc,
   }) : super(key: key);
-
   @override
   State<LoginForm3> createState() => _LoginForm3State();
 }
 
 class _LoginForm3State extends State<LoginForm3>
     with SingleTickerProviderStateMixin {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController _textFieldController = TextEditingController();
   Color pageThemeColor = HexColor("#314453");
   AnimationController controller;
   Animation animation;
   FocusNode focusNode = FocusNode();
+  bool autoValidate = false;
+  String mobile;
+  String otp;
   @override
   void initState() {
     super.initState();
-
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     animation = Tween(begin: 300.0, end: 50.0).animate(controller)
       ..addListener(() {
         setState(() {});
       });
-
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         controller.forward();
@@ -51,7 +50,6 @@ class _LoginForm3State extends State<LoginForm3>
   void dispose() {
     controller.dispose();
     focusNode.dispose();
-
     super.dispose();
   }
 
@@ -59,6 +57,8 @@ class _LoginForm3State extends State<LoginForm3>
   final PageController _loginPageControl = new PageController();
   bool _showOtpButtons = false;
   bool _isTextFieldVisible = true;
+  bool _autoValidate = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginEvent, LoginState>(
@@ -76,81 +76,88 @@ class _LoginForm3State extends State<LoginForm3>
         }
         return Scaffold(
           resizeToAvoidBottomPadding: false,
-          body: Container(
-            color: pageThemeColor,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: 50,
-                  child: _buildTopContainer(context),
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.6,
+          body: InkWell(
+            child: Container(
+              color: pageThemeColor,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    top: 50,
+                    child: _buildTopContainer(context),
+                  ),
+                  Positioned(
+                    bottom: 0,
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                      ),
-                      child: Stack(
-                        children: <Widget>[
-                          ClipShadowPath(
-                            clipper: GetClipper(),
-                            shadow: Shadow(
-                                blurRadius: 20, color: HexColor("#171717")),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: HexColor("#f2f2f2"),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: Stack(
+                          children: <Widget>[
+                            SizedBox(height: animation.value),
+                            ClipShadowPath(
+                              clipper: GetClipper(),
+                              shadow: Shadow(
+                                  blurRadius: 20, color: HexColor("#171717")),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: HexColor("#f2f2f2"),
+                                ),
+                                child: Form(
+                                  key: formKey,
+                                  autovalidate: autoValidate,
+                                  child: PageView(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    controller: _loginPageControl,
+                                    children: <Widget>[
+                                      _buildPhoneNumberContent(context),
+                                      _buildOtpContent(context)
+                                    ],
+                                  ),
+                                ),
                               ),
-                              child: PageView(
-                                physics: NeverScrollableScrollPhysics(),
-                                controller: _loginPageControl,
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 35),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  _buildPhoneNumberContent(context),
-                                  _buildOtpContent(context)
+                                  _isTextFieldVisible
+                                      ? Center(
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            backgroundImage: AssetImage(
+                                                'assets/smartphone.png'),
+                                            radius: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.10,
+                                          ),
+                                        )
+                                      : Center(
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            backgroundImage:
+                                                AssetImage('assets/chat.png'),
+                                            radius: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.10,
+                                          ),
+                                        ),
                                 ],
                               ),
                             ),
-                          ),
-                          SizedBox(height: animation.value),
-                          Container(
-                            padding: EdgeInsets.only(top: 35),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                _isTextFieldVisible
-                                    ? Center(
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          backgroundImage:
-                                              AssetImage('assets/chat.png'),
-                                          radius: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.10,
-                                        ),
-                                      )
-                                    : Center(
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          backgroundImage: AssetImage(
-                                              'assets/smartphone.png'),
-                                          radius: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.10,
-                                        ),
-                                      ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         );
@@ -196,6 +203,9 @@ class _LoginForm3State extends State<LoginForm3>
                     color: HexColor("#314453"),
                     onPressed: () {
                       setState(() {
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        _validateInputs();
+
                         this._showOtpButtons = false;
                         _textFieldController.text = "";
                         _isTextFieldVisible = !_isTextFieldVisible;
@@ -215,6 +225,7 @@ class _LoginForm3State extends State<LoginForm3>
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.25,
         ),
+        // SizedBox(height: animation.value),
         Text(
           'Enter OTP Code',
           style: TextStyle(
@@ -227,7 +238,10 @@ class _LoginForm3State extends State<LoginForm3>
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
-          child: TextField(
+          child: TextFormField(
+            //    autofocus: true,
+            autovalidate: _autoValidate,
+            validator: validateOTP,
             controller: _textFieldController,
             maxLength: 4,
             inputFormatters: [
@@ -240,7 +254,7 @@ class _LoginForm3State extends State<LoginForm3>
               suffixIcon: IconButton(
                   icon: Icon(
                     Icons.refresh,
-                    color: HexColor("#314453"),
+                    color: pageThemeColor,
                   ),
                   tooltip: 'Resend OTP',
                   onPressed: () {
@@ -249,16 +263,16 @@ class _LoginForm3State extends State<LoginForm3>
                     ));
                   }),
               border: OutlineInputBorder(
-                  borderSide: BorderSide(color: HexColor("#314453")),
+                  borderSide: BorderSide(color: pageThemeColor),
                   borderRadius: BorderRadius.all(
                     Radius.circular(25.0),
                   )),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: HexColor("#314453")),
+                borderSide: BorderSide(color: pageThemeColor),
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
             ),
-            focusNode: focusNode,
+            //   focusNode: focusNode,
           ),
         ),
         Row(
@@ -272,6 +286,7 @@ class _LoginForm3State extends State<LoginForm3>
                 textColor: Colors.white,
                 color: HexColor("#314453"),
                 onPressed: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
                   setState(() {
                     _textFieldController.text = "";
                     _isTextFieldVisible = !_isTextFieldVisible;
@@ -290,9 +305,10 @@ class _LoginForm3State extends State<LoginForm3>
                 textColor: Colors.white,
                 color: HexColor("#314453"),
                 onPressed: () {
-                  setState(() {
-                    _textFieldController.text = "";
-                  });
+                  // setState(() {
+                  //   _textFieldController.text = "";
+                  // });
+
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text('Login Clicked'),
                     action: SnackBarAction(
@@ -300,6 +316,7 @@ class _LoginForm3State extends State<LoginForm3>
                       onPressed: () {},
                     ),
                   ));
+                  _validateInputs();
                 }),
           ],
         ),
@@ -337,6 +354,16 @@ class _LoginForm3State extends State<LoginForm3>
       ),
     );
   }
+
+  void _validateInputs() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      // Text forms was validated.
+      form.save();
+    } else {
+      setState(() => _autoValidate = true);
+    }
+  }
 }
 
 class HexColor extends Color {
@@ -358,7 +385,6 @@ class GetClipper extends CustomClipper<Path> {
     path.moveTo(0, size.height * 0.38);
     path.lineTo(size.width, 0);
     path.lineTo(size.width, size.height);
-
     path.lineTo(0, size.height);
     path.close();
     return path;
@@ -410,4 +436,11 @@ class _ClipShadowShadowPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
+}
+
+String validateOTP(String value) {
+  if (value.length < 4)
+    return 'OTP must be of 4 digits';
+  else
+    return null;
 }

@@ -58,8 +58,10 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthenticationBloc>(
+      
       bloc: _authenticationBloc,
       child: MaterialApp(
+       debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
           bloc: _authenticationBloc,
           builder: (BuildContext context, AuthenticationState state) {
