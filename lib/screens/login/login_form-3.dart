@@ -22,42 +22,18 @@ class _LoginForm3State extends State<LoginForm3>
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController _textFieldController = TextEditingController();
   Color pageThemeColor = HexColor("#314453");
-  AnimationController controller;
-  Animation animation;
   FocusNode focusNode = FocusNode();
-  bool autoValidate = false;
   String mobile;
   String otp;
-  @override
-  void initState() {
-    super.initState();
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    animation = Tween(begin: 300.0, end: 50.0).animate(controller)
-      ..addListener(() {
-        setState(() {});
-      });
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        controller.forward();
-      } else {
-        controller.reverse();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    focusNode.dispose();
-    super.dispose();
-  }
-
   LoginBloc get _loginBloc => widget.loginBloc;
   final PageController _loginPageControl = new PageController();
+  final _mobileController = TextEditingController();
+  final _otpController = TextEditingController();
   bool _showOtpButtons = false;
   bool _isTextFieldVisible = true;
   bool _autoValidate = false;
+
+  get state => null;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +72,7 @@ class _LoginForm3State extends State<LoginForm3>
                         ),
                         child: Stack(
                           children: <Widget>[
-                            SizedBox(height: animation.value),
+                            //    SizedBox(height: animation.value),
                             ClipShadowPath(
                               clipper: GetClipper(),
                               shadow: Shadow(
@@ -107,7 +83,7 @@ class _LoginForm3State extends State<LoginForm3>
                                 ),
                                 child: Form(
                                   key: formKey,
-                                  autovalidate: autoValidate,
+                                  autovalidate: _autoValidate,
                                   child: PageView(
                                     physics: NeverScrollableScrollPhysics(),
                                     controller: _loginPageControl,
@@ -203,16 +179,8 @@ class _LoginForm3State extends State<LoginForm3>
                     color: HexColor("#314453"),
                     onPressed: () {
                       setState(() {
-                        FocusScope.of(context).requestFocus(new FocusNode());
-                        _validateInputs();
-
-                        this._showOtpButtons = false;
-                        _textFieldController.text = "";
-                        _isTextFieldVisible = !_isTextFieldVisible;
+                        validateInputs();
                       });
-                      _loginPageControl.nextPage(
-                          duration: Duration(milliseconds: 350),
-                          curve: Curves.linear);
                     })
                 : _buildOtpContent),
       ],
@@ -240,7 +208,7 @@ class _LoginForm3State extends State<LoginForm3>
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
             //    autofocus: true,
-            autovalidate: _autoValidate,
+            //  autovalidate: _autoValidate,
             validator: validateOTP,
             controller: _textFieldController,
             maxLength: 4,
@@ -305,19 +273,27 @@ class _LoginForm3State extends State<LoginForm3>
                 textColor: Colors.white,
                 color: HexColor("#314453"),
                 onPressed: () {
-                  // setState(() {
-                  //   _textFieldController.text = "";
-                  // });
+                  setState(() {
+                    _validateInputs();
+                  });
+                  //     state is! LoginLoading ? _onLoginButtonPressed : null;
+                }
+                //     child: Text('Login'),
+                // onPressed: () {
+                //   // setState(() {
+                //   //   _textFieldController.text = "";
+                //   // });
 
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text('Login Clicked'),
-                    action: SnackBarAction(
-                      label: 'Done',
-                      onPressed: () {},
-                    ),
-                  ));
-                  _validateInputs();
-                }),
+                //   Scaffold.of(context).showSnackBar(SnackBar(
+                //     content: Text('Login Clicked'),
+                //     action: SnackBarAction(
+                //       label: 'Done',
+                //       onPressed: () {},
+                //     ),
+                //   ));
+                //   _validateInputs();
+
+                ), // }),
           ],
         ),
       ],
@@ -358,11 +334,43 @@ class _LoginForm3State extends State<LoginForm3>
   void _validateInputs() {
     final form = formKey.currentState;
     if (form.validate()) {
-      // Text forms was validated.
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          action: SnackBarAction(
+            label: 'Done',
+            onPressed: () {},
+          ),
+          content: Text('Welcome to Universal Chit Funds'),
+          backgroundColor: HexColor("#314453"),
+        ),
+      );
+      state is! LoginLoading ? _onLoginButtonPressed : null;
       form.save();
     } else {
       setState(() => _autoValidate = true);
     }
+  }
+
+  void validateInputs() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      FocusScope.of(context).requestFocus(new FocusNode());
+      this._showOtpButtons = false;
+      _textFieldController.text = "";
+      _isTextFieldVisible = !_isTextFieldVisible;
+      _loginPageControl.nextPage(
+          duration: Duration(milliseconds: 350), curve: Curves.linear);
+      form.save();
+    } else {
+      setState(() => _autoValidate = true);
+    }
+  }
+
+  get _onLoginButtonPressed {
+    _loginBloc.dispatch(LoginButtonPressed(
+      mobile: _mobileController.text,
+      password: _otpController.text,
+    ));
   }
 }
 
@@ -439,8 +447,10 @@ class _ClipShadowShadowPainter extends CustomPainter {
 }
 
 String validateOTP(String value) {
-  if (value.length < 4)
-    return 'OTP must be of 4 digits';
-  else
-    return null;
+  if (value.length == 0) {
+    return "OTP is Required";
+  } else if (value.length != 4) {
+    return "OTP must be 4 digits";
+  }
+  return null;
 }

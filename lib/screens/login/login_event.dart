@@ -11,7 +11,7 @@ class LoginButtonPressed extends LoginEvent {
 
   LoginButtonPressed({
     @required this.mobile,
-    @required this.password,
+    @required this.password, String otp,
   }) : super([mobile, password]);
 
   @override
