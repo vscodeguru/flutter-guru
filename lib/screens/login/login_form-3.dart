@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/screens/login/widgets/rounded_textbox.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
+import 'package:http/http.dart' as http;
 
 class LoginForm3 extends StatefulWidget {
   final LoginBloc loginBloc;
@@ -19,6 +20,19 @@ class LoginForm3 extends StatefulWidget {
 
 class _LoginForm3State extends State<LoginForm3>
     with SingleTickerProviderStateMixin {
+  String displayValue = "";
+  onSubmitted(value) {
+    setState(() => displayValue = value);
+  }
+
+  Future<String> getData() async {
+    http.Response response = await http.get(
+        Uri.encodeFull(
+            "http://192.168.0.137:2531/mobile/request-otp/CUSTOMER_OTP/9994594163"),
+        headers: {"Accept": "application/json"});
+    print(response.body);
+  }
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController _textFieldController = TextEditingController();
   Color pageThemeColor = HexColor("#314453");
@@ -180,6 +194,8 @@ class _LoginForm3State extends State<LoginForm3>
                     onPressed: () {
                       setState(() {
                         validateInputs();
+                        getData();
+                  //      onSubmitted();
                       });
                     })
                 : _buildOtpContent),
@@ -211,7 +227,7 @@ class _LoginForm3State extends State<LoginForm3>
             //  autovalidate: _autoValidate,
             validator: validateOTP,
             controller: _textFieldController,
-            maxLength: 4,
+            maxLength: 6,
             inputFormatters: [
               WhitelistingTextInputFormatter.digitsOnly,
             ],
@@ -275,6 +291,7 @@ class _LoginForm3State extends State<LoginForm3>
                 onPressed: () {
                   setState(() {
                     _validateInputs();
+                    //       getData();
                   });
                   //     state is! LoginLoading ? _onLoginButtonPressed : null;
                 }
@@ -449,8 +466,8 @@ class _ClipShadowShadowPainter extends CustomPainter {
 String validateOTP(String value) {
   if (value.length == 0) {
     return "OTP is Required";
-  } else if (value.length != 4) {
-    return "OTP must be 4 digits";
+  } else if (value.length != 6) {
+    return "OTP must be 6 digits";
   }
   return null;
 }

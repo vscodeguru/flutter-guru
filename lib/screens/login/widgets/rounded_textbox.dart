@@ -6,8 +6,10 @@ final GlobalKey<FormState> form = GlobalKey<FormState>();
 TextFormField guruRoundedText(String hint, Color pageThemeColor, IconData icon,
     TextEditingController textFieldController) {
       bool _autoValidate = false;
+      
   return TextFormField(
    // autofocus: true,
+   
    autovalidate: _autoValidate,
     validator: validateMobile,
     controller: textFieldController,
