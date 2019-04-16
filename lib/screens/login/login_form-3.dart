@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_guru/screens/login/index.dart';
-import 'package:flutter_guru/screens/login/widgets/rounded_textbox.dart';
+//  import 'package:flutter_guru/screens/login/widgets/rounded_textbox.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,23 +19,88 @@ class LoginForm3 extends StatefulWidget {
   State<LoginForm3> createState() => _LoginForm3State();
 }
 
+class Post {
+  final int mobilenumber;
+
+  Post({this.mobilenumber});
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      mobilenumber: json['mobile'],
+    );
+  }
+}
+
 class _LoginForm3State extends State<LoginForm3>
     with SingleTickerProviderStateMixin {
   String displayValue = "";
-  onSubmitted(value) {
+  String otpValue = "";
+  void onSubmitted(value) {
     setState(() => displayValue = value);
   }
 
-  Future<String> getData() async {
-    http.Response response = await http.get(
-        Uri.encodeFull(
-            "http://192.168.0.137:2531/mobile/request-otp/CUSTOMER_OTP/9994594163"),
-        headers: {"Accept": "application/json"});
-    print(response.body);
+  void submitted(String value) {
+    setState(() => otpValue = value);
+  }
+
+  getData() async {
+    String url = "http://192.168.0.114:2531/mobile/request-otp/CUSTOMER_OTP/" +
+        displayValue;
+    var response = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+
+    if (response.statusCode == 200) {
+      String responseBody = response.body;
+      var responseJson = json.decode(responseBody);
+      mobile = responseJson['mobile'];
+      setState(() {
+        print(responseBody);
+      });
+    } else {
+      print('Something went wrong. \nResponse Code : ${response.statusCode}');
+    }
+    // print('Sucess');
+    // setState(() {
+    //  var converdata = json.decode(response.body) ;
+    // });
+    // print(response.body);
+  }
+
+  // @override
+  // void initState() {
+  //   getData();
+  // }
+
+  otpData() async {
+    print(otpValue);
+    String url = "http://192.168.0.114:2531/mobile/validate-otp/CUSTOMER_OTP/" +
+        displayValue +
+        "/" +
+        otpValue;
+    print(url);
+    http.Response response = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+
+    String responseBody = response.body;
+    print(responseBody);
+    var responseJson = json.decode(responseBody);
+    if (responseJson['response'] == "success") {
+      state is! LoginLoading ? _onLoginButtonPressed : null;
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Welcome to chit funds'),
+        backgroundColor: HexColor("#314453"),
+      ));
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Invalid OTP'),
+        backgroundColor: HexColor("#314453"),
+      ));
+    }
   }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController _textFieldController = TextEditingController();
+  TextEditingController textFieldController = TextEditingController();
   Color pageThemeColor = HexColor("#314453");
   FocusNode focusNode = FocusNode();
   String mobile;
@@ -46,6 +112,7 @@ class _LoginForm3State extends State<LoginForm3>
   bool _showOtpButtons = false;
   bool _isTextFieldVisible = true;
   bool _autoValidate = false;
+  String verificationId;
 
   get state => null;
 
@@ -155,31 +222,63 @@ class _LoginForm3State extends State<LoginForm3>
     );
   }
 
-  // Row _buildOtpButtonContent() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //     children: <Widget>[],
-  //   );
-  // }
-
   Column _buildPhoneNumberContent(BuildContext context) {
     return Column(
       children: <Widget>[
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.25,
         ),
-        guruLabel('Enter Your Mobile Number', pageThemeColor),
+        Text(
+          'Enter your Mobile Number',
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: HexColor("#314453")),
+        ),
+        // guruLabel('Enter Your Mobile Number', pageThemeColor),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.035,
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
-          child: guruRoundedText(
-            '',
-            pageThemeColor,
-            Icons.phone_android,
-            _textFieldController,
+          child: TextFormField(
+            // autofocus: true,
+            // onFieldSubmitted: onSubmitted,
+            autovalidate: _autoValidate,
+            validator: validateMobile,
+            controller: textFieldController,
+            maxLength: 10,
+            inputFormatters: [
+              WhitelistingTextInputFormatter.digitsOnly,
+            ],
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(13.0),
+              hintText: 'Enter your Number',
+              suffixIcon: Icon(
+                Icons.phone_android,
+                color: pageThemeColor,
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: pageThemeColor),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(25.0),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: pageThemeColor),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(25.0),
+                ),
+              ),
+            ),
           ),
+          // child: guruRoundedText(
+          //   '',
+          //   pageThemeColor,
+          //   Icons.phone_android,
+          //   _textFieldController,
+          // ),
         ),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
@@ -193,9 +292,12 @@ class _LoginForm3State extends State<LoginForm3>
                     color: HexColor("#314453"),
                     onPressed: () {
                       setState(() {
+                      //  Navigator.push(context, route)
+                        onSubmitted(textFieldController.text);
                         validateInputs();
                         getData();
-                  //      onSubmitted();
+                        textFieldController.clear();
+                        //     onSubmitted(displayValue);
                       });
                     })
                 : _buildOtpContent),
@@ -211,7 +313,7 @@ class _LoginForm3State extends State<LoginForm3>
         ),
         // SizedBox(height: animation.value),
         Text(
-          'Enter OTP Code',
+          'Enter OTP Code ',
           style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -231,6 +333,7 @@ class _LoginForm3State extends State<LoginForm3>
             inputFormatters: [
               WhitelistingTextInputFormatter.digitsOnly,
             ],
+            //    onFieldSubmitted: submitted,
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(13.0),
@@ -242,6 +345,7 @@ class _LoginForm3State extends State<LoginForm3>
                   ),
                   tooltip: 'Resend OTP',
                   onPressed: () {
+                    getData();
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text('ReSend OTP'),
                     ));
@@ -272,6 +376,7 @@ class _LoginForm3State extends State<LoginForm3>
                 onPressed: () {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   setState(() {
+                    // otpData();
                     _textFieldController.text = "";
                     _isTextFieldVisible = !_isTextFieldVisible;
 
@@ -290,26 +395,11 @@ class _LoginForm3State extends State<LoginForm3>
                 color: HexColor("#314453"),
                 onPressed: () {
                   setState(() {
+                    submitted(_textFieldController.text);
                     _validateInputs();
-                    //       getData();
+                    otpData();   
                   });
-                  //     state is! LoginLoading ? _onLoginButtonPressed : null;
                 }
-                //     child: Text('Login'),
-                // onPressed: () {
-                //   // setState(() {
-                //   //   _textFieldController.text = "";
-                //   // });
-
-                //   Scaffold.of(context).showSnackBar(SnackBar(
-                //     content: Text('Login Clicked'),
-                //     action: SnackBarAction(
-                //       label: 'Done',
-                //       onPressed: () {},
-                //     ),
-                //   ));
-                //   _validateInputs();
-
                 ), // }),
           ],
         ),
@@ -351,17 +441,7 @@ class _LoginForm3State extends State<LoginForm3>
   void _validateInputs() {
     final form = formKey.currentState;
     if (form.validate()) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          action: SnackBarAction(
-            label: 'Done',
-            onPressed: () {},
-          ),
-          content: Text('Welcome to Universal Chit Funds'),
-          backgroundColor: HexColor("#314453"),
-        ),
-      );
-      state is! LoginLoading ? _onLoginButtonPressed : null;
+      //   state is! LoginLoading ? _onLoginButtonPressed : null;
       form.save();
     } else {
       setState(() => _autoValidate = true);
@@ -372,6 +452,7 @@ class _LoginForm3State extends State<LoginForm3>
     final form = formKey.currentState;
     if (form.validate()) {
       FocusScope.of(context).requestFocus(new FocusNode());
+      //   otpData();
       this._showOtpButtons = false;
       _textFieldController.text = "";
       _isTextFieldVisible = !_isTextFieldVisible;
@@ -468,6 +549,19 @@ String validateOTP(String value) {
     return "OTP is Required";
   } else if (value.length != 6) {
     return "OTP must be 6 digits";
+  }
+  return null;
+}
+
+String validateMobile(String value) {
+  String patttern = r'(^[0-9]*$)';
+  RegExp regExp = new RegExp(patttern);
+  if (value.length == 0) {
+    return "Mobile is Required";
+  } else if (value.length != 10) {
+    return "Mobile number must 10 digits";
+  } else if (!regExp.hasMatch(value)) {
+    return "Mobile Number must be digits";
   }
   return null;
 }
