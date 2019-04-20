@@ -6,7 +6,11 @@ import 'package:flutter_guru/screens/login/index.dart';
 //  import 'package:flutter_guru/screens/login/widgets/rounded_textbox.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'package:permission/permission.dart';
+import 'package:pin_view/pin_view.dart';
 
+//  import 'package:permission/permission.dart';
 class LoginForm3 extends StatefulWidget {
   final LoginBloc loginBloc;
   final AuthenticationBloc authenticationBloc;
@@ -19,86 +23,12 @@ class LoginForm3 extends StatefulWidget {
   State<LoginForm3> createState() => _LoginForm3State();
 }
 
-class Post {
-  final int mobilenumber;
-
-  Post({this.mobilenumber});
-
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
-      mobilenumber: json['mobile'],
-    );
-  }
-}
-
 class _LoginForm3State extends State<LoginForm3>
     with SingleTickerProviderStateMixin {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String displayValue = "";
   String otpValue = "";
-  void onSubmitted(value) {
-    setState(() => displayValue = value);
-  }
-
-  void submitted(String value) {
-    setState(() => otpValue = value);
-  }
-
-  getData() async {
-    String url = "http://192.168.0.114:2531/mobile/request-otp/CUSTOMER_OTP/" +
-        displayValue;
-    var response = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-
-    if (response.statusCode == 200) {
-      String responseBody = response.body;
-      var responseJson = json.decode(responseBody);
-      mobile = responseJson['mobile'];
-      setState(() {
-        print(responseBody);
-      });
-    } else {
-      print('Something went wrong. \nResponse Code : ${response.statusCode}');
-    }
-    // print('Sucess');
-    // setState(() {
-    //  var converdata = json.decode(response.body) ;
-    // });
-    // print(response.body);
-  }
-
-  // @override
-  // void initState() {
-  //   getData();
-  // }
-
-  otpData() async {
-    print(otpValue);
-    String url = "http://192.168.0.114:2531/mobile/validate-otp/CUSTOMER_OTP/" +
-        displayValue +
-        "/" +
-        otpValue;
-    print(url);
-    http.Response response = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-
-    String responseBody = response.body;
-    print(responseBody);
-    var responseJson = json.decode(responseBody);
-    if (responseJson['response'] == "success") {
-      state is! LoginLoading ? _onLoginButtonPressed : null;
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Welcome to chit funds'),
-        backgroundColor: HexColor("#314453"),
-      ));
-    } else {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Invalid OTP'),
-        backgroundColor: HexColor("#314453"),
-      ));
-    }
-  }
-
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String verificationId;
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController textFieldController = TextEditingController();
   Color pageThemeColor = HexColor("#314453");
@@ -110,12 +40,11 @@ class _LoginForm3State extends State<LoginForm3>
   final _mobileController = TextEditingController();
   final _otpController = TextEditingController();
   bool _showOtpButtons = false;
-  bool _isTextFieldVisible = true;
+  bool avatarVisible = true;
   bool _autoValidate = false;
-  String verificationId;
-
   get state => null;
 
+  static get _channel => null;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginEvent, LoginState>(
@@ -182,7 +111,7 @@ class _LoginForm3State extends State<LoginForm3>
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  _isTextFieldVisible
+                                  avatarVisible
                                       ? Center(
                                           child: CircleAvatar(
                                             backgroundColor: Colors.white,
@@ -292,7 +221,9 @@ class _LoginForm3State extends State<LoginForm3>
                     color: HexColor("#314453"),
                     onPressed: () {
                       setState(() {
-                      //  Navigator.push(context, route)
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        //  Navigator.push(context, route)
+                        SmsRetriever();
                         onSubmitted(textFieldController.text);
                         validateInputs();
                         getData();
@@ -378,8 +309,8 @@ class _LoginForm3State extends State<LoginForm3>
                   setState(() {
                     // otpData();
                     _textFieldController.text = "";
-                    _isTextFieldVisible = !_isTextFieldVisible;
-
+                    //   _isTextFieldVisible = !_isTextFieldVisible;
+                    avatarVisible = !avatarVisible;
                     this._showOtpButtons = false;
                   });
                   _loginPageControl.previousPage(
@@ -395,12 +326,12 @@ class _LoginForm3State extends State<LoginForm3>
                 color: HexColor("#314453"),
                 onPressed: () {
                   setState(() {
+                    // FocusScope.of(context).requestFocus(new FocusNode());
                     submitted(_textFieldController.text);
                     _validateInputs();
-                    otpData();   
+                    otpData();
                   });
-                }
-                ), // }),
+                }), // }),
           ],
         ),
       ],
@@ -438,6 +369,14 @@ class _LoginForm3State extends State<LoginForm3>
     );
   }
 
+  void onSubmitted(value) {
+    setState(() => displayValue = value);
+  }
+
+  void submitted(String value) {
+    setState(() => otpValue = value);
+  }
+
   void _validateInputs() {
     final form = formKey.currentState;
     if (form.validate()) {
@@ -451,11 +390,12 @@ class _LoginForm3State extends State<LoginForm3>
   void validateInputs() {
     final form = formKey.currentState;
     if (form.validate()) {
-      FocusScope.of(context).requestFocus(new FocusNode());
+      //  FocusScope.of(context).requestFocus(new FocusNode());
       //   otpData();
       this._showOtpButtons = false;
       _textFieldController.text = "";
-      _isTextFieldVisible = !_isTextFieldVisible;
+//      _isTextFieldVisible = !_isTextFieldVisible;
+      avatarVisible = !avatarVisible;
       _loginPageControl.nextPage(
           duration: Duration(milliseconds: 350), curve: Curves.linear);
       form.save();
@@ -469,6 +409,51 @@ class _LoginForm3State extends State<LoginForm3>
       mobile: _mobileController.text,
       password: _otpController.text,
     ));
+  }
+
+  getData() async {
+    String url = "http://192.168.0.114:2531/mobile/request-otp/CUSTOMER_OTP/" +
+        displayValue;
+    var response = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+
+    if (response.statusCode == 200) {
+      String responseBody = response.body;
+      var responseJson = json.decode(responseBody);
+      mobile = responseJson['mobile'];
+      setState(() {
+        print(responseBody);
+      });
+    } else {
+      print('Something went wrong. \nResponse Code : ${response.statusCode}');
+    }
+  }
+
+  otpData() async {
+    print(otpValue);
+    String url = "http://192.168.0.114:2531/mobile/validate-otp/CUSTOMER_OTP/" +
+        displayValue +
+        "/" +
+        otpValue;
+    print(url);
+    http.Response response = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+
+    String responseBody = response.body;
+    print(responseBody);
+    var responseJson = json.decode(responseBody);
+    if (responseJson['response'] == "success") {
+      state is! LoginLoading ? _onLoginButtonPressed : null;
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Welcome to chit funds'),
+        backgroundColor: HexColor("#314453"),
+      ));
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Invalid OTP!!'),
+        backgroundColor: HexColor("#314453"),
+      ));
+    }
   }
 }
 
@@ -523,6 +508,25 @@ class ClipShadowPath extends StatelessWidget {
       ),
       child: ClipPath(child: child, clipper: this.clipper),
     );
+  }
+}
+
+class SmsRetriever {
+  static const MethodChannel _channel = const MethodChannel('sms_retriever');
+
+  static Future<String> startListening() async {
+    final String smsCode = await _channel.invokeMethod('startListening');
+    return smsCode;
+  }
+
+  static Future<String> stopListening() async {
+    final String smsCode = await _channel.invokeMethod('stopListening');
+    return smsCode;
+  }
+
+  static Future<String> getAppSignature() async {
+    final String smsCode = await _channel.invokeMethod('getAppSignature');
+    return smsCode;
   }
 }
 
