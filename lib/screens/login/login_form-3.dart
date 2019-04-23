@@ -7,8 +7,9 @@ import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'package:permission/permission.dart';
-import 'package:pin_view/pin_view.dart';
+import 'package:sms/sms.dart';
+// import 'package:permission/permission.dart';
+// import 'package:pin_view/pin_view.dart';
 
 //  import 'package:permission/permission.dart';
 class LoginForm3 extends StatefulWidget {
@@ -25,9 +26,10 @@ class LoginForm3 extends StatefulWidget {
 
 class _LoginForm3State extends State<LoginForm3>
     with SingleTickerProviderStateMixin {
+  SmsReceiver receiver = new SmsReceiver();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  String displayValue = "";
-  String otpValue = "";
+  String getNumber = "";
+  String getOtp = "";
   String verificationId;
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController textFieldController = TextEditingController();
@@ -35,6 +37,7 @@ class _LoginForm3State extends State<LoginForm3>
   FocusNode focusNode = FocusNode();
   String mobile;
   String otp;
+
   LoginBloc get _loginBloc => widget.loginBloc;
   final PageController _loginPageControl = new PageController();
   final _mobileController = TextEditingController();
@@ -43,8 +46,18 @@ class _LoginForm3State extends State<LoginForm3>
   bool avatarVisible = true;
   bool _autoValidate = false;
   get state => null;
+  @override
+  void initState() {
+    super.initState();
+    receiver.onSmsReceived.listen((SmsMessage msg) => print(msg.body));
+  }
+  // @override
+  // void dispose() {
+  //  // cancel();
+  //   textFieldController.dispose();
+  //   super.dispose();
+  // }
 
-  static get _channel => null;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginEvent, LoginState>(
@@ -223,7 +236,6 @@ class _LoginForm3State extends State<LoginForm3>
                       setState(() {
                         FocusScope.of(context).requestFocus(new FocusNode());
                         //  Navigator.push(context, route)
-                        SmsRetriever();
                         onSubmitted(textFieldController.text);
                         validateInputs();
                         getData();
@@ -326,6 +338,7 @@ class _LoginForm3State extends State<LoginForm3>
                 color: HexColor("#314453"),
                 onPressed: () {
                   setState(() {
+                    //  SmsRetriever();
                     // FocusScope.of(context).requestFocus(new FocusNode());
                     submitted(_textFieldController.text);
                     _validateInputs();
@@ -370,11 +383,11 @@ class _LoginForm3State extends State<LoginForm3>
   }
 
   void onSubmitted(value) {
-    setState(() => displayValue = value);
+    setState(() => getNumber = value);
   }
 
   void submitted(String value) {
-    setState(() => otpValue = value);
+    setState(() => getOtp = value);
   }
 
   void _validateInputs() {
@@ -413,10 +426,9 @@ class _LoginForm3State extends State<LoginForm3>
 
   getData() async {
     String url = "http://192.168.0.114:2531/mobile/request-otp/CUSTOMER_OTP/" +
-        displayValue;
+        getNumber;
     var response = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-
     if (response.statusCode == 200) {
       String responseBody = response.body;
       var responseJson = json.decode(responseBody);
@@ -430,11 +442,11 @@ class _LoginForm3State extends State<LoginForm3>
   }
 
   otpData() async {
-    print(otpValue);
+    print(getOtp);
     String url = "http://192.168.0.114:2531/mobile/validate-otp/CUSTOMER_OTP/" +
-        displayValue +
+        getNumber +
         "/" +
-        otpValue;
+        getOtp;
     print(url);
     http.Response response = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
@@ -508,25 +520,6 @@ class ClipShadowPath extends StatelessWidget {
       ),
       child: ClipPath(child: child, clipper: this.clipper),
     );
-  }
-}
-
-class SmsRetriever {
-  static const MethodChannel _channel = const MethodChannel('sms_retriever');
-
-  static Future<String> startListening() async {
-    final String smsCode = await _channel.invokeMethod('startListening');
-    return smsCode;
-  }
-
-  static Future<String> stopListening() async {
-    final String smsCode = await _channel.invokeMethod('stopListening');
-    return smsCode;
-  }
-
-  static Future<String> getAppSignature() async {
-    final String smsCode = await _channel.invokeMethod('getAppSignature');
-    return smsCode;
   }
 }
 
