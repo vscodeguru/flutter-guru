@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:sms/sms.dart';
 // import 'package:permission/permission.dart';
-// import 'package:pin_view/pin_view.dart';
+import 'package:pin_view/pin_view.dart';
 
 //  import 'package:permission/permission.dart';
 class LoginForm3 extends StatefulWidget {
@@ -30,14 +30,14 @@ class _LoginForm3State extends State<LoginForm3>
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String getNumber = "";
   String getOtp = "";
-  String verificationId;
+  String mobile;
+  String otp;
+  String getsms = '';
+   TextEditingController textField = TextEditingController();
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController textFieldController = TextEditingController();
   Color pageThemeColor = HexColor("#314453");
   FocusNode focusNode = FocusNode();
-  String mobile;
-  String otp;
-
   LoginBloc get _loginBloc => widget.loginBloc;
   final PageController _loginPageControl = new PageController();
   final _mobileController = TextEditingController();
@@ -46,11 +46,29 @@ class _LoginForm3State extends State<LoginForm3>
   bool avatarVisible = true;
   bool _autoValidate = false;
   get state => null;
-  @override
-  void initState() {
-    super.initState();
-    receiver.onSmsReceived.listen((SmsMessage msg) => print(msg.body));
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   receiver.onSmsReceived.listen(
+  //     (SmsMessage msg) => Scaffold.of(context).showSnackBar(
+  //           SnackBar(
+  //             content: Text(msg.body),
+  //             backgroundColor: HexColor("#314453"),
+  //           ),
+  //         ),
+  //   );
+  //   // receiver.onSmsReceived.listen((SmsMessage msg) => print(msg.body));
+  // }
+//    sms(){
+//      receiver.onSmsReceived.listen(
+//      (SmsMessage msg) => Scaffold.of(context).showSnackBar(
+//              SnackBar(
+//               content: Text(msg.body),
+//               backgroundColor: HexColor("#314453"),
+//            ),
+//            ),
+//      );
+//  }
   // @override
   // void dispose() {
   //  // cancel();
@@ -234,11 +252,13 @@ class _LoginForm3State extends State<LoginForm3>
                     color: HexColor("#314453"),
                     onPressed: () {
                       setState(() {
+                        // sms();
                         FocusScope.of(context).requestFocus(new FocusNode());
                         //  Navigator.push(context, route)
                         onSubmitted(textFieldController.text);
                         validateInputs();
                         getData();
+                        //  sms();
                         textFieldController.clear();
                         //     onSubmitted(displayValue);
                       });
@@ -268,8 +288,10 @@ class _LoginForm3State extends State<LoginForm3>
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
+            //    onFieldSubmitted: onField,
             //    autofocus: true,
             //  autovalidate: _autoValidate,
+           // onFieldSubmitted: onfield,
             validator: validateOTP,
             controller: _textFieldController,
             maxLength: 6,
@@ -280,7 +302,7 @@ class _LoginForm3State extends State<LoginForm3>
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(13.0),
-              hintText: 'Enter OTP Code',
+              hintText: 'Enter OTP Code' ,
               suffixIcon: IconButton(
                   icon: Icon(
                     Icons.refresh,
@@ -338,6 +360,7 @@ class _LoginForm3State extends State<LoginForm3>
                 color: HexColor("#314453"),
                 onPressed: () {
                   setState(() {
+                    // onField(_textFieldController.text);
                     //  SmsRetriever();
                     // FocusScope.of(context).requestFocus(new FocusNode());
                     submitted(_textFieldController.text);
@@ -386,6 +409,17 @@ class _LoginForm3State extends State<LoginForm3>
     setState(() => getNumber = value);
   }
 
+  // sms() {
+  //   receiver.onSmsReceived.listen((SmsMessage msg) {
+  //     Scaffold.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(msg.body),
+  //         backgroundColor: HexColor("#314453"),
+  //       ),
+  //     );
+  //   });
+  // }
+
   void submitted(String value) {
     setState(() => getOtp = value);
   }
@@ -425,8 +459,10 @@ class _LoginForm3State extends State<LoginForm3>
   }
 
   getData() async {
+  
     String url = "http://192.168.0.114:2531/mobile/request-otp/CUSTOMER_OTP/" +
         getNumber;
+        
     var response = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
@@ -434,13 +470,23 @@ class _LoginForm3State extends State<LoginForm3>
       var responseJson = json.decode(responseBody);
       mobile = responseJson['mobile'];
       setState(() {
-        print(responseBody);
+        receiver.onSmsReceived.listen((SmsMessage msg) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text(msg.body),
+              backgroundColor: HexColor("#314453"),
+            ),
+          );
+          final intRegex = RegExp(r'((is|otp|password|key|code|CODE|KEY|OTP|PASSWORD).[0-9a-zA-Z]{4,8}.(is|otp|password|key|code|CODE|KEY|OTP|PASSWORD)?)|(^[0-9a-zA-Z]{4,8}.(is|otp|password|key|code|CODE|KEY|OTP|PASSWORD))', multiLine: true);
+           print(intRegex.allMatches(msg.body).map((m) => m.group(0)));
+        });
+       // print(responseBody);
       });
     } else {
       print('Something went wrong. \nResponse Code : ${response.statusCode}');
     }
   }
-
+  
   otpData() async {
     print(getOtp);
     String url = "http://192.168.0.114:2531/mobile/validate-otp/CUSTOMER_OTP/" +
@@ -450,7 +496,6 @@ class _LoginForm3State extends State<LoginForm3>
     print(url);
     http.Response response = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-
     String responseBody = response.body;
     print(responseBody);
     var responseJson = json.decode(responseBody);
