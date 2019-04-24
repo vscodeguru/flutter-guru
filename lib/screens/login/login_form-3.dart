@@ -28,12 +28,14 @@ class _LoginForm3State extends State<LoginForm3>
     with SingleTickerProviderStateMixin {
   SmsReceiver receiver = new SmsReceiver();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String value = '';
   String getNumber = "";
   String getOtp = "";
   String mobile;
   String otp;
   String getsms = '';
-   TextEditingController textField = TextEditingController();
+  String displayValue = "";
+  TextEditingController textField = TextEditingController();
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController textFieldController = TextEditingController();
   Color pageThemeColor = HexColor("#314453");
@@ -46,6 +48,17 @@ class _LoginForm3State extends State<LoginForm3>
   bool avatarVisible = true;
   bool _autoValidate = false;
   get state => null;
+
+  // _onSubmitted(String value) {
+  //   setState(() {
+  //     receiver.onSmsReceived.listen(
+  //       (SmsMessage msg) => Scaffold.of(context).showSnackBar(
+  //           SnackBar(
+  //               content: Text(msg.body), backgroundColor: HexColor("#314453")),
+  //           displayValue = msg.body),
+  //     );
+  //   });
+  // }
   // @override
   // void initState() {
   //   super.initState();
@@ -276,7 +289,7 @@ class _LoginForm3State extends State<LoginForm3>
         ),
         // SizedBox(height: animation.value),
         Text(
-          'Enter OTP Code ',
+          'Enter OTP Code ' + displayValue,
           style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -288,10 +301,10 @@ class _LoginForm3State extends State<LoginForm3>
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
-            //    onFieldSubmitted: onField,
+         //   onFieldSubmitted: _onSubmitted,
             //    autofocus: true,
             //  autovalidate: _autoValidate,
-           // onFieldSubmitted: onfield,
+            // onFieldSubmitted: onfield,
             validator: validateOTP,
             controller: _textFieldController,
             maxLength: 6,
@@ -302,7 +315,7 @@ class _LoginForm3State extends State<LoginForm3>
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(13.0),
-              hintText: 'Enter OTP Code' ,
+              hintText: 'Enter OTP Code',
               suffixIcon: IconButton(
                   icon: Icon(
                     Icons.refresh,
@@ -459,10 +472,8 @@ class _LoginForm3State extends State<LoginForm3>
   }
 
   getData() async {
-  
     String url = "http://192.168.0.114:2531/mobile/request-otp/CUSTOMER_OTP/" +
         getNumber;
-        
     var response = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
@@ -477,16 +488,20 @@ class _LoginForm3State extends State<LoginForm3>
               backgroundColor: HexColor("#314453"),
             ),
           );
-          final intRegex = RegExp(r'((is|otp|password|key|code|CODE|KEY|OTP|PASSWORD).[0-9a-zA-Z]{4,8}.(is|otp|password|key|code|CODE|KEY|OTP|PASSWORD)?)|(^[0-9a-zA-Z]{4,8}.(is|otp|password|key|code|CODE|KEY|OTP|PASSWORD))', multiLine: true);
-           print(intRegex.allMatches(msg.body).map((m) => m.group(0)));
+          final intRegex = RegExp(
+              //  '((otp|otp is|OTP|OTP is|otp:|).[0-9a-z]{6})',
+              // '((is|otp|password|key|code|CODE|KEY|OTP|PASSWORD).[0-9a-zA-Z]{4,8}.(is|otp|password|key|code|CODE|KEY|OTP|PASSWORD)?)|(^[0-9a-zA-Z]{4,8}.(is|otp|password|key|code|CODE|KEY|OTP|PASSWORD))',
+              "(\\d{6})",
+              multiLine: true);
+          print(intRegex.allMatches(msg.body).map((m) => m.group(0)));
         });
-       // print(responseBody);
+        print(responseBody);
       });
     } else {
       print('Something went wrong. \nResponse Code : ${response.statusCode}');
     }
   }
-  
+
   otpData() async {
     print(getOtp);
     String url = "http://192.168.0.114:2531/mobile/validate-otp/CUSTOMER_OTP/" +
