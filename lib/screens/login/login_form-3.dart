@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:sms/sms.dart';
 // import 'package:permission/permission.dart';
 import 'package:pin_view/pin_view.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 //  import 'package:permission/permission.dart';
 class LoginForm3 extends StatefulWidget {
@@ -33,8 +34,7 @@ class _LoginForm3State extends State<LoginForm3>
   String getOtp = "";
   String mobile;
   String otp;
-  String getsms = '';
-  String displayValue = "";
+
   TextEditingController textField = TextEditingController();
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController textFieldController = TextEditingController();
@@ -48,17 +48,17 @@ class _LoginForm3State extends State<LoginForm3>
   bool avatarVisible = true;
   bool _autoValidate = false;
   get state => null;
-
-  // _onSubmitted(String value) {
-  //   setState(() {
-  //     receiver.onSmsReceived.listen(
-  //       (SmsMessage msg) => Scaffold.of(context).showSnackBar(
-  //           SnackBar(
-  //               content: Text(msg.body), backgroundColor: HexColor("#314453")),
-  //           displayValue = msg.body),
-  //     );
-  //   });
-  // }
+ 
+//    _onSubmitted(String value) {
+//      setState(() {
+//      receiver.onSmsReceived.listen(
+//          (SmsMessage msg) => Scaffold.of(context).showSnackBar(
+//              SnackBar(
+//                 content: Text(msg.body), backgroundColor: HexColor("#314453")),
+//              displayValue = msg.body),
+//        );
+//      });
+//  }
   // @override
   // void initState() {
   //   super.initState();
@@ -212,7 +212,9 @@ class _LoginForm3State extends State<LoginForm3>
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.035,
         ),
+
         Padding(
+ 
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
             // autofocus: true,
@@ -265,6 +267,7 @@ class _LoginForm3State extends State<LoginForm3>
                     color: HexColor("#314453"),
                     onPressed: () {
                       setState(() {
+                        //   _onSubmitted(_textFieldController.text);
                         // sms();
                         FocusScope.of(context).requestFocus(new FocusNode());
                         //  Navigator.push(context, route)
@@ -275,13 +278,31 @@ class _LoginForm3State extends State<LoginForm3>
                         textFieldController.clear();
                         //     onSubmitted(displayValue);
                       });
-                    })
+                    },
+                  )
                 : _buildOtpContent),
       ],
     );
   }
 
   Column _buildOtpContent(BuildContext context) {
+    receiver.onSmsReceived.listen((SmsMessage msg) {
+      final otpRegex = RegExp(
+          '((?:(?:otp|password) (?:is|\:|is :) ?)([a-z0-9]{4,6}))|(([a-z0-9]{4,6}) (?:is your|is the).?(?:otp|password))',
+          multiLine: true,
+          caseSensitive: false);
+      _textFieldController.text =
+          (otpRegex.allMatches(msg.body).map((m) => m.group(1)).first != null)
+              ? (otpRegex.allMatches(msg.body).map((m) => m.group(2)).first)
+              : (otpRegex.allMatches(msg.body).map((m) => m.group(4)).first);
+      state is! LoginLoading ? _onLoginButtonPressed : print('Error');
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Welcome to chit funds'),
+          backgroundColor: HexColor("#314453"),
+        ),
+      );
+    });
     return Column(
       children: <Widget>[
         SizedBox(
@@ -289,7 +310,7 @@ class _LoginForm3State extends State<LoginForm3>
         ),
         // SizedBox(height: animation.value),
         Text(
-          'Enter OTP Code ' + displayValue,
+          'Enter OTP Code ',
           style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -301,7 +322,7 @@ class _LoginForm3State extends State<LoginForm3>
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
-         //   onFieldSubmitted: _onSubmitted,
+            //   onFieldSubmitted: _onSubmitted,
             //    autofocus: true,
             //  autovalidate: _autoValidate,
             // onFieldSubmitted: onfield,
@@ -311,7 +332,6 @@ class _LoginForm3State extends State<LoginForm3>
             inputFormatters: [
               WhitelistingTextInputFormatter.digitsOnly,
             ],
-            //    onFieldSubmitted: submitted,
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(13.0),
@@ -454,7 +474,7 @@ class _LoginForm3State extends State<LoginForm3>
       //   otpData();
       this._showOtpButtons = false;
       _textFieldController.text = "";
-//      _isTextFieldVisible = !_isTextFieldVisible;
+      //      _isTextFieldVisible = !_isTextFieldVisible;
       avatarVisible = !avatarVisible;
       _loginPageControl.nextPage(
           duration: Duration(milliseconds: 350), curve: Curves.linear);
@@ -481,20 +501,6 @@ class _LoginForm3State extends State<LoginForm3>
       var responseJson = json.decode(responseBody);
       mobile = responseJson['mobile'];
       setState(() {
-        receiver.onSmsReceived.listen((SmsMessage msg) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text(msg.body),
-              backgroundColor: HexColor("#314453"),
-            ),
-          );
-          final intRegex = RegExp(
-              //  '((otp|otp is|OTP|OTP is|otp:|).[0-9a-z]{6})',
-              // '((is|otp|password|key|code|CODE|KEY|OTP|PASSWORD).[0-9a-zA-Z]{4,8}.(is|otp|password|key|code|CODE|KEY|OTP|PASSWORD)?)|(^[0-9a-zA-Z]{4,8}.(is|otp|password|key|code|CODE|KEY|OTP|PASSWORD))',
-              "(\\d{6})",
-              multiLine: true);
-          print(intRegex.allMatches(msg.body).map((m) => m.group(0)));
-        });
         print(responseBody);
       });
     } else {
