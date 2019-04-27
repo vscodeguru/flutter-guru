@@ -49,26 +49,130 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Text(
-                              "Balance",
-                              //   style: TextStyle(fontFamily: UIData.ralewayFont),
-                            ),
-                            Material(
-                              color: Colors.black,
-                              shape: StadiumBorder(),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "500 Points",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    //  fontFamily: UIData.ralewayFont),
-                                  ),
+                            Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.card_membership,
+                                  color: Colors.cyan,
                                 ),
-                              ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "Card",
+                                  //   style: TextStyle(fontFamily: UIData.ralewayFont),
+                                ),
+                              ],
                             ),
+                            Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.receipt,
+                                  color: Colors.cyan,
+                                ),
+                                SizedBox(height: 10),
+                                Text('Report')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.home,
+                                  color: Colors.cyan,
+                                ),
+                                SizedBox(height: 10),
+                                Text('Home')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.attach_money,
+                                  color: Colors.cyan,
+                                ),
+                                SizedBox(height: 10),
+                                Text('Loan')
+                              ],
+                            )
+
+                            // Material(
+                            //   color: Colors.black,
+                            //   shape: StadiumBorder(),
+                            //   child: Padding(
+                            //     padding: const EdgeInsets.all(8.0),
+                            //     child: Text(
+                            //       "500 Points",
+                            //       style: TextStyle(
+                            //         color: Colors.white,
+                            //         //  fontFamily: UIData.ralewayFont),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        SizedBox(height: 15),
+                          Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.card_membership,
+                                  color: Colors.cyan,
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "Card",
+                                  //   style: TextStyle(fontFamily: UIData.ralewayFont),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.receipt,
+                                  color: Colors.cyan,
+                                ),
+                                SizedBox(height: 10),
+                                Text('Report')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.home,
+                                  color: Colors.cyan,
+                                ),
+                                SizedBox(height: 10),
+                                Text('Home')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.attach_money,
+                                  color: Colors.cyan,
+                                ),
+                                SizedBox(height: 10),
+                                Text('Loan')
+                              ],
+                            )
+
+                            // Material(
+                            //   color: Colors.black,
+                            //   shape: StadiumBorder(),
+                            //   child: Padding(
+                            //     padding: const EdgeInsets.all(8.0),
+                            //     child: Text(
+                            //       "500 Points",
+                            //       style: TextStyle(
+                            //         color: Colors.white,
+                            //         //  fontFamily: UIData.ralewayFont),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                         Text(
@@ -80,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 25.0),
                         ),
                         Row(
-                         // crossAxisAlignment: CrossAxisAlignment.center,
+                          // crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             RaisedButton(
