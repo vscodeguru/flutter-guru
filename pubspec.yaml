@@ -58,6 +58,9 @@ flutter:
     - assets/chat.png
     - assets/sms.png
     - assets/sm.png
+    - assets/image.jpg
+    - assets/customer.jpg
+    - assets/trust.jpg
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

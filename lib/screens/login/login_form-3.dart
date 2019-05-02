@@ -454,7 +454,7 @@ class _LoginForm3State extends State<LoginForm3>
           msg: 'Please wait for your OTP',
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor:HexColor('#314453'),
+          backgroundColor: HexColor('#314453'),
           textColor: Colors.white,
         );
       });
