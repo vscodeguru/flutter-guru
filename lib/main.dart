@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,8 @@ import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/screens/splash/index.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 import 'package:flutter_guru/widgets/loading_indicator/index.dart';
-
+import 'package:flutter_guru/screens/dashboard/dashboard_page.dart';
+import 'package:flutter_guru/screens/dashboard/usercard.dart';
 class SimpleBlocDelegate extends BlocDelegate {
   @override
   void onTransition(Transition transition) {
@@ -31,7 +31,6 @@ void main() {
 
 class App extends StatefulWidget {
   final UserRepository userRepository;
-
   App({Key key, @required this.userRepository}) : super(key: key);
 
   @override
@@ -58,9 +57,12 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthenticationBloc>(
-      
+    
       bloc: _authenticationBloc,
       child: MaterialApp(
+        routes:<String,WidgetBuilder>{
+          "/a":(BuildContext context) => new Usercard(),
+        },
        debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
           bloc: _authenticationBloc,
