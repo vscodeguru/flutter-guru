@@ -6,7 +6,6 @@ import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 import 'package:http/http.dart' as http;
 import 'package:sms/sms.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginForm3 extends StatefulWidget {
@@ -309,11 +308,13 @@ class _LoginForm3State extends State<LoginForm3>
                 color: HexColor("#314453"),
                 onPressed: () {
                   FocusScope.of(context).requestFocus(new FocusNode());
-                  setState(() {
-                    _textFieldController.text = "";
-                    avatarVisible = !avatarVisible;
-                    this._showOtpButtons = false;
-                  });
+                  setState(
+                    () {
+                      _textFieldController.text = "";
+                      avatarVisible = !avatarVisible;
+                      this._showOtpButtons = false;
+                    },
+                  );
                   _loginPageControl.previousPage(
                       duration: Duration(milliseconds: 350),
                       curve: Curves.linear);

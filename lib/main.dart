@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_guru/screens/dashboard/index.dart';
+import 'package:flutter_guru/screens/dashboard/report.dart';
 import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/screens/splash/index.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
@@ -61,7 +62,8 @@ class _AppState extends State<App> {
       bloc: _authenticationBloc,
       child: MaterialApp(
         routes:<String,WidgetBuilder>{
-          "/a":(BuildContext context) => new Usercard(),
+          "/card":(BuildContext context) => new Usercard(),
+          "/report":(BuildContext context) => new Report(),
         },
        debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(

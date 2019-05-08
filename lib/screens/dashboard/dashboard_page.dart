@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: () {
-                Navigator.of(context).pushNamed("/a");
+                Navigator.of(context).pushNamed("/card");
               },
               leading: new Icon(
                 Icons.credit_card,
@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> {
             Divider(height: 5.0, indent: 70.0),
             ListTile(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).pushNamed("/report");
               },
               leading: new Icon(
                 Icons.report,
@@ -272,7 +272,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                     Navigator.of(context).pushNamed("/a");
+                    Navigator.of(context).pushNamed("/card");
                   },
                   child: Card(
                     color: HexColor('#ffffff'),
@@ -296,6 +296,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/report");
+                  },
                   child: Card(
                     color: HexColor('#ffffff'),
                     child: Column(
@@ -415,7 +418,7 @@ class _HomePageState extends State<HomePage> {
 
   Positioned _buildMiddlePositioned() {
     return Positioned(
-      top: MediaQuery.of(context).size.height * 0.38,
+      top: MediaQuery.of(context).size.height * 0.35,
       width: MediaQuery.of(context).size.width * 1.10,
       height: MediaQuery.of(context).size.height * 0.12,
       child: Container(
@@ -558,7 +561,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Row(
                     children: <Widget>[
-                       Text(
+                      Text(
                         'Mobile:',
                         style: TextStyle(color: Colors.white),
                       ),
