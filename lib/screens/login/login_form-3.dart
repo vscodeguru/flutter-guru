@@ -89,8 +89,8 @@ class _LoginForm3State extends State<LoginForm3>
                                   color: HexColor("#f2f2f2"),
                                 ),
                                 child: Form(
-                                  key: formKey,
-                                  autovalidate: _autoValidate,
+                                  //  key: formKey,
+                                  // autovalidate: _autoValidate,
                                   child: PageView(
                                     physics: NeverScrollableScrollPhysics(),
                                     controller: _loginPageControl,
@@ -168,9 +168,9 @@ class _LoginForm3State extends State<LoginForm3>
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
-            autovalidate: _autoValidate,
-            validator: validateMobile,
-            controller: textFieldController,
+            //  autovalidate: _autoValidate,
+            //  validator: validateMobile,
+            //  controller: textFieldController,
             maxLength: 10,
             //    buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
             inputFormatters: [
@@ -211,10 +211,13 @@ class _LoginForm3State extends State<LoginForm3>
                     color: HexColor("#314453"),
                     onPressed: () {
                       setState(() {
+                        _loginPageControl.nextPage(
+                            duration: Duration(milliseconds: 350),
+                            curve: Curves.linear);
                         FocusScope.of(context).requestFocus(new FocusNode());
-                        onSubmitted(textFieldController.text);
-                        validateInputs();
-                        getData();
+                        //   onSubmitted(textFieldController.text);
+                        //  validateInputs();
+                        //  getData();
 
                         textFieldController.clear();
                       });
@@ -227,23 +230,23 @@ class _LoginForm3State extends State<LoginForm3>
 
   //OTP TextForm Field
   Column _buildOtpContent(BuildContext context) {
-    receiver.onSmsReceived.listen((SmsMessage msg) {
-      final otpRegex = RegExp(
-          '((?:(?:otp|password) (?:is|\:|is :) ?)([a-z0-9]{4,6}))|(([a-z0-9]{4,6}) (?:is your|is the).?(?:otp|password))',
-          multiLine: true,
-          caseSensitive: false);
-      _textFieldController.text =
-          (otpRegex.allMatches(msg.body).map((m) => m.group(1)).first != null)
-              ? (otpRegex.allMatches(msg.body).map((m) => m.group(2)).first)
-              : (otpRegex.allMatches(msg.body).map((m) => m.group(4)).first);
-      state is! LoginLoading ? _onLoginButtonPressed : print('Error');
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Welcome to chit funds'),
-          backgroundColor: HexColor("#314453"),
-        ),
-      );
-    });
+    // receiver.onSmsReceived.listen((SmsMessage msg) {
+    //   final otpRegex = RegExp(
+    //       '((?:(?:otp|password) (?:is|\:|is :) ?)([a-z0-9]{4,6}))|(([a-z0-9]{4,6}) (?:is your|is the).?(?:otp|password))',
+    //       multiLine: true,
+    //       caseSensitive: false);
+    //   _textFieldController.text =
+    //       (otpRegex.allMatches(msg.body).map((m) => m.group(1)).first != null)
+    //           ? (otpRegex.allMatches(msg.body).map((m) => m.group(2)).first)
+    //           : (otpRegex.allMatches(msg.body).map((m) => m.group(4)).first);
+    //   state is! LoginLoading ? _onLoginButtonPressed : print('Error');
+    //   Scaffold.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text('Welcome to chit funds'),
+    //       backgroundColor: HexColor("#314453"),
+    //     ),
+    //   );
+    // });
     return Column(
       children: <Widget>[
         SizedBox(
@@ -262,8 +265,8 @@ class _LoginForm3State extends State<LoginForm3>
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
-            validator: validateOTP,
-            controller: _textFieldController,
+            // validator: validateOTP,
+            // controller: _textFieldController,
             maxLength: 6,
             inputFormatters: [
               WhitelistingTextInputFormatter.digitsOnly,
@@ -279,7 +282,7 @@ class _LoginForm3State extends State<LoginForm3>
                   ),
                   tooltip: 'Resend OTP',
                   onPressed: () {
-                    getData();
+                    //  getData();
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text('ReSend OTP'),
                     ));
@@ -328,9 +331,12 @@ class _LoginForm3State extends State<LoginForm3>
               color: HexColor("#314453"),
               onPressed: () {
                 setState(() {
-                  submitted(_textFieldController.text);
-                  _validateInputs();
-                  otpData();
+                  state is! LoginLoading
+                      ? _onLoginButtonPressed
+                      : print('Error');
+                  //    submitted(_textFieldController.text);
+                  //   _validateInputs();
+                  //  otpData();
                 });
               },
             ),

@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
             Divider(height: 5.0, indent: 70.0),
             ListTile(
               onTap: () {
-                Navigator.pop(context);
+               Navigator.of(context).pushNamed("/expand");
               },
               leading: new Icon(
                 Icons.home,
@@ -418,7 +418,7 @@ class _HomePageState extends State<HomePage> {
 
   Positioned _buildMiddlePositioned() {
     return Positioned(
-      top: MediaQuery.of(context).size.height * 0.35,
+      top: MediaQuery.of(context).size.height * 0.38,
       width: MediaQuery.of(context).size.width * 1.10,
       height: MediaQuery.of(context).size.height * 0.12,
       child: Container(

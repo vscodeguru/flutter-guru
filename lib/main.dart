@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_guru/screens/dashboard/expand.dart';
 import 'package:flutter_guru/screens/dashboard/index.dart';
 import 'package:flutter_guru/screens/dashboard/report.dart';
+import 'package:flutter_guru/screens/dashboard/sample.dart';
 import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/screens/splash/index.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
@@ -64,6 +66,8 @@ class _AppState extends State<App> {
         routes:<String,WidgetBuilder>{
           "/card":(BuildContext context) => new Usercard(),
           "/report":(BuildContext context) => new Report(),
+           "/expand":(BuildContext context) => new Expand(),
+           "/sample":(BuildContext context) => new Sample(),
         },
        debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
