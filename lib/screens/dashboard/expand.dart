@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_guru/utils/theme/index.dart';
 
 class Expand extends StatefulWidget {
   Expand({Key key}) : super(key: key);
@@ -7,459 +9,235 @@ class Expand extends StatefulWidget {
 }
 
 class _ExpandState extends State<Expand> {
+  List<String> cities = <String>[
+    'Salem',
+    'Chennai',
+    'bangalore',
+    'Coimbatore',
+    'Tirupur',
+    'Trichy'
+  ];
+  String city = '';
+  var nameController = TextEditingController();
+  var mobileController = TextEditingController();
+  var cityController = TextEditingController();
+  var professionController = TextEditingController();
+  final FocusNode nameFocus = FocusNode();
+  final FocusNode mobileFocus = FocusNode();
+  final FocusNode cityFocus = FocusNode();
+  final FocusNode professionFocus = FocusNode();
+
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Container(
-              height: 250,
-              decoration: BoxDecoration(
-                  color: Colors.teal,
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.white,
+      body: Column(
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  color: themeGuru.getColor('#466e7a'),
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(40),
-                      bottomRight: Radius.circular(40))),
-            ),
-            //  Expanded(child: Container()),
-          ],
-        ),
-        SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 400,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0.0, 15.0),
-                            blurRadius: 25.0),
-                        BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0.0, -10.0),
-                            blurRadius: 25.0),
-                      ]),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'User Details',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'Name',
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Enter your Name',
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 12.0),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          'Mobile',
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Enter your Mobile Number',
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 12.0),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          'City',
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Enter your city',
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 12.0),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          'Profession',
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Enter your Profession',
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 12.0),
-                          ),
-                        ),
-                      ],
-                    ),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
                   ),
                 ),
-                SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    RaisedButton(
-                      splashColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40.0),
+              ),
+              SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
                       ),
-                      child: Text('Next'),
-                      color: Colors.teal,
-                      textColor: Colors.white,
-                      onPressed: () {
-                        setState(() {
-                          print('ralph');
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40.0),
+                      Container(
+                        // width: double.infinity,
+                        height: 430,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0.0, 10.0),
+                                blurRadius: 5),
+                            //     BoxShadow(
+                            //  color: Colors.black12,
+                            //      offset: Offset(0.0, -10.0),
+                            //      blurRadius: 0),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'User Details',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                'Name',
+                              ),
+                              TextFormField(
+                                controller: nameController,
+                                focusNode: nameFocus,
+                                onFieldSubmitted: (term) {
+                                  FocusScope.of(context)
+                                      .requestFocus(mobileFocus);
+                                },
+                                textInputAction: TextInputAction.next,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter your Name',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0),
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Mobile',
+                              ),
+                              TextFormField(
+                                buildCounter: (BuildContext context,
+                                        {int currentLength,
+                                        int maxLength,
+                                        bool isFocused}) =>
+                                    null,
+                                maxLength: 10,
+                                inputFormatters: [
+                                  WhitelistingTextInputFormatter.digitsOnly,
+                                ],
+                                keyboardType: TextInputType.phone,
+                                onFieldSubmitted: (term) {
+                                  FocusScope.of(context)
+                                      .requestFocus(cityFocus);
+                                },
+                                focusNode: mobileFocus,
+                                textInputAction: TextInputAction.next,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter your Mobile Number',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0),
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'City',
+                              ),
+                              FormField(
+                                builder: (FormFieldState state) {
+                                  return InputDecorator(
+                                    decoration: InputDecoration(
+                                      hintText: 'Enter your city',
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey, fontSize: 12.0),
+                                    ),
+                                    isEmpty: city == '',
+                                    child: new DropdownButtonHideUnderline(
+                                      child: new DropdownButton(
+                                        value: city,
+                                        isDense: true,
+                                        onChanged: (String newValue) {
+                                          setState(
+                                            () {
+                                              city = newValue;
+                                              state.didChange(newValue);
+                                            },
+                                          );
+                                        },
+                                        items: cities.map((String value) {
+                                          return new DropdownMenuItem(
+                                            value: value,
+                                            child: new Text(value),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              // TextFormField(
+                              //   focusNode: cityFocus,
+                              //   onFieldSubmitted: (term) {
+                              //     FocusScope.of(context)
+                              //         .requestFocus(professionFocus);
+                              //   },
+                              //   textInputAction: TextInputAction.next,
+                              //   decoration: InputDecoration(
+                              //     hintText: 'Enter your city',
+                              //     hintStyle:
+                              //         TextStyle(color: Colors.grey, fontSize: 12.0),
+                              //   ),
+                              // ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Profession',
+                              ),
+                              TextFormField(
+                                onFieldSubmitted: (value) {
+                                  cityFocus.unfocus();
+                                  Navigator.of(context).pushNamed("/sample");
+                                },
+                                textInputAction: TextInputAction.done,
+                                focusNode: professionFocus,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter your Profession',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      child: Text('Next'),
-                      color: Colors.teal,
-                      textColor: Colors.white,
-                      onPressed: () {
-                        setState(() {
-                          print('ralph');
-                        });
-                      },
-                    ),
-                  ],
+                      SizedBox(height: 30),
+                    ],
+                  ),
                 ),
-              ],
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.63,
+                left: MediaQuery.of(context).size.width * 0.42,
+                child: FloatingActionButton(
+                  elevation: 6,
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.teal,
+                  child: Icon(Icons.arrow_forward),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("/sample");
+                  },
+                ),
+              ),
+            ],
+          ),
+          Center(
+            child: Image(
+              image: AssetImage('assets/Color-GreyedOut.png'),
+              width: MediaQuery.of(context).size.width * 1.05,
             ),
           ),
-        )
-      ],
-    )
-
-        // body: Container(
-        //   child: Stack(
-        //     children: <Widget>[
-        //       Container(
-        //         child: SingleChildScrollView(
-        //             child: Container(
-        //           height: MediaQuery.of(context).size.height,
-        //           padding: EdgeInsets.all(16),
-        //           child: Column(
-        //             mainAxisSize: MainAxisSize.max,
-        //             mainAxisAlignment: MainAxisAlignment.center,
-        //             children: <Widget>[
-        //               Row(
-        //                 mainAxisAlignment: MainAxisAlignment.start,
-        //                 children: <Widget>[
-        //                   Text(
-        //                     'User Details',
-        //                     style: TextStyle(fontSize: 30),
-        //                   ),
-        //                 ],
-        //               ),
-        //               SizedBox(
-        //                 height: 10,
-        //               ),
-        //               Divider(
-        //                 height: 16,
-        //                 color: Colors.grey,
-        //               ),
-        //               SizedBox(
-        //                 height: 20,
-        //               ),
-        //               TextFormField(
-        //                 decoration: InputDecoration(
-        //                   contentPadding: const EdgeInsets.all(13.0),
-        //                   labelText: 'Name',
-        //                   hintText: 'Enter your Name',
-        //                   suffixIcon: Icon(
-        //                     Icons.person,
-        //                   ),
-        //                   border: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                   focusedBorder: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ),
-        //               SizedBox(height: 20.0),
-        //               TextFormField(
-        //                 keyboardType: TextInputType.phone,
-        //                 maxLength: 10,
-        //                 buildCounter: (BuildContext context,
-        //                         {int currentLength,
-        //                         int maxLength,
-        //                         bool isFocused}) =>
-        //                     null,
-        //                 inputFormatters: [
-        //                   WhitelistingTextInputFormatter.digitsOnly,
-        //                 ],
-        //                 decoration: InputDecoration(
-        //                   contentPadding: const EdgeInsets.all(13.0),
-        //                   labelText: 'Mobile',
-        //                   hintText: 'Enter your Mobile',
-        //                   suffixIcon: Icon(
-        //                     Icons.phone_android,
-        //                   ),
-        //                   border: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                   focusedBorder: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ),
-        //               SizedBox(height: 20.0),
-        //               TextFormField(
-        //                 decoration: InputDecoration(
-        //                   contentPadding: const EdgeInsets.all(13.0),
-        //                   labelText: 'City',
-        //                   hintText: 'Enter your City',
-        //                   suffixIcon: Icon(
-        //                     Icons.domain,
-        //                   ),
-        //                   border: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                   focusedBorder: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ),
-        //               SizedBox(height: 20.0),
-        //               TextFormField(
-        //                 decoration: InputDecoration(
-        //                   contentPadding: const EdgeInsets.all(13.0),
-        //                   labelText:'Profession',
-        //                   hintText: 'Enter your Profession',
-        //                   suffixIcon: Icon(
-        //                     Icons.business,
-        //                   ),
-        //                   border: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                   focusedBorder: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ),
-        //               SizedBox(height: 20.0),
-        //               TextFormField(
-        //                 decoration: InputDecoration(
-        //                   contentPadding: const EdgeInsets.all(13.0),
-        //                   labelText: 'Appointment Date & Time',
-        //                   hintText: 'Appointment Date & Time',
-        //                   suffixIcon: Icon(
-        //                     Icons.business,
-        //                   ),
-        //                   border: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                   focusedBorder: OutlineInputBorder(
-        //                     borderRadius: BorderRadius.all(
-        //                       Radius.circular(5.0),
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ),
-        //               SizedBox(height: 20.0),
-        //               Container(
-        //                 child: Row(
-        //                   children: <Widget>[
-        //                     Text(
-        //                       'Other Details',
-        //                       style: TextStyle(fontSize: 30),
-        //                     )
-        //                   ],
-        //                 ),
-        //               ),
-        //               SizedBox(height: 5.0),
-        //               Divider(
-        //                 height: 16,
-        //                 color: Colors.grey,
-        //               ),
-        //               SizedBox(height: 5.0),
-        //               Container(
-        //                 child: Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                   children: <Widget>[
-        //                     Text('Purpose'),
-        //                     Row(
-        //                       children: <Widget>[
-        //                         Radio(
-        //                             value: 0,
-        //                             groupValue: purposeValue,
-        //                             onChanged: (a) {
-        //                               setState(() {
-        //                                 purposeValue = 0;
-        //                               });
-        //                             }),
-        //                         Text('Investment'),
-        //                       ],
-        //                     ),
-        //                     Row(
-        //                       children: <Widget>[
-        //                         Radio(
-        //                             value: 1,
-        //                             groupValue: purposeValue,
-        //                             onChanged: (a) {
-        //                               setState(() {
-        //                                 purposeValue = 1;
-        //                               });
-        //                             }),
-        //                         new Text('Savings'),
-        //                       ],
-        //                     ),
-        //                     Row(
-        //                       children: <Widget>[
-        //                         Radio(
-        //                             value: 2,
-        //                             groupValue: purposeValue,
-        //                             onChanged: (a) {
-        //                               setState(() {
-        //                                 purposeValue = 2;
-        //                               });
-        //                             }),
-        //                         new Text('others'),
-        //                       ],
-        //                     ),
-        //                   ],
-        //                 ),
-        //               ),
-        //               Container(
-        //                 padding: EdgeInsets.only(right: 50),
-        //                 child: Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                   children: <Widget>[
-        //                     Text('Home'),
-        //                     Row(
-        //                       children: <Widget>[
-        //                         Radio(
-        //                             value: 0,
-        //                             groupValue: homeValue,
-        //                             onChanged: (a) {
-        //                               setState(() {
-        //                                 homeValue = 0;
-        //                               });
-        //                             }),
-        //                         Text('Own house'),
-        //                       ],
-        //                     ),
-        //                     Row(
-        //                       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                       children: <Widget>[
-        //                         Radio(
-        //                             value: 1,
-        //                             groupValue: homeValue,
-        //                             onChanged: (a) {
-        //                               setState(() {
-        //                                 homeValue = 1;
-        //                               });
-        //                             }),
-        //                         new Text('Rent house'),
-        //                       ],
-        //                     ),
-        //                   ],
-        //                 ),
-        //               ),
-        //               Container(
-        //                 padding: EdgeInsets.only(right: 150),
-        //                 child: Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                   children: <Widget>[
-        //                     Text('Vehicle '),
-        //                     Row(
-        //                       children: <Widget>[
-        //                         Checkbox(
-        //                             value: isChecked,
-        //                             onChanged: (value) {
-        //                               setState(() {
-        //                                 isChecked = value;
-        //                               });
-        //                             }),
-        //                         Text('Car'),
-        //                       ],
-        //                     ),
-        //                     Row(
-        //                       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                       children: <Widget>[
-        //                         Checkbox(
-        //                             value: check,
-        //                             onChanged: (value) {
-        //                               setState(() {
-        //                                 check = value;
-        //                               });
-        //                             }),
-        //                         new Text('Bike'),
-        //                       ],
-        //                     ),
-        //                   ],
-        //                 ),
-        //               ),
-        //               SizedBox(height: 10.0),
-        //               Container(
-        //                 width: MediaQuery.of(context).size.width,
-        //                 child: RaisedButton(
-        //                   shape: RoundedRectangleBorder(
-        //                     borderRadius: BorderRadius.circular(20.0),
-        //                   ),
-        //                   splashColor: Colors.blueGrey,
-        //                   elevation: 10,
-        //                   color: Colors.blue,
-        //                   textColor: Colors.white,
-        //                   onPressed: () {
-        //                     print('tapped');
-        //                     Navigator.of(context).pushNamed("/sample");
-        //                   },
-        //                   child: Text('Next'),
-        //                 ),
-        //               )
-        //             ],
-        //           ),
-        //         )),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        );
+        ],
+      ),
+    );
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
