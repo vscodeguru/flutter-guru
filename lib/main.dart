@@ -3,15 +3,15 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_guru/screens/dashboard/expand.dart';
-import 'package:flutter_guru/screens/dashboard/index.dart';
 import 'package:flutter_guru/screens/dashboard/report.dart';
 import 'package:flutter_guru/screens/dashboard/sample.dart';
+import 'package:flutter_guru/screens/lead/lead/index.dart';
 import 'package:flutter_guru/screens/login/index.dart';
 import 'package:flutter_guru/screens/splash/index.dart';
 import 'package:flutter_guru/utils/authentication/index.dart';
 import 'package:flutter_guru/widgets/loading_indicator/index.dart';
-import 'package:flutter_guru/screens/dashboard/dashboard_page.dart';
 import 'package:flutter_guru/screens/dashboard/usercard.dart';
+
 class SimpleBlocDelegate extends BlocDelegate {
   @override
   void onTransition(Transition transition) {
@@ -60,16 +60,15 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthenticationBloc>(
-    
       bloc: _authenticationBloc,
       child: MaterialApp(
-        routes:<String,WidgetBuilder>{
-          "/card":(BuildContext context) => new Usercard(),
-          "/report":(BuildContext context) => new Report(),
-           "/expand":(BuildContext context) => new Expand(),
-           "/sample":(BuildContext context) => new Sample(),
+        routes: <String, WidgetBuilder>{
+          "/card": (BuildContext context) => new Usercard(),
+          "/report": (BuildContext context) => new Report(),
+          "/expand": (BuildContext context) => new Expand(),
+          "/sample": (BuildContext context) => new Sample(),
         },
-       debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
           bloc: _authenticationBloc,
           builder: (BuildContext context, AuthenticationState state) {
@@ -77,7 +76,7 @@ class _AppState extends State<App> {
               return SplashPage();
             }
             if (state is AuthenticationAuthenticated) {
-              return HomePage();
+              return LeadPage();
             }
             if (state is AuthenticationUnauthenticated) {
               return LoginPage(userRepository: _userRepository);
