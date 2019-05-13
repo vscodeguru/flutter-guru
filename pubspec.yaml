@@ -72,6 +72,11 @@ flutter:
     - assets/Color-GreyedOut.png
     - assets/Colored.png
     - assets/Black.png
+    - assets/house.png
+    - assets/home.png
+    - assets/bank.png
+    - assets/money.png
+    - assets/Noel.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/cardElementWidget.dart';
 import 'package:flutter_guru/utils/theme/theme_guru.dart';
 import '../../../../states/auth/registration.dart';
-import 'cardElementWidget.dart';
-class VehicleWidget extends StatelessWidget {
+import 'package:provider/provider.dart';
+
+class PurposeWidget extends StatelessWidget {
+  String input = '';
+  var _inputController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor('#466e7a'),
       body: Container(
         decoration: new BoxDecoration(
           image: new DecorationImage(
@@ -19,8 +23,9 @@ class VehicleWidget extends StatelessWidget {
           children: <Widget>[
             Container(
               //    color: HexColor('#2980b9'),
-              //  padding: EdgeInsets.all(20),
+              // padding: EdgeInsets.all(20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     width: double.infinity,
@@ -42,7 +47,6 @@ class VehicleWidget extends StatelessWidget {
                           ),
                           Row(
                             //    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                             children: <Widget>[
                               IconButton(
                                 padding: EdgeInsets.all(0.0),
@@ -58,7 +62,7 @@ class VehicleWidget extends StatelessWidget {
                               Expanded(
                                 child: Center(
                                   child: Text(
-                                    'Vehicle Details',
+                                    'Purpose Details',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 20),
                                   ),
@@ -74,10 +78,10 @@ class VehicleWidget extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top:60),
+                    padding: const EdgeInsets.only(top: 60),
                     child: Center(
                       child: Text(
-                        'What type of Vehicle you have?',
+                        'What type of Owner you are?',
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
@@ -90,25 +94,41 @@ class VehicleWidget extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new CardElement('assets/car.png', 'Car'),
-                        new CardElement('assets/motorcycle.png', 'Bike'),
+                        new CardElement('assets/bank.png', 'Investment'),
+                        new CardElement('assets/money.png', 'Salary'),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            Container(
+              decoration: new BoxDecoration(
+                color: HexColor('#1dd1a1').withOpacity(1),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(0.0, -7),
+                      blurRadius: 3),
+                ],
+              ),
               height: 50,
               width: double.infinity, // match_parent
               child: FlatButton(
                 color: Colors.teal,
+
+                // color: HexColor('#1a6d75'),
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                child: Text('Next',style: TextStyle(color: Colors.white, fontSize: 20)),
+                child: Center(
+                  child: Text(
+                    'Save',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
                 textColor: Colors.white,
                 onPressed: () {
-                  RegistrationState.of(context).currentPage++;
-                  RegistrationState.of(context).notify();
+                  // RegistrationState.of(context).currentPage++;
+                  // RegistrationState.of(context).notify();
                 },
               ),
             )
@@ -118,5 +138,3 @@ class VehicleWidget extends StatelessWidget {
     );
   }
 }
-
-

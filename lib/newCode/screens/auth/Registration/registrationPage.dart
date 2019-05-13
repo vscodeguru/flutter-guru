@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/purposeWidget.dart';
 import '../../../states/auth/registration.dart';
 import 'widgets/houseWidget.dart';
 import 'widgets/personalWidget.dart';
@@ -19,30 +20,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
         currentSelection = PersonalWidget();
         break;
       case 2:
-      currentSelection = HouseWidget();
+        currentSelection = VehicleWidget();
         break;
       case 3:
-      currentSelection = VehicleWidget();
+        currentSelection = HouseWidget();
         break;
-        case 4:
-        currentSelection = Column(children: <Widget>[
-          Text('Name : ' + state.data.personal.Name),
-          Text('House Blah : ' + state.data.house.blah),
-          Text('Vehicle Blah : ' + state.data.vehicle.blah)
-        ],);
+      case 4:
+        currentSelection = PurposeWidget(); //PUIRPOSE
+        break;
+      case 5:
+        currentSelection = Column(
+          children: <Widget>[
+            Text('Name : ' + state.data.personal.name),
+            Text('House Blah : ' + state.data.house.blah),
+            Text('Vehicle Blah : ' + state.data.vehicle.blah)
+          ],
+        );
         break;
     }
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Registration Page'),
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: currentSelection,
-            ),
-          ],
-        ));
+    return currentSelection;
   }
 }
