@@ -21,43 +21,59 @@ class RegistrationModel {
 }
 
 class Registration_PersonalData {
-  String name='';
-  String mobile='';
-  String city='';
-  String profession='';
+  String name = '';
+  String mobile = '';
+  String city = 'Salem';
+  String profession = '';
 }
 
 class Registration_HouseData {
-  String blah='';
+  bool own = false;
+  bool rent = false;
+  select(String selection) {
+    own = rent = false;
+    if (selection == 'own')
+      own = true;
+    else
+      rent = true;
+  }
 }
+
 class Registration_VechicleData {
-  String blah='';
+  bool car = false;
+  bool bike = false;
 }
 
 class Registration_PurposeData {
-  String blah='';
+  bool investment = false;
+  bool salary = false;
+  bool others = false;
+  String other = '';
+  select(String selection) {
+    investment = salary = false;
+    if (selection == 'investment')
+      investment = true;
+    else
+      salary = true;
+  }
 }
 
 class RegistrationState with ChangeNotifier {
-
   RegistrationModel _data;
 
   int currentPage = 1;
 
-  RegistrationModel get data => _data; // This is equalent to {get; private set;}
+  RegistrationModel get data =>
+      _data; // This is equalent to {get; private set;}
 
-  RegistrationState()
-  {
+  RegistrationState() {
     _data = RegistrationModel();
   }
 
   static RegistrationState of(BuildContext context) =>
       Provider.of<RegistrationState>(context);
 
-  notify()
-  {
+  notify() {
     notifyListeners();
   }
-
-
 }

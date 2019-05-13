@@ -91,52 +91,37 @@ class HouseWidget extends StatelessWidget {
                         top: MediaQuery.of(context).size.height * 0.20,
                         left: MediaQuery.of(context).size.height * 0.045,
                         right: MediaQuery.of(context).size.height * 0.045),
-                    child: GestureDetector(
-                      onTap: () {
-                      
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          new CardElement('assets/house.png', 'Own house'),
-                          new CardElement('assets/home.png', 'Rented house'),
-                        ],
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        new CardElement(
+                          'assets/house.png',
+                          'Own house',
+                          selected:
+                              RegistrationState.of(context).data.house.own,
+                          onSelect: (selection) {
+                            RegistrationState.of(context).data.house.select('own');
+                            RegistrationState.of(context).currentPage++;
+                            RegistrationState.of(context).notify();
+                          },
+                        ),
+                        new CardElement(
+                          'assets/home.png',
+                          'Rented house',
+                          selected:
+                              RegistrationState.of(context).data.house.rent,
+                          onSelect: (selection) {
+                            RegistrationState.of(context).data.house.select('rent');
+                            RegistrationState.of(context).currentPage++;
+                            RegistrationState.of(context).notify();
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              decoration: new BoxDecoration(
-                color: HexColor('#1dd1a1').withOpacity(1),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(0.0, -7),
-                      blurRadius: 3),
-                ],
-              ),
-              height: 50,
-              width: double.infinity, // match_parent
-              child: FlatButton(
-                color: Colors.teal,
-
-                // color: HexColor('#1a6d75'),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                child: Center(
-                  child: Text(
-                    'Next',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
-                textColor: Colors.white,
-                onPressed: () {
-                  RegistrationState.of(context).currentPage++;
-                  RegistrationState.of(context).notify();
-                },
-              ),
-            )
           ],
         ),
       ),

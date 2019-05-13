@@ -77,61 +77,71 @@ class PurposeWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 60),
-                    child: Center(
-                      child: Text(
-                        'What type of Owner you are?',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 60),
+                  //   child: Center(
+                  //     child: Text(
+                  //       'What type of Owner you are?',
+                  //       style: TextStyle(color: Colors.white, fontSize: 20),
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.20,
+                        top: MediaQuery.of(context).size.height * 0.12,
                         left: MediaQuery.of(context).size.height * 0.045,
                         right: MediaQuery.of(context).size.height * 0.045),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
                       children: <Widget>[
-                        new CardElement('assets/bank.png', 'Investment'),
-                        new CardElement('assets/money.png', 'Salary'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            new CardElement(
+                              'assets/bank.png',
+                              'Investment',
+                              selected: RegistrationState.of(context).data.purpose.investment,
+                              onSelect: (selection) {
+                                RegistrationState.of(context).data.purpose.investment = selection;
+                                RegistrationState.of(context).currentPage++;
+                                RegistrationState.of(context).notify();
+                              },
+                            ),
+                            new CardElement(
+                              'assets/money.png',
+                              'Salary',
+                              selected: RegistrationState.of(context).data.purpose.salary,
+                              onSelect: (selection) {
+                                RegistrationState.of(context).data.purpose.salary = selection;
+                                RegistrationState.of(context).currentPage++;
+                                RegistrationState.of(context).notify();
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new CardElement(
+                              'assets/cash.png',
+                              'Others',
+                              selected: RegistrationState.of(context).data.purpose.others,
+                              onSelect: (selection) {
+                                RegistrationState.of(context).data.purpose.others = selection;
+                                RegistrationState.of(context).currentPage++;
+                                RegistrationState.of(context).notify();
+                              },
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              decoration: new BoxDecoration(
-                color: HexColor('#1dd1a1').withOpacity(1),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(0.0, -7),
-                      blurRadius: 3),
-                ],
-              ),
-              height: 50,
-              width: double.infinity, // match_parent
-              child: FlatButton(
-                color: Colors.teal,
-
-                // color: HexColor('#1a6d75'),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                child: Center(
-                  child: Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
-                textColor: Colors.white,
-                onPressed: () {
-                  // RegistrationState.of(context).currentPage++;
-                  // RegistrationState.of(context).notify();
-                },
-              ),
-            )
           ],
         ),
       ),

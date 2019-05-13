@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/purposeWidget.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/resultWidget.dart';
 import '../../../states/auth/registration.dart';
 import 'widgets/houseWidget.dart';
 import 'widgets/personalWidget.dart';
@@ -29,13 +30,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         currentSelection = PurposeWidget(); //PUIRPOSE
         break;
       case 5:
-        currentSelection = Column(
-          children: <Widget>[
-            Text('Name : ' + state.data.personal.name),
-            Text('House Blah : ' + state.data.house.blah),
-            Text('Vehicle Blah : ' + state.data.vehicle.blah)
-          ],
-        );
+        currentSelection = ResultWidget();
         break;
     }
 
