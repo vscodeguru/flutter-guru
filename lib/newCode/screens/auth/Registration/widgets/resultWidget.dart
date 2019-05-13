@@ -60,7 +60,7 @@ class ResultWidget extends StatelessWidget {
                               Expanded(
                                 child: Center(
                                   child: Text(
-                                    'Home Details',
+                                    'Result Details',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 20),
                                   ),

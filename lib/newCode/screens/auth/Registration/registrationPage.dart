@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/appointmentWidget.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/listViewWidget.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/listWidget.dart';
 import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/purposeWidget.dart';
 import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/resultWidget.dart';
 import '../../../states/auth/registration.dart';
@@ -30,7 +33,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
         currentSelection = PurposeWidget(); //PUIRPOSE
         break;
       case 5:
-        currentSelection = ResultWidget();
+        currentSelection = ListWidget();
+        break;
+      case 6:
+        currentSelection = AppointmentWidget();
+        break;
+      case 7:
+        currentSelection =  ListViewWidget();
         break;
     }
 

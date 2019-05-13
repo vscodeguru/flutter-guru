@@ -77,15 +77,6 @@ class PurposeWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(top: 60),
-                  //   child: Center(
-                  //     child: Text(
-                  //       'What type of Owner you are?',
-                  //       style: TextStyle(color: Colors.white, fontSize: 20),
-                  //     ),
-                  //   ),
-                  // ),
                   Container(
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.12,
@@ -99,9 +90,15 @@ class PurposeWidget extends StatelessWidget {
                             new CardElement(
                               'assets/bank.png',
                               'Investment',
-                              selected: RegistrationState.of(context).data.purpose.investment,
+                              selected: RegistrationState.of(context)
+                                  .data
+                                  .purpose
+                                  .investment,
                               onSelect: (selection) {
-                                RegistrationState.of(context).data.purpose.investment = selection;
+                                RegistrationState.of(context)
+                                    .data
+                                    .purpose
+                                    .investment = selection;
                                 RegistrationState.of(context).currentPage++;
                                 RegistrationState.of(context).notify();
                               },
@@ -109,9 +106,15 @@ class PurposeWidget extends StatelessWidget {
                             new CardElement(
                               'assets/money.png',
                               'Salary',
-                              selected: RegistrationState.of(context).data.purpose.salary,
+                              selected: RegistrationState.of(context)
+                                  .data
+                                  .purpose
+                                  .salary,
                               onSelect: (selection) {
-                                RegistrationState.of(context).data.purpose.salary = selection;
+                                RegistrationState.of(context)
+                                    .data
+                                    .purpose
+                                    .salary = selection;
                                 RegistrationState.of(context).currentPage++;
                                 RegistrationState.of(context).notify();
                               },
@@ -127,9 +130,15 @@ class PurposeWidget extends StatelessWidget {
                             new CardElement(
                               'assets/cash.png',
                               'Others',
-                              selected: RegistrationState.of(context).data.purpose.others,
+                              selected: RegistrationState.of(context)
+                                  .data
+                                  .purpose
+                                  .others,
                               onSelect: (selection) {
-                                RegistrationState.of(context).data.purpose.others = selection;
+                                RegistrationState.of(context)
+                                    .data
+                                    .purpose
+                                    .others = selection;
                                 RegistrationState.of(context).currentPage++;
                                 RegistrationState.of(context).notify();
                               },
