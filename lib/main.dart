@@ -6,13 +6,17 @@ import 'package:flutter_guru/newCode/ApplicationBase.dart';
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(MainApplication());
+    runApp(MainApplication()
+    );
   });
 }
 
 class MainApplication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ApplicationBase();
+
+    return ApplicationBase(
+      
+    );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guru/newCode/screens/auth/Login/loginPage.dart';
+import 'package:flutter_guru/newCode/states/auth/login.dart';
 import 'screens/Dashboard/dashboardPage.dart';
 import 'package:provider/provider.dart';
 import './states/baseState.dart';
@@ -17,7 +19,9 @@ class _ApplicationBaseState extends State<ApplicationBase> {
     return ChangeNotifierProvider<ApplicationGlobalState>(
       builder: (ctx) => ApplicationGlobalState(),
       child: MaterialApp(
-        home: DashboardPage()
+        debugShowCheckedModeBanner: false,
+        home: ChangeNotifierProvider<LoginState>(
+            builder: (ctx) => LoginState(), child: LoginPage()),
       ),
     );
   }

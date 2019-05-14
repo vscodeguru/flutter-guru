@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_guru/newCode/screens/Dashboard/dashboardPage.dart';
 import 'package:flutter_guru/newCode/states/auth/login.dart';
 import 'package:flutter_guru/newCode/states/baseState.dart';
+import 'package:flutter_guru/newCode/states/dashboardState/dashboard.dart';
 import 'package:flutter_guru/utils/theme/theme_guru.dart';
 import 'package:flutter_guru/widgets/clipper/clipShadowPath.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:sms/sms.dart';
 
 class LoginPage extends StatefulWidget {
@@ -36,7 +39,7 @@ class _LoginPageState extends State<LoginPage>
       //resizeToAvoidBottomPadding: false,
       body: InkWell(
         child: Container(
-          color: pageThemeColor,
+          color: HexColor('#1a6d76'),
           child: Stack(
             children: <Widget>[
               Positioned(
@@ -76,36 +79,6 @@ class _LoginPageState extends State<LoginPage>
                             ),
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.only(top: 35),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                avatarVisible
-                                    ? Center(
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          backgroundImage: AssetImage(
-                                              'assets/smartphone.png'),
-                                          radius: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.10,
-                                        ),
-                                      )
-                                    : Center(
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          backgroundImage:
-                                              AssetImage('assets/chat.png'),
-                                          radius: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.10,
-                                        ),
-                                      ),
-                              ]),
-                        )
                       ],
                     ),
                   ),
@@ -137,7 +110,7 @@ class _LoginPageState extends State<LoginPage>
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Agent Portal",
+              "Leads Portal",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 28,
@@ -257,6 +230,14 @@ class _LoginPageState extends State<LoginPage>
                 backgroundColor: HexColor("#314453"),
               ),
             );
+            Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (ctx) {
+                return ChangeNotifierProvider<DashboardState>(
+                  builder: (_ctx) => DashboardState(),
+                  child: DashboardPage(),
+                );
+              },
+            ));
           } else if (data == 'failure') {
             _scaffoldKey.currentState.showSnackBar(
               SnackBar(
@@ -320,7 +301,7 @@ class _LoginPageState extends State<LoginPage>
       } else {
         showErrorMessage(data);
       }
-    }).catchError(()=>showErrorMessage('Something Went Wrong.. Please Try again Later..'));
+    });
   }
 
   Column _buildOtpContent(BuildContext context) {
@@ -343,7 +324,6 @@ class _LoginPageState extends State<LoginPage>
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
             validator: validateOTP,
-            
             controller: tfcOtp,
             maxLength: 6,
             inputFormatters: [
@@ -360,8 +340,8 @@ class _LoginPageState extends State<LoginPage>
                   ),
                   tooltip: 'Resend OTP',
                   onPressed: () {
-                    //  getData();
-                    Scaffold.of(context).showSnackBar(SnackBar(
+                    requestOtp();
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
                       content: Text('ReSend OTP'),
                     ));
                   }),
