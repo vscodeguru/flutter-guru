@@ -57,7 +57,15 @@ class Registration_PurposeData {
       salary = true;
   }
 }
-
+class Registration_AppointmentData {
+ 
+}
+class Registration_CustomerList {
+ 
+}
+class Registration_ListData {
+ 
+}
 class RegistrationState with ChangeNotifier {
   RegistrationModel _data;
 

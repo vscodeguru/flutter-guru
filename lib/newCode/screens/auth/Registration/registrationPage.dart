@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/appointmentWidget.dart';
 import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/purposeWidget.dart';
 import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/resultWidget.dart';
 import '../../../states/auth/registration.dart';
@@ -29,11 +30,23 @@ class _RegistrationPageState extends State<RegistrationPage> {
       case 4:
         currentSelection = PurposeWidget(); //PUIRPOSE
         break;
-      case 5:
-        currentSelection = ResultWidget();
+         case 5:
+        currentSelection = AppointmentWidget();
         break;
+
     }
 
-    return currentSelection;
+    return WillPopScope(
+        onWillPop: onBackClick,
+        child: currentSelection);
+  }
+  Future<bool> onBackClick() async {
+    if(RegistrationState.of(context).currentPage == 1)
+    return Future.value(true);
+    else
+    {
+      RegistrationState.of(context).currentPage--;
+      RegistrationState.of(context).notify();
+    }
   }
 }

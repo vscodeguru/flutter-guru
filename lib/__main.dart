@@ -24,7 +24,7 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 }
 
-void _main() {
+void __main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     BlocSupervisor().delegate = SimpleBlocDelegate();

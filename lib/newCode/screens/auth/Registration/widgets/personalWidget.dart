@@ -44,20 +44,20 @@ class _PersonalWidgetState extends State<PersonalWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
-      body: Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("assets/Noel.png"),
-            fit: BoxFit.cover,
+      body: SingleChildScrollView(
+              child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("assets/Noel.png"),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                SingleChildScrollView(
-                  child: Padding(
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  Padding(
                     padding:
                         EdgeInsets.only(left: 28.0, right: 28.0, top: 120.0),
                     child: Column(
@@ -85,112 +85,108 @@ class _PersonalWidgetState extends State<PersonalWidget> {
                           child: Padding(
                             padding: EdgeInsets.only(
                                 left: 16.0, right: 16.0, top: 16.0),
-                            child: Form(
-                              key: _formKey,
-                              //autovalidate: _autoValidate,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    'User Details',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'User Details',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Name',
+                                ),
+                                TextFormField(
+                                  buildCounter: (BuildContext context,
+                                          {int currentLength,
+                                          int maxLength,
+                                          bool isFocused}) =>
+                                      null,
+                                  maxLength: 25,
+                                  controller: nameController,
+                                  focusNode: nameFocus,
+                                  onFieldSubmitted: (term) {
+                                    FocusScope.of(context)
+                                        .requestFocus(mobileFocus);
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your Name',
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey, fontSize: 12.0),
                                   ),
-                                  SizedBox(
-                                    height: 20,
+                                ),
+                                SizedBox(height: 20),
+                                Text(
+                                  'Mobile',
+                                ),
+                                TextFormField(
+                                  controller: mobileController,
+                                //  autovalidate: _autoValidate,
+                                  buildCounter: (BuildContext context,
+                                          {int currentLength,
+                                          int maxLength,
+                                          bool isFocused}) =>
+                                      null,
+                                  maxLength: 10,
+                                  inputFormatters: [
+                                    WhitelistingTextInputFormatter.digitsOnly,
+                                  ],
+                                  keyboardType: TextInputType.phone,
+                                  onFieldSubmitted: (term) {
+                                    FocusScope.of(context)
+                                        .requestFocus(cityFocus);
+                                  },
+                                  focusNode: mobileFocus,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your Mobile Number',
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey, fontSize: 12.0),
                                   ),
-                                  Text(
-                                    'Name',
+                                ),
+                                SizedBox(height: 20),
+                                Text(
+                                  'City',
+                                ),
+                                DropdownButtonFormField<String>(
+                                  value: dropdownValue,
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue;
+                                    });
+                                  },
+                                  items: cities
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) =>
+                                              DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              ))
+                                      .toList(),
+                                ),
+                                SizedBox(height: 20),
+                                Text(
+                                  'Profession',
+                                ),
+                                TextFormField(
+                                //  autovalidate: _autoValidate,
+                                  onFieldSubmitted: (value) {
+                                    cityFocus.unfocus();
+                                  },
+                                  textInputAction: TextInputAction.done,
+                                  focusNode: professionFocus,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter your Profession',
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey, fontSize: 12.0),
                                   ),
-                                  TextFormField(
-                                    buildCounter: (BuildContext context,
-                                            {int currentLength,
-                                            int maxLength,
-                                            bool isFocused}) =>
-                                        null,
-                                    maxLength: 25,
-                                    controller: nameController,
-                                    focusNode: nameFocus,
-                                    onFieldSubmitted: (term) {
-                                      FocusScope.of(context)
-                                          .requestFocus(mobileFocus);
-                                    },
-                                    textInputAction: TextInputAction.next,
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter your Name',
-                                      hintStyle: TextStyle(
-                                          color: Colors.grey, fontSize: 12.0),
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    'Mobile',
-                                  ),
-                                  TextFormField(
-                                    controller: mobileController,
-                                  //  autovalidate: _autoValidate,
-                                    buildCounter: (BuildContext context,
-                                            {int currentLength,
-                                            int maxLength,
-                                            bool isFocused}) =>
-                                        null,
-                                    maxLength: 10,
-                                    inputFormatters: [
-                                      WhitelistingTextInputFormatter.digitsOnly,
-                                    ],
-                                    keyboardType: TextInputType.phone,
-                                    onFieldSubmitted: (term) {
-                                      FocusScope.of(context)
-                                          .requestFocus(cityFocus);
-                                    },
-                                    focusNode: mobileFocus,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter your Mobile Number',
-                                      hintStyle: TextStyle(
-                                          color: Colors.grey, fontSize: 12.0),
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    'City',
-                                  ),
-                                  DropdownButtonFormField<String>(
-                                    value: dropdownValue,
-                                    onChanged: (String newValue) {
-                                      setState(() {
-                                        dropdownValue = newValue;
-                                      });
-                                    },
-                                    items: cities
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) =>
-                                                DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                ))
-                                        .toList(),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    'Profession',
-                                  ),
-                                  TextFormField(
-                                  //  autovalidate: _autoValidate,
-                                    onFieldSubmitted: (value) {
-                                      cityFocus.unfocus();
-                                    },
-                                    textInputAction: TextInputAction.done,
-                                    focusNode: professionFocus,
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter your Profession',
-                                      hintStyle: TextStyle(
-                                          color: Colors.grey, fontSize: 12.0),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -198,38 +194,38 @@ class _PersonalWidgetState extends State<PersonalWidget> {
                       ],
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 1,
-                  left: MediaQuery.of(context).size.width * 0.42,
-                  child: FloatingActionButton(
-                    elevation: 6,
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.teal,
-                    child: Icon(Icons.arrow_forward),
-                    onPressed: () {
-                      RegistrationState.of(context).data.personal.name =
-                          nameController.text;
-                      RegistrationState.of(context).data.personal.mobile =
-                          mobileController.text;
-                      RegistrationState.of(context).data.personal.city =
-                          dropdownValue;
-                      RegistrationState.of(context).data.personal.profession =
-                          professionController.text;
-                      RegistrationState.of(context).currentPage++;
-                      RegistrationState.of(context).notify();
-                    },
+                  Positioned(
+                    bottom: 1,
+                    left: MediaQuery.of(context).size.width * 0.42,
+                    child: FloatingActionButton(
+                      elevation: 6,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.teal,
+                      child: Icon(Icons.arrow_forward),
+                      onPressed: () {
+                        RegistrationState.of(context).data.personal.name =
+                            nameController.text;
+                        RegistrationState.of(context).data.personal.mobile =
+                            mobileController.text;
+                        RegistrationState.of(context).data.personal.city =
+                            dropdownValue;
+                        RegistrationState.of(context).data.personal.profession =
+                            professionController.text;
+                        RegistrationState.of(context).currentPage++;
+                        RegistrationState.of(context).notify();
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-            // Center(
-            //   child: Image(
-            //     image: AssetImage('assets/Color-GreyedOut.png'),
-            //     width: MediaQuery.of(context).size.width * 1.05,
-            //   ),
-            // ),
-          ],
+                ],
+              ),
+              // Center(
+              //   child: Image(
+              //     image: AssetImage('assets/Color-GreyedOut.png'),
+              //     width: MediaQuery.of(context).size.width * 1.05,
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );

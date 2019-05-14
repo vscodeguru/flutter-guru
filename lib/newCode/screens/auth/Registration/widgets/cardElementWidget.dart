@@ -65,8 +65,8 @@ class _CardElementState extends State<CardElement> {
             child: (isSelected)
                 ? Image(
                     alignment: Alignment.bottomRight,
-                    image: NetworkImage(
-                        'https://img.icons8.com/cotton/2x/checkmark.png',
+                    image: ExactAssetImage(
+                        'assets/checkmark.png',
                         scale: 6),
                   )
                 : null,
