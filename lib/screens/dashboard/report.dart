@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sticky_headers/sticky_headers.dart';
 
 class Report extends StatefulWidget {
   Report({Key key}) : super(key: key);
@@ -51,146 +50,117 @@ class _ReportState extends State<Report> {
       top: MediaQuery.of(context).size.height * 0.43,
       child: ListView(
         children: <Widget>[
-          StickyHeaderBuilder(
-            builder: (context, i) => Text(
-                  'Report',
-                  style: TextStyle(fontSize: 35),
+          Column(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.pinkAccent,
                 ),
-            // content: Column(
-            //   children: <Widget>[
-            //     Row(
-            //       children: <Widget>[
-            //         Text(
-            //           'Report',
-            //           style: TextStyle(fontSize: 35),
-            //         ),
-            //       ],
-            //     ),
-            //     Row(
-            //       children: <Widget>[
-            //         Text(
-            //           'May 05-08-2019',
-            //         ),
-            //       ],
-            //     ),
-            //   ],
-            // ),
-
-            // SizedBox(
-            //   height: 4,
-            // ),
-            content: Column(
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.pinkAccent,
-                  ),
-                  trailing: Text('5:00 PM'),
-                  title: new Text(
-                    'Profile Report',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
+                trailing: Text('5:00 PM'),
+                title: new Text(
+                  'Profile Report',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.blueAccent,
-                  ),
-                  trailing: Text('2:00 AM'),
-                  title: new Text(
-                    'User',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
+                subtitle: Text('User can view the profile'),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.blueAccent,
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.greenAccent,
-                  ),
-                  trailing: Text('5:30 AM'),
-                  title: new Text(
-                    'Accounts',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
+                trailing: Text('2:00 AM'),
+                title: new Text(
+                  'User',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.purpleAccent,
-                  ),
-                  trailing: Text('8:30 PM'),
-                  title: new Text(
-                    'Card',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
+                subtitle: Text('User can view the profile'),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.greenAccent,
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.pinkAccent,
-                  ),
-                  trailing: Text('5:00 PM'),
-                  title: new Text(
-                    'Profile',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
+                trailing: Text('5:30 AM'),
+                title: new Text(
+                  'Accounts',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.orangeAccent,
-                  ),
-                  trailing: Text('1:00 PM'),
-                  title: new Text(
-                    'Cash',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
+                subtitle: Text('User can view the profile'),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.purpleAccent,
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.indigo,
-                  ),
-                  trailing: Text('1:00 PM'),
-                  title: new Text(
-                    'Card',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
+                trailing: Text('8:30 PM'),
+                title: new Text(
+                  'Card',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.teal,
-                  ),
-                  trailing: Text('1:00 PM'),
-                  title: new Text(
-                    'Bank',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
+                subtitle: Text('User can view the profile'),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.pinkAccent,
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.fiber_manual_record,
-                    color: Colors.teal,
-                  ),
-                  trailing: Text('1:00 PM'),
-                  title: new Text(
-                    'Account Balance',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('User can view the profile'),
-                )
-              ],
-            ),
+                trailing: Text('5:00 PM'),
+                title: new Text(
+                  'Profile',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text('User can view the profile'),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.orangeAccent,
+                ),
+                trailing: Text('1:00 PM'),
+                title: new Text(
+                  'Cash',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text('User can view the profile'),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.indigo,
+                ),
+                trailing: Text('1:00 PM'),
+                title: new Text(
+                  'Card',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text('User can view the profile'),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.teal,
+                ),
+                trailing: Text('1:00 PM'),
+                title: new Text(
+                  'Bank',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text('User can view the profile'),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: Colors.teal,
+                ),
+                trailing: Text('1:00 PM'),
+                title: new Text(
+                  'Account Balance',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text('User can view the profile'),
+              )
+            ],
           ),
         ],
       ),

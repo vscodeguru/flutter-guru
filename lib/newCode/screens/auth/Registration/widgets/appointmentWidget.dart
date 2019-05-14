@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_guru/newCode/screens/Dashboard/dashboardPage.dart';
+import 'package:flutter_guru/newCode/states/dashboardState/dashboard.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import '../../../../states/auth/registration.dart';
 
 import 'package:flutter_guru/utils/theme/index.dart';
@@ -10,47 +14,48 @@ class AppointmentWidget extends StatefulWidget {
 }
 
 class _AppointmentWidgetState extends State<AppointmentWidget> {
+  var dateController = TextEditingController();
+  var timeController = TextEditingController();
 
   DateTime _date = new DateTime.now();
-  TimeOfDay _time = new  TimeOfDay.now();
-  selectedDate(BuildContext context) async{
+  TimeOfDay _time = new TimeOfDay.now();
+
+  selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-      context:context,
-      initialDate: _date,
-      firstDate: DateTime(1990),
-      lastDate: DateTime(2035)
-    );
+        context: context,
+        initialDate: _date,
+        firstDate: DateTime(1990),
+        lastDate: DateTime(2035));
+
+    if (picked != null && picked != _date) {
+      print('Date Selected: ${_date.toString()}');
+      setState(() {
+        _date = picked;
+        dateController.text =
+            "${_date.day.toString()}-${_date.month.toString().padLeft(2, '0')}-${_date.year.toString().padLeft(2, '0')}";
+      });
+    }
   }
+
+  SelectedTime(BuildContext context) async {
+    final TimeOfDay picked =
+        await showTimePicker(context: context, initialTime: _time);
+    if (picked != null && picked != _time) {
+      //   print('Date Selected: ${_time.toString()}');
+      setState(() {
+        _time = picked;
+        timeController.text = _time.format(context);
+            
+      });
+    }
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  List<String> cities = <String>[
-    'Salem',
-    'Chennai',
-    'bangalore',
-    'Coimbatore',
-    'Tirupur',
-    'Trichy'
-  ];
-  String dropdownValue = 'Salem';
-  String name;
-  String mobile;
-  String city;
-  String profession;
-  var nameController = TextEditingController();
-  var mobileController = TextEditingController();
-  var professionController = TextEditingController();
-  final FocusNode nameFocus = FocusNode();
-  final FocusNode mobileFocus = FocusNode();
-  final FocusNode cityFocus = FocusNode();
-  final FocusNode professionFocus = FocusNode();
-
   @override
   void initState() {
     super.initState();
   }
-
-
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,12 +70,64 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
         ),
         child: Column(
           children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 80,
+              decoration: new BoxDecoration(
+                color: HexColor('#1a6d75').withOpacity(0.8),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(0.0, 7.0),
+                      blurRadius: 3),
+                ],
+              ),
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 28,
+                    ),
+                    Row(
+                      //    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        IconButton(
+                          padding: EdgeInsets.all(0.0),
+                          onPressed: () {
+                            RegistrationState.of(context).currentPage--;
+                            RegistrationState.of(context).notify();
+                          },
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              'Appointment Details',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 40,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Stack(
               children: <Widget>[
                 SingleChildScrollView(
                   child: Padding(
-                    padding:
-                        EdgeInsets.only(left: 28.0, right: 28.0, top: 120.0),
+                    padding: EdgeInsets.only(
+                        left: 28.0,
+                        right: 28.0,
+                        top: MediaQuery.of(context).size.height * 0.20),
                     child: Column(
                       children: <Widget>[
                         SizedBox(
@@ -78,7 +135,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 430,
+                          height: 300,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8.0),
@@ -87,36 +144,67 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                                   color: Colors.black12,
                                   offset: Offset(0.0, 10.0),
                                   blurRadius: 5),
-                              //     BoxShadow(
-                              //  color: Colors.black12,
-                              //      offset: Offset(0.0, -10.0),
-                              //      blurRadius: 0),
                             ],
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
                                 left: 16.0, right: 16.0, top: 16.0),
-                            child: Form(
-                              key: _formKey,
-                              //autovalidate: _autoValidate,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    'User Details',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Appointment Date & Time',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Text(
+                                  'Appointment Date ',
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    selectedDate(context);
+                                  },
+                                  child: AbsorbPointer(
+                                    child: TextFormField(
+                                      controller: dateController,
+                                      decoration: InputDecoration(
+                                        suffixIcon: Icon(Icons.calendar_today),
+                                        hintText: ' Date',
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey, fontSize: 12.0),
+                                      ),
+                                      keyboardType: null,
+                                    ),
                                   ),
-                                  SizedBox(
-                                    height: 20,
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Appointment Time',
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    SelectedTime(context);
+                                  },
+                                  child: AbsorbPointer(
+                                    child: TextFormField(
+                                      controller: timeController,
+                                      decoration: InputDecoration(
+                                        suffixIcon: Icon(Icons.timer),
+                                        hintText: ' Time',
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey, fontSize: 12.0),
+                                      ),
+                                      keyboardType: null,
+                                    ),
                                   ),
-                                  Text(
-                                    'Name',
-                                  ),
-                                  
-                                ],
-                              ),
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -134,30 +222,56 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                     backgroundColor: Colors.teal,
                     child: Icon(Icons.arrow_forward),
                     onPressed: () {
-                      RegistrationState.of(context).data.personal.name =
-                          nameController.text;
-                      RegistrationState.of(context).data.personal.mobile =
-                          mobileController.text;
-                      RegistrationState.of(context).data.personal.city =
-                          dropdownValue;
-                      RegistrationState.of(context).data.personal.profession =
-                          professionController.text;
-                      RegistrationState.of(context).currentPage++;
-                      RegistrationState.of(context).notify();
+                      _showDialog();
+                      // RegistrationState.of(context).currentPage++;
+                      // RegistrationState.of(context).notify();
                     },
                   ),
                 ),
               ],
             ),
-            // Center(
-            //   child: Image(
-            //     image: AssetImage('assets/Color-GreyedOut.png'),
-            //     width: MediaQuery.of(context).size.width * 1.05,
-            //   ),
-            // ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext _ctx) {
+        // return object of type Dialog
+        return AlertDialog(
+          content: new Text("Do you want to save your details ?"),
+          actions: <Widget>[
+            FlatButton(
+                child: Text('Cancel'),
+                color: Colors.teal,
+                textColor: Colors.white,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("yes"),
+              color: Colors.teal,
+              textColor: Colors.white,
+              onPressed: () {
+                
+                Navigator.push(context, MaterialPageRoute(
+            builder: (ctx) {
+              return ChangeNotifierProvider<DashboardState>(
+                builder: (_ctx) => DashboardState(),
+                child: DashboardPage(),
+              );
+            },
+          ));
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

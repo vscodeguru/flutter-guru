@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/Dashboard/dashboardPage.dart';
 import 'package:provider/provider.dart';
 import './states/baseState.dart';
 
@@ -16,10 +17,7 @@ class _ApplicationBaseState extends State<ApplicationBase> {
     return ChangeNotifierProvider<ApplicationGlobalState>(
       builder: (ctx) => ApplicationGlobalState(),
       child: MaterialApp(
-        home: ChangeNotifierProvider<RegistrationState>(
-          builder: (ctx) => RegistrationState(),
-          child: RegistrationPage(),
-        ),
+        home: DashboardPage()
       ),
     );
   }
