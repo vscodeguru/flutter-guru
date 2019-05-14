@@ -97,20 +97,18 @@ class _LoginPageState extends State<LoginPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(height: 40,),
           Container(
-              width: MediaQuery.of(context).size.width * 0.32,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(15.0)),
-              ),
-              padding: EdgeInsets.all(15),
+              width: MediaQuery.of(context).size.width * 0.52,
+              
+              padding: EdgeInsets.all(0),
               child: Image(
                 image: AssetImage('assets/images/logo/UCF.png'),
               )),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Leads Portal",
+              "",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 28,

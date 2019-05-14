@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guru/newCode/screens/auth/Login/loginPage.dart';
+import 'package:flutter_guru/newCode/screens/splashScreen.dart';
 import 'package:flutter_guru/newCode/states/auth/login.dart';
+import 'package:flutter_guru/screens/splash/splash_page.dart';
 import 'screens/Dashboard/dashboardPage.dart';
 import 'package:provider/provider.dart';
 import './states/baseState.dart';
@@ -20,8 +22,7 @@ class _ApplicationBaseState extends State<ApplicationBase> {
       builder: (ctx) => ApplicationGlobalState(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ChangeNotifierProvider<LoginState>(
-            builder: (ctx) => LoginState(), child: LoginPage()),
+        home: SplashScreenPage()
       ),
     );
   }

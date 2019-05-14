@@ -14,7 +14,7 @@ class LoginState with ChangeNotifier {
       Provider.of<LoginState>(context);
 
   Future<String> generateOtp() async {
-    String url = "http://192.168.0.114:2531/mobile/request-otp/CUSTOMER_OTP/" +
+    String url = "https://leads-api.302010.in/mobile/request-otp/CUSTOMER_OTP/" +
         mobileNumber;
     try {
       var response = await http
@@ -38,7 +38,7 @@ class LoginState with ChangeNotifier {
   }
 
   Future<String> validateOtp(String otp) async {
-    String url = "http://192.168.0.114:2531/mobile/validate-otp/CUSTOMER_OTP/" +
+    String url = "https://leads-api.302010.in/mobile/validate-otp/CUSTOMER_OTP/" +
         mobileNumber +
         "/" +
         otp;
