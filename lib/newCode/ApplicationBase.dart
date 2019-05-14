@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guru/newCode/states/auth/login.dart';
+import 'screens/auth/Login/loginPage.dart';
+
 import 'package:provider/provider.dart';
 import './states/baseState.dart';
 
@@ -16,9 +19,9 @@ class _ApplicationBaseState extends State<ApplicationBase> {
     return ChangeNotifierProvider<ApplicationGlobalState>(
       builder: (ctx) => ApplicationGlobalState(),
       child: MaterialApp(
-        home: ChangeNotifierProvider<RegistrationState>(
-          builder: (ctx) => RegistrationState(),
-          child: RegistrationPage(),
+        home: ChangeNotifierProvider<LoginState>(
+          builder: (ctx) => LoginState(),
+          child: LoginPage(),
         ),
       ),
     );

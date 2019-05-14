@@ -230,23 +230,23 @@ class _LoginForm3State extends State<LoginForm3>
 
   //OTP TextForm Field
   Column _buildOtpContent(BuildContext context) {
-    // receiver.onSmsReceived.listen((SmsMessage msg) {
-    //   final otpRegex = RegExp(
-    //       '((?:(?:otp|password) (?:is|\:|is :) ?)([a-z0-9]{4,6}))|(([a-z0-9]{4,6}) (?:is your|is the).?(?:otp|password))',
-    //       multiLine: true,
-    //       caseSensitive: false);
-    //   _textFieldController.text =
-    //       (otpRegex.allMatches(msg.body).map((m) => m.group(1)).first != null)
-    //           ? (otpRegex.allMatches(msg.body).map((m) => m.group(2)).first)
-    //           : (otpRegex.allMatches(msg.body).map((m) => m.group(4)).first);
-    //   state is! LoginLoading ? _onLoginButtonPressed : print('Error');
-    //   Scaffold.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text('Welcome to chit funds'),
-    //       backgroundColor: HexColor("#314453"),
-    //     ),
-    //   );
-    // });
+    receiver.onSmsReceived.listen((SmsMessage msg) {
+      final otpRegex = RegExp(
+          '((?:(?:otp|password) (?:is|\:|is :) ?)([a-z0-9]{4,6}))|(([a-z0-9]{4,6}) (?:is your|is the).?(?:otp|password))',
+          multiLine: true,
+          caseSensitive: false);
+      _textFieldController.text =
+          (otpRegex.allMatches(msg.body).map((m) => m.group(1)).first != null)
+              ? (otpRegex.allMatches(msg.body).map((m) => m.group(2)).first)
+              : (otpRegex.allMatches(msg.body).map((m) => m.group(4)).first);
+      state is! LoginLoading ? _onLoginButtonPressed : print('Error');
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Welcome to chit funds'),
+          backgroundColor: HexColor("#314453"),
+        ),
+      );
+    });
     return Column(
       children: <Widget>[
         SizedBox(

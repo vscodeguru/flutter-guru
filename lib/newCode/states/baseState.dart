@@ -9,7 +9,7 @@ class ApplicationGlobalState with ChangeNotifier {
   ApplicationGlobalState() {
     //_registrationState = RegistrationState();
   }
-
+  String mobileNumber = '';
   static ApplicationGlobalState of(BuildContext context) => Provider.of<ApplicationGlobalState>(context);
   notify()
   {
