@@ -4,13 +4,14 @@ import 'package:flutter_guru/utils/theme/theme_guru.dart';
 
 class ListViewWidget extends StatelessWidget {
   LeadsModel data;
-  ListViewWidget(this.data,{Key key}) : super(key: key);
+  ListViewWidget(this.data, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Lead Details'),
+        backgroundColor: Colors.teal,
       ),
       body: Container(
         padding: EdgeInsets.all(8),
@@ -45,25 +46,41 @@ class ListViewWidget extends StatelessWidget {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.message),
-                color: Colors.teal,
+              FloatingActionButton(
+                  mini: true,
+                  heroTag: null,
+                  elevation: 6,
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.teal,
+                  child: Icon(Icons.phone),
+                  onPressed: () {}),
+              FloatingActionButton(
+                mini: true,
+                heroTag: null,
+                elevation: 6,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.teal,
+                child: Icon(Icons.mail),
                 onPressed: () {},
               ),
-              IconButton(
-                icon: Icon(Icons.mail),
-                color: Colors.teal,
+                FloatingActionButton(
+                mini: true,
+                heroTag: null,
+                elevation: 6,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.teal,
+                child: Icon(Icons.calendar_today),
                 onPressed: () {},
               ),
-              IconButton(
-                icon: Icon(Icons.calendar_today),
-                color: Colors.teal,
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(Icons.phone),
-                color: Colors.teal,
+             FloatingActionButton(
+                mini: true,
+                heroTag: null,
+                elevation: 6,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.teal,
+                child: Icon(Icons.message),
                 onPressed: () {},
               ),
             ],
@@ -92,22 +109,21 @@ class ListViewWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 12.0, 12.0, 6.0),
                             child: Row(
                               children: <Widget>[
                                 Text(
                                   'City',
-                                  style:
-                                      TextStyle(fontSize: 15, color: Colors.teal),
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.teal),
                                 ),
-                                
                               ],
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 6.0, 12.0, 12.0),
                             child: Text(data.city),
                           ),
                         ],
@@ -124,22 +140,21 @@ class ListViewWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 12.0, 12.0, 6.0),
                             child: Row(
                               children: <Widget>[
                                 Text(
                                   'Vechicle Owned',
-                                  style:
-                                      TextStyle(fontSize: 15, color: Colors.teal),
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.teal),
                                 ),
-                                
                               ],
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 6.0, 12.0, 12.0),
                             child: Row(
                               children: <Widget>[
                                 Text('Car : ' + data.carOwned),
@@ -164,22 +179,21 @@ class ListViewWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 12.0, 12.0, 6.0),
                             child: Row(
                               children: <Widget>[
                                 Text(
                                   'House Type',
-                                  style:
-                                      TextStyle(fontSize: 15, color: Colors.teal),
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.teal),
                                 ),
-                                
                               ],
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 6.0, 12.0, 12.0),
                             child: Text(data.houseType),
                           )
                         ],
@@ -196,16 +210,15 @@ class ListViewWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 12.0, 12.0, 6.0),
                             child: Row(
                               children: <Widget>[
                                 Text(
                                   'Reason',
-                                  style:
-                                      TextStyle(fontSize: 15, color: Colors.teal),
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.teal),
                                 ),
-                                
                               ],
                             ),
                           ),

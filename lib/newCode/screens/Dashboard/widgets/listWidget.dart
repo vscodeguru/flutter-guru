@@ -126,6 +126,7 @@ class ListWidget extends StatelessWidget {
                                 subtitle: Text(
                                   data.profession,
                                 ),
+                                trailing: Text('12:45 PM'),
                               ),
                             ),
                       )

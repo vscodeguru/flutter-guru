@@ -11,11 +11,12 @@ class LeadsModel {
   String avatar;
   String phoneNumber = '123456798';
   String city = 'Salem';
+  String time;
   String carOwned = 'Yes';
   String bikeOwned = 'Yes';
   String houseType = 'Own House';
   String reason = 'Investment';
-  LeadsModel({this.name,this.profession,this.avatar});
+  LeadsModel({this.name,this.profession,this.avatar,  this.time});
 }
 
 class DashboardState with ChangeNotifier {

@@ -59,18 +59,9 @@ flutter:
     - assets/chat.png
     - assets/sms.png
     - assets/sm.png
-    - assets/image.jpg
-    - assets/customer.jpg
-    - assets/trust.jpg
-    - assets/salesforce.jpg
-    - assets/images/cmp.jpg
-    - assets/images/cam.jpg
     - assets/automobile.png
     - assets/car.png
     - assets/motorcycle.png
-    - assets/Color-GreyedOut.png
-    - assets/Colored.png
-    - assets/Black.png
     - assets/house.png
     - assets/home.png
     - assets/bank.png
@@ -79,7 +70,6 @@ flutter:
     - assets/cash.png
     - assets/300_11.jpg
     - assets/checkmark.png
-    - assets/mobile-phone.png
     - assets/whatsapp.png
   #  - images/a_dot_ham.jpeg
 
