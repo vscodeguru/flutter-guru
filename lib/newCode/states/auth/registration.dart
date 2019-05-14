@@ -24,7 +24,7 @@ class Registration_PersonalData {
   String name = '';
   String mobile = '';
   String city = 'Salem';
-  String profession = '';
+  String profession = 'Employee';
 }
 
 class Registration_HouseData {
