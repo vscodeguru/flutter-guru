@@ -1,313 +1,179 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_guru/newCode/states/auth/registration.dart';
-import 'package:flutter_guru/utils/theme/theme_guru.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/personalWidget.dart';
 
-class ResultWidget extends StatelessWidget {
-  const ResultWidget({Key key}) : super(key: key);
+class User extends StatefulWidget {
+  _UserState createState() => _UserState();
+}
+
+class _UserState extends State<User> {
+  var searchview = TextEditingController();
+  bool firstSearch = true;
+  String query = '';
+  List<String> cities;
+  List<String> filterList;
+  @override
+  void initState() {
+    super.initState();
+    cities = new List<String>();
+    cities = [
+      'Salem',
+      'Coimbatore',
+      'Chennai',
+      'Trichy',
+      'Bangalore',
+      'Kerala',
+      'Kanyakumari',
+      'Tirupur',
+      'Jarkhand',
+      'kozhikode',
+      'Thiruvandram',
+      'kozhikode'
+    ];
+    cities.sort();
+  }
+
+  filterSearchList() {
+    searchview.addListener(() {
+      if (searchview.text.isEmpty) {
+        setState(() {
+          firstSearch = true;
+          query = '';
+        });
+      } else {
+        setState(() {
+          firstSearch = false;
+          query = searchview.text;
+        });
+      }
+    });
+  }
+
+  _onClear() {
+    setState(() {
+      searchview.text = "";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("assets/Noel.png"),
-            fit: BoxFit.cover,
+        body: Container(
+      // color: Colors.grey,
+      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 90),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Select your Cities',
+                style: TextStyle(fontSize: 30),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          createSearchview(),
+          firstSearch  ? createListView() : performSearch(),
+        ],
+      ),
+    ));
+  }
+
+  Widget createSearchview() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 13),
+      child: TextFormField(
+        autofocus: true,
+        controller: searchview,
+        onSaved: filterSearchList(),
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(15.0),
+          hintText: 'Enter your cities',
+          suffixIcon: IconButton(
+              icon: Icon(
+                Icons.clear,
+                color: Colors.teal,
+              ),
+              tooltip: 'Resend OTP',
+              onPressed: () {
+                _onClear();
+              }),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.teal),
+              borderRadius: BorderRadius.all(
+                Radius.circular(25.0),
+              )),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.teal),
+            borderRadius: BorderRadius.all(Radius.circular(25.0)),
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              //    color: HexColor('#2980b9'),
-              // padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    height: 80,
-                    decoration: new BoxDecoration(
-                      color: HexColor('#1a6d75').withOpacity(0.8),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0.0, 7.0),
-                            blurRadius: 3),
-                      ],
-                    ),
-                    child: Center(
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 28,
-                          ),
-                          Row(
-                            //    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              IconButton(
-                                padding: EdgeInsets.all(0.0),
-                                onPressed: () {
-                                  RegistrationState.of(context).currentPage--;
-                                  RegistrationState.of(context).notify();
-                                },
-                                icon: Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                    'Result Details',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 40,
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(
-                      left: 40,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 90,
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                'Name : ' +
-                                    RegistrationState.of(context)
-                                        .data
-                                        .personal
-                                        .name,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'Mobile : ' +
-                                      RegistrationState.of(context)
-                                          .data
-                                          .personal
-                                          .mobile,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 40, bottom: 70),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'city : ' +
-                                      RegistrationState.of(context)
-                                          .data
-                                          .personal
-                                          .city,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'Profession : ' +
-                                      RegistrationState.of(context)
-                                          .data
-                                          .personal
-                                          .profession,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 40, bottom: 70),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'Car : ' +
-                                      ((RegistrationState.of(context)
-                                              .data
-                                              .vehicle
-                                              .car)
-                                          ? 'yes'
-                                          : 'No'),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'Bike : ' +
-                                      ((RegistrationState.of(context)
-                                              .data
-                                              .vehicle
-                                              .car)
-                                          ? 'yes'
-                                          : 'No'),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 40, bottom: 70),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'Own : ' +
-                                      ((RegistrationState.of(context)
-                                              .data
-                                              .house
-                                              .own)
-                                          ? 'yes'
-                                          : 'No'),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'Rent : ' +
-                                      ((RegistrationState.of(context)
-                                              .data
-                                              .house
-                                              .rent)
-                                          ? 'yes'
-                                          : 'No'),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 40, bottom: 70),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'Investment : ' +
-                                      ((RegistrationState.of(context)
-                                              .data
-                                              .purpose
-                                              .investment)
-                                          ? 'yes'
-                                          : 'No'),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                  'Salary : ' +
-                                      ((RegistrationState.of(context)
-                                              .data
-                                              .purpose
-                                              .salary)
-                                          ? 'yes'
-                                          : 'No'),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              SizedBox(
-                                width: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+      ),
+    );
+  }
+
+  Widget createListView() {
+    return new Flexible(
+      child: ListView.builder(
+        itemCount: cities.length,
+        itemBuilder: (BuildContext context, int index) {
+          return GestureDetector(
+            onTap: () {},
+            child: new ListTile(
+              leading: Icon(
+                Icons.location_city,
+              ),
+              title: Text(
+                '${cities[index]}',
               ),
             ),
-          ],
-        ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget performSearch() {
+    filterList = List<String>();
+    for (int i = 0; i < cities.length; i++) {
+      var item = cities[i];
+      if (item.toLowerCase().contains(query.toLowerCase())) {
+        filterList.add(item);
+      }
+    }
+    return createFilteredListView();
+  }
+
+  Widget createFilteredListView() {
+    return new Flexible(
+      child: ListView.builder(
+        itemCount: filterList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return GestureDetector(
+            onTap: () {},
+            child: new ListTile(
+              leading: Icon(
+                Icons.location_city,
+              ),
+              title: RichText(
+                text: TextSpan(
+                  text: filterList[index].substring(0, query.length),
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                        text: filterList[index].substring(query.length),
+                        style: TextStyle(color: Colors.grey))
+                  ],
+                ),
+              ),
+              trailing: Icon(Icons.call_made),
+            ),
+          );
+        },
       ),
     );
   }
