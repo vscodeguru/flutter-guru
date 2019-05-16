@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_guru/newCode/screens/auth/Login/loginPage.dart';
 import 'package:flutter_guru/newCode/screens/splashScreen.dart';
 import 'package:flutter_guru/newCode/states/auth/login.dart';
-import 'package:flutter_guru/screens/splash/splash_page.dart';
-import 'screens/Dashboard/dashboardPage.dart';
 import 'package:provider/provider.dart';
 import './states/baseState.dart';
 
-import './screens/auth/Registration/registrationPage.dart';
-import 'states/auth/registration.dart';
 
 class ApplicationBase extends StatefulWidget {
   @override
@@ -21,6 +16,7 @@ class _ApplicationBaseState extends State<ApplicationBase> {
     return ChangeNotifierProvider<ApplicationGlobalState>(
       builder: (ctx) => ApplicationGlobalState(),
       child: MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.teal),
           debugShowCheckedModeBanner: false,
           home: ChangeNotifierProvider<LoginState>(
             builder: (_ctx) => LoginState(),
