@@ -30,7 +30,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       if (response.statusCode == 200) {
         var responseJson = json.decode(responseBody);
         if (responseJson['response'] == 'success') {
-          if (responseJson['success']['result']['status'] == 'ACIVE')
+          if (responseJson['success']['result']['status'] == 'ACTIVE')
             return Future.value('success');
         }
         return Future.value('failure');
@@ -60,6 +60,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       } else if (data == 'failure') {
         showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (BuildContext context) {
             // return object of type Dialog
             return AlertDialog(

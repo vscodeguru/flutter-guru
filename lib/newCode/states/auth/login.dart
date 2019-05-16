@@ -13,9 +13,9 @@ class LoginState with ChangeNotifier {
   static LoginState of(BuildContext context) =>
       Provider.of<LoginState>(context);
 
-  Future<String> generateOtp() async {
-    String url = "https://leads-api.302010.in/mobile/request-otp/CUSTOMER_OTP/" +
-        mobileNumber;
+  Future<String> generateOtp(String key) async {
+    //String url = "http://192.168.0.114:2531/mobile/request-otp/CUSTOMER_OTP/${mobileNumber}/${Uri.encodeFull(key)}";
+    String url = "https://leads-api.302010.in/mobile/request-otp/CUSTOMER_OTP/${mobileNumber}/${Uri.encodeFull(key)}";
     try {
       var response = await http
           .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});

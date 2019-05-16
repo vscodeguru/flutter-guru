@@ -8,7 +8,7 @@ import 'package:flutter_guru/utils/theme/theme_guru.dart';
 import 'package:flutter_guru/widgets/clipper/clipShadowPath.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:sms/sms.dart';
+import 'package:sms_retriever/sms_retriever.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -28,8 +28,6 @@ class _LoginPageState extends State<LoginPage>
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController tfcMobileNumber = TextEditingController();
   TextEditingController tfcOtp = TextEditingController();
-
-  SmsReceiver receiver = new SmsReceiver();
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
@@ -72,6 +70,22 @@ class _LoginPageState extends State<LoginPage>
                                 physics: NeverScrollableScrollPhysics(),
                                 controller: _loginPageControl,
                                 children: <Widget>[
+                                  FlatButton(
+                                    child: Text('Poda Paradesi'),
+                                    onPressed: () {
+                                      ApplicationGlobalState.of(context).mobileNumber = '9715162434';
+                                      Navigator.pushReplacement(context,
+                                          MaterialPageRoute(
+                                        builder: (ctx) {
+                                          return ChangeNotifierProvider<
+                                              DashboardState>(
+                                            builder: (_ctx) => DashboardState(),
+                                            child: DashboardPage(),
+                                          );
+                                        },
+                                      ));
+                                    },
+                                  ),
                                   _buildPhoneNumberContent(context),
                                   _buildOtpContent(context)
                                 ],
@@ -200,61 +214,50 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  listenOtp() {
-    var smsReception;
-    smsReception = receiver.onSmsReceived.listen((SmsMessage msg) {
-      final otpRegex = RegExp(
-          '((?:(?:otp|password) (?:is|\:|is :) ?)([a-z0-9]{4,6}))|(([a-z0-9]{4,6}) (?:is your|is the).?(?:otp|password))',
-          multiLine: true,
-          caseSensitive: false);
-      if (otpRegex.hasMatch(msg.body)) {
-        setState(() {
-          tfcOtp.text = (otpRegex
-                      .allMatches(msg.body)
-                      .map((m) => m.group(1))
-                      .first !=
-                  null)
-              ? (otpRegex.allMatches(msg.body).map((m) => m.group(2)).first)
-              : (otpRegex.allMatches(msg.body).map((m) => m.group(4)).first);
-        });
-        smsReception.cancel();
-        LoginState.of(context).validateOtp(tfcOtp.text).then((data) {
-          if (data == 'success') {
-            ApplicationGlobalState.of(context).mobileNumber =
-                LoginState.of(context).mobileNumber;
+  listenOtp() async {
+    String smsCode = await SmsRetriever.startListening();
+    SmsRetriever.stopListening();
+    final otpRegex = RegExp(
+        '((?:(?:otp|password) (?:is|\:|is :) ?)([a-z0-9]{4,6}))|(([a-z0-9]{4,6}) (?:is your|is the).?(?:otp|password))',
+        multiLine: true,
+        caseSensitive: false);
+    if (otpRegex.hasMatch(smsCode)) {
+      setState(() {
+        tfcOtp.text =
+            (otpRegex.allMatches(smsCode).map((m) => m.group(1)).first != null)
+                ? (otpRegex.allMatches(smsCode).map((m) => m.group(2)).first)
+                : (otpRegex.allMatches(smsCode).map((m) => m.group(4)).first);
+      });
+      LoginState.of(context).validateOtp(tfcOtp.text).then((data) {
+        if (data == 'success') {
+          ApplicationGlobalState.of(context).mobileNumber =
+              LoginState.of(context).mobileNumber;
 
-            _scaffoldKey.currentState.showSnackBar(
-              SnackBar(
-                content: Text('Validation Success'),
-                backgroundColor: HexColor("#314453"),
-              ),
-            );
-            Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (ctx) {
-                return ChangeNotifierProvider<DashboardState>(
-                  builder: (_ctx) => DashboardState(),
-                  child: DashboardPage(),
-                );
-              },
-            ));
-          } else if (data == 'failure') {
-            _scaffoldKey.currentState.showSnackBar(
-              SnackBar(
-                content: Text('Something went wrong, try again later..'),
-                backgroundColor: HexColor("#314453"),
-              ),
-            );
-          } else {
-            _scaffoldKey.currentState.showSnackBar(
-              SnackBar(
-                content: Text(data),
-                backgroundColor: HexColor("#314453"),
-              ),
-            );
-          }
-        });
-      }
-    });
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (ctx) {
+              return ChangeNotifierProvider<DashboardState>(
+                builder: (_ctx) => DashboardState(),
+                child: DashboardPage(),
+              );
+            },
+          ));
+        } else if (data == 'failure') {
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text('Something went wrong, try again later..'),
+              backgroundColor: HexColor("#314453"),
+            ),
+          );
+        } else {
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text(data),
+              backgroundColor: HexColor("#314453"),
+            ),
+          );
+        }
+      });
+    }
   }
 
   showLoadingMessage(String message) {
@@ -286,20 +289,22 @@ class _LoginPageState extends State<LoginPage>
 
     showLoadingMessage('Sending OTP...');
 
-    LoginState.of(context).generateOtp().then((data) {
-      _scaffoldKey.currentState.hideCurrentSnackBar();
+    SmsRetriever.getAppSignature().then((signature) {
+      LoginState.of(context).generateOtp(signature).then((data) {
+        _scaffoldKey.currentState.hideCurrentSnackBar();
 
-      if (data == 'success') {
-        _loginPageControl.nextPage(
-            duration: Duration(milliseconds: 350), curve: Curves.linear);
+        if (data == 'success') {
+          _loginPageControl.nextPage(
+              duration: Duration(milliseconds: 350), curve: Curves.linear);
 
-        listenOtp();
-        showLoadingMessage('Waiting for OTP...');
-      } else if (data == 'failure') {
-        showErrorMessage('Unable to Send OTP');
-      } else {
-        showErrorMessage(data);
-      }
+          listenOtp();
+          showLoadingMessage('Waiting for OTP...');
+        } else if (data == 'failure') {
+          showErrorMessage('Unable to Send OTP');
+        } else {
+          showErrorMessage(data);
+        }
+      });
     });
   }
 

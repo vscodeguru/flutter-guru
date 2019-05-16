@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guru/newCode/states/dashboardState/dashboard.dart';
+import 'package:flutter_guru/utils/launcher_helper.dart';
 import 'package:flutter_guru/utils/theme/theme_guru.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ListViewWidget extends StatelessWidget {
+class ListViewWidget extends StatefulWidget {
   LeadsModel data;
   ListViewWidget(this.data, {Key key}) : super(key: key);
 
   @override
+  _ListViewWidgetState createState() => _ListViewWidgetState();
+}
+
+class _ListViewWidgetState extends State<ListViewWidget> {
+GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key:_scaffoldKey,
       appBar: AppBar(
         title: Text('Lead Details'),
         backgroundColor: Colors.teal,
@@ -20,7 +29,7 @@ class ListViewWidget extends StatelessWidget {
             children: <Widget>[
               CircleAvatar(
                 backgroundColor: Colors.white,
-                backgroundImage: AssetImage(data.avatar),
+                backgroundImage: AssetImage(widget.data.avatar),
                 radius: MediaQuery.of(context).size.width * 0.10,
               ),
               Column(
@@ -29,23 +38,24 @@ class ListViewWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
                     child: Text(
-                      data.name,
+                      widget.data.name,
                       style: TextStyle(fontSize: 15, color: Colors.teal),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
-                    child: Text(data.profession),
+                    child: Text(widget.data.profession),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
-                    child: Text(data.phoneNumber),
+                    child: Text(widget.data.phoneNumber),
                   ),
                 ],
               ),
             ],
           ),
-          Row(
+          
+Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               FloatingActionButton(
@@ -55,36 +65,61 @@ class ListViewWidget extends StatelessWidget {
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.teal,
                   child: Icon(Icons.phone),
-                  onPressed: () {}),
+                  onPressed: () {
+                    luncherHelper().launchDialer(widget.data.phoneNumber).then((data) {
+                      if (!data) {
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                          content: Text('Cannot launch Dialer.'),
+                        ));
+                      }
+                    });
+                  }),
+              FloatingActionButton(
+                  mini: true,
+                  heroTag: null,
+                  elevation: 6,
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.teal,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(left: 8, right: 4, top: 2, bottom: 10),
+                    child: Icon(
+                      FontAwesomeIcons.whatsapp,
+                      size: 30,
+                    ),
+                  ),
+                  onPressed: () {
+                    luncherHelper()
+                        .launchWhatsapp(widget.data.phoneNumber)
+                        .then((data) {
+                      if (!data) {
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                          content: Text('Cannot launch WhatsApp.'),
+                        ));
+                      }
+                    });
+                  }),
               FloatingActionButton(
                 mini: true,
                 heroTag: null,
                 elevation: 6,
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.teal,
-                child: Icon(Icons.mail),
-                onPressed: () {},
-              ),
-                FloatingActionButton(
-                mini: true,
-                heroTag: null,
-                elevation: 6,
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.teal,
-                child: Icon(Icons.calendar_today),
-                onPressed: () {},
-              ),
-             FloatingActionButton(
-                mini: true,
-                heroTag: null,
-                elevation: 6,
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.teal,
                 child: Icon(Icons.message),
-                onPressed: () {},
+                onPressed: () {
+                  luncherHelper().launchMessager(widget.data.phoneNumber).then((data) {
+                    if (!data) {
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        content:
+                            Text('Cannot launch SMS Messaging Application.'),
+                      ));
+                    }
+                  });
+                },
               ),
             ],
           ),
+          
           SizedBox(
             height: 10,
           ),
@@ -124,7 +159,7 @@ class ListViewWidget extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
                                 12.0, 6.0, 12.0, 12.0),
-                            child: Text(data.city),
+                            child: Text(widget.data.city),
                           ),
                         ],
                       )
@@ -157,10 +192,10 @@ class ListViewWidget extends StatelessWidget {
                                 12.0, 6.0, 12.0, 12.0),
                             child: Row(
                               children: <Widget>[
-                                Text('Car : ' + data.carOwned),
+                                Text('Car : ' + widget.data.carOwned),
                                 Container(
                                   padding: EdgeInsets.only(left: 10),
-                                  child: Text('Bike : ' + data.bikeOwned),
+                                  child: Text('Bike : ' + widget.data.bikeOwned),
                                 ),
                               ],
                             ),
@@ -194,7 +229,7 @@ class ListViewWidget extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(
                                 12.0, 6.0, 12.0, 12.0),
-                            child: Text(data.houseType),
+                            child: Text(widget.data.houseType),
                           )
                         ],
                       )
@@ -225,7 +260,7 @@ class ListViewWidget extends StatelessWidget {
                           Padding(
                               padding: const EdgeInsets.fromLTRB(
                                   12.0, 6.0, 12.0, 12.0),
-                              child: Text(data.reason)),
+                              child: Text(widget.data.reason)),
                         ],
                       )
                     ],
