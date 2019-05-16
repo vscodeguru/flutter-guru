@@ -7,7 +7,7 @@ class DashboardModel {
 
 class LeadsModel {
   String name;
-  String profession;
+  String profession = 'Employee';
   String avatar;
   String phoneNumber = '123456798';
   String city = 'Salem';
@@ -16,7 +16,7 @@ class LeadsModel {
   String bikeOwned = 'Yes';
   String houseType = 'Own House';
   String reason = 'Investment';
-  LeadsModel({this.name,this.profession,this.avatar,  this.time});
+  LeadsModel({this.name,this.avatar,  this.time});
 }
 
 class DashboardState with ChangeNotifier {
@@ -27,11 +27,11 @@ class DashboardState with ChangeNotifier {
   DashboardState()
   {
     _data = DashboardModel();
-    data.leadsData = [LeadsModel(name: 'Owais',profession: 'Student',avatar: 'assets/300_2.jpg'),LeadsModel(name: 'Owais',profession: 'Student',avatar: 'assets/300_2.jpg')];
+    data.leadsData = [LeadsModel(name: 'Owais',avatar: 'assets/300_2.jpg'),LeadsModel(name: 'Owais',avatar: 'assets/300_2.jpg')];
   }
 
   Future<bool> getLeadsData() async {
-    List<LeadsModel> models = [LeadsModel(name: 'Owais',profession: 'Student',avatar: 'assets/300_2.jpg'),LeadsModel(name: 'Owais',profession: 'Student',avatar: 'assets/300_2.jpg')];
+    List<LeadsModel> models = [LeadsModel(name: 'Owais',avatar: 'assets/300_2.jpg'),LeadsModel(name: 'Owais',avatar: 'assets/300_2.jpg')];
     _data.leadsData = models;
     return Future.value(true);
 

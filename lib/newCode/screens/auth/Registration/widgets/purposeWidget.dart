@@ -46,7 +46,6 @@ class PurposeWidget extends StatelessWidget {
                             height: 28,
                           ),
                           Row(
-                            //    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               IconButton(
                                 padding: EdgeInsets.all(0.0),
