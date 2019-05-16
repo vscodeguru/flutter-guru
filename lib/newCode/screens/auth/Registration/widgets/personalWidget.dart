@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/professiondropdown.dart';
 import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/resultWidget.dart';
 import '../../../../states/auth/registration.dart';
 
-import 'package:flutter_guru/utils/theme/index.dart';
-
 class PersonalWidget extends StatefulWidget {
+  PersonalWidget({
+    Key key,
+  }) : super(key: key);
   @override
   _PersonalWidgetState createState() => _PersonalWidgetState();
 }
@@ -13,57 +15,37 @@ class PersonalWidget extends StatefulWidget {
 class _PersonalWidgetState extends State<PersonalWidget> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  List<String> cities = <String>[
-    'Salem',
-    'Chennai',
-    'bangalore',
-    'Coimbatore',
-    'Tirupur',
-    'Trichy'
-  ];
+  List<String> cities;
+  List<String> profession;
   List<String> employ = <String>[
     'Employee',
     'Goverment Employee',
     'Self Employee',
     'Business',
-    'Salaried',
   ];
   String dropdownValue = 'Salem';
   String dropdown = 'Employee';
-  String name;
-  String mobile;
-  String city;
-  String profession;
   bool firstSearch = true;
-  String query = '';
-  List<String> nebulae;
-  List<String> filterList;
-  var nameController = TextEditingController();
-  var mobileController = TextEditingController();
-  var professionController = TextEditingController();
-  final FocusNode nameFocus = FocusNode();
-  final FocusNode mobileFocus = FocusNode();
-  final FocusNode cityFocus = FocusNode();
-  final FocusNode professionFocus = FocusNode();
+  var tecNameController = TextEditingController();
+  var tecMobileController = TextEditingController();
+  var tecCityController = TextEditingController();
+  var tecProfessionController = TextEditingController();
+  final FocusNode fnNameFocus = FocusNode();
+  final FocusNode fnMobileFocus = FocusNode();
+  final FocusNode fnCityFocus = FocusNode();
+  final FocusNode fnProfessionFocus = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    nebulae = new List<String>();
-    nebulae = [
-      'Ralph',
-      'Noel',
-      'Bruno',
-      'Horse Head',
-      'Butterfly',
-      'Elephant Trunk'
-    ];
-    nebulae.sort();
   }
 
-
-
   Widget build(BuildContext context) {
+    cities =
+        (cities == null) ? RegistrationState.of(context).getCities() : cities;
+    profession = (profession == null)
+        ? RegistrationState.of(context).getProfession()
+        : profession;
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       body: Stack(
@@ -98,10 +80,6 @@ class _PersonalWidgetState extends State<PersonalWidget> {
                                 color: Colors.black12,
                                 offset: Offset(0.0, 10.0),
                                 blurRadius: 5),
-                            //     BoxShadow(
-                            //  color: Colors.black12,
-                            //      offset: Offset(0.0, -10.0),
-                            //      blurRadius: 0),
                           ],
                         ),
                         child: Padding(
@@ -122,17 +100,21 @@ class _PersonalWidgetState extends State<PersonalWidget> {
                                 'Name',
                               ),
                               TextFormField(
+                                cursorColor: Colors.teal,
+                                autovalidate: _autoValidate,
+                                validator: validateName,
+                                keyboardType: TextInputType.text,
                                 buildCounter: (BuildContext context,
                                         {int currentLength,
                                         int maxLength,
                                         bool isFocused}) =>
                                     null,
                                 maxLength: 25,
-                                controller: nameController,
-                                focusNode: nameFocus,
+                                controller: tecNameController,
+                                focusNode: fnNameFocus,
                                 onFieldSubmitted: (term) {
                                   FocusScope.of(context)
-                                      .requestFocus(mobileFocus);
+                                      .requestFocus(fnMobileFocus);
                                 },
                                 textInputAction: TextInputAction.next,
                                 decoration: InputDecoration(
@@ -146,8 +128,10 @@ class _PersonalWidgetState extends State<PersonalWidget> {
                                 'Mobile',
                               ),
                               TextFormField(
+                                cursorColor: Colors.teal,
                                 autovalidate: _autoValidate,
-                                controller: mobileController,
+                                validator: validateMobile,
+                                controller: tecMobileController,
                                 buildCounter: (BuildContext context,
                                         {int currentLength,
                                         int maxLength,
@@ -160,9 +144,9 @@ class _PersonalWidgetState extends State<PersonalWidget> {
                                 keyboardType: TextInputType.phone,
                                 onFieldSubmitted: (term) {
                                   FocusScope.of(context)
-                                      .requestFocus(cityFocus);
+                                      .requestFocus(fnCityFocus);
                                 },
-                                focusNode: mobileFocus,
+                                focusNode: fnMobileFocus,
                                 textInputAction: TextInputAction.next,
                                 decoration: InputDecoration(
                                   hintText: 'Enter your Mobile Number',
@@ -177,40 +161,65 @@ class _PersonalWidgetState extends State<PersonalWidget> {
                                 'City',
                               ),
                               TextField(
-                                focusNode: cityFocus,
-                                textInputAction: TextInputAction.next,
+                                cursorColor: Colors.teal,
+                                focusNode: fnCityFocus,
+                                onSubmitted: (term) {
+                                  FocusScope.of(context)
+                                      .requestFocus(fnProfessionFocus);
+                                },
+                                controller: tecCityController,
+                                onTap: () {
+                                  Navigator.push<String>(context,
+                                      MaterialPageRoute(
+                                    builder: (ctx) {
+                                      return User(
+                                        cities: cities,
+                                      );
+                                    },
+                                  )).then((data) {
+                                    setState(() {
+                                      tecCityController.text = data;
+                                    });
+                                  });
+                                },
                                 decoration: InputDecoration(
-                                  hintText: 'Enter your City',
+                                  hintText: 'Enter your city',
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0),
                                 ),
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(
-                                    builder: (ctx) {
-                                      return User();
-                                    },
-                                  ));
-                                },
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: 25),
                               Text(
                                 'Profession',
                               ),
-                              DropdownButtonFormField<String>(
-                                value: dropdown,
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    dropdown = newValue;
+                              TextField(
+                                cursorColor: Colors.teal,
+                                keyboardType: null,
+                                //  focusNode: fnCityFocus,
+                                onSubmitted: (term) {
+                                  FocusScope.of(context)
+                                      .requestFocus(fnProfessionFocus);
+                                },
+                                controller: tecProfessionController,
+                                onTap: () {
+                                  Navigator.push<String>(context,
+                                      MaterialPageRoute(
+                                    builder: (ctx) {
+                                      return Profession(
+                                        profession: profession,
+                                      );
+                                    },
+                                  )).then((data) {
+                                    setState(() {
+                                      tecProfessionController.text = data;
+                                    });
                                   });
                                 },
-                                items: employ
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) =>
-                                            DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            ))
-                                    .toList(),
+                                decoration: InputDecoration(
+                                  hintText: 'Enter your profession',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 12.0),
+                                ),
                               ),
                             ],
                           ),
@@ -232,16 +241,7 @@ class _PersonalWidgetState extends State<PersonalWidget> {
               backgroundColor: Colors.teal,
               child: Icon(Icons.arrow_forward),
               onPressed: () {
-                RegistrationState.of(context).data.personal.name =
-                    nameController.text;
-                RegistrationState.of(context).data.personal.mobile =
-                    mobileController.text;
-                RegistrationState.of(context).data.personal.city =
-                    dropdownValue;
-                RegistrationState.of(context).data.personal.profession =
-                    dropdown;
-                RegistrationState.of(context).currentPage++;
-                RegistrationState.of(context).notify();
+                validateInputs();
               },
             ),
           )
@@ -250,6 +250,37 @@ class _PersonalWidgetState extends State<PersonalWidget> {
     );
   }
 
+  String validateName(String value) {
+    if (value.isEmpty)
+      return 'Name is required';
+    else
+      return null;
+  }
 
+  String validateMobile(String value) {
+    if (value.length == 0) {
+      return "Mobile is Required";
+    } else if (value.length != 10) {
+      return "Mobile number must 10 digits";
+    }
+    return null;
+  }
 
+  void validateInputs() {
+    final form = formKey.currentState;
+    if (formKey.currentState.validate()) {
+      RegistrationState.of(context).data.personal.name = tecNameController.text;
+      RegistrationState.of(context).data.personal.mobile =
+          tecMobileController.text;
+      RegistrationState.of(context).data.personal.city = dropdownValue;
+      RegistrationState.of(context).data.personal.profession = dropdown;
+      RegistrationState.of(context).currentPage++;
+      RegistrationState.of(context).notify();
+      form.save();
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
 }

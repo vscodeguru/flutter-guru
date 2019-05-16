@@ -57,15 +57,13 @@ class Registration_PurposeData {
       salary = true;
   }
 }
-class Registration_AppointmentData {
- 
-}
-class Registration_CustomerList {
- 
-}
-class Registration_ListData {
- 
-}
+
+class Registration_AppointmentData {}
+
+class Registration_CustomerList {}
+
+class Registration_ListData {}
+
 class RegistrationState with ChangeNotifier {
   RegistrationModel _data;
 
@@ -76,6 +74,38 @@ class RegistrationState with ChangeNotifier {
 
   RegistrationState() {
     _data = RegistrationModel();
+  }
+
+  List<String> getCities() {
+    var cities = new List<String>();
+    cities = [
+      'Salem',
+      'Coimbatore',
+      'Chennai',
+      'Trichy',
+      'Bangalore',
+      'Kerala',
+      'Kanyakumari',
+      'Tirupur',
+      'Jarkhand',
+      'kozhikode',
+      'Thiruvandram',
+      'kozhikode'
+    ];
+    cities.sort();
+    return cities;
+  }
+
+  List<String> getProfession() {
+    var profession = new List<String>();
+    profession = [
+      'Employee',
+      'Business',
+      'Goverment Employee',
+      'Self Employee'
+    ];
+    profession.sort();
+    return profession;
   }
 
   static RegistrationState of(BuildContext context) =>

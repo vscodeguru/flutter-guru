@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_guru/newCode/screens/Dashboard/dashboardPage.dart';
@@ -70,10 +72,11 @@ class _LoginPageState extends State<LoginPage>
                                 physics: NeverScrollableScrollPhysics(),
                                 controller: _loginPageControl,
                                 children: <Widget>[
-                                  FlatButton(
-                                    child: Text('Poda Paradesi'),
+                                  RaisedButton(
+                                    child: Text('Ellam Konja Kalam'),
                                     onPressed: () {
-                                      ApplicationGlobalState.of(context).mobileNumber = '9715162434';
+                                      ApplicationGlobalState.of(context)
+                                              .mobileNumber = '9715162434';
                                       Navigator.pushReplacement(context,
                                           MaterialPageRoute(
                                         builder: (ctx) {
@@ -443,4 +446,9 @@ class GetClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) {
     return true;
   }
+}
+
+class sms {
+  static const MethodChannel _channel = const MethodChannel('sms_autofill');
+  final StreamController<String> _code = StreamController.broadcast();
 }

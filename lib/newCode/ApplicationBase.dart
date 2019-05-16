@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_guru/newCode/screens/auth/Login/loginPage.dart';
 import 'package:flutter_guru/newCode/screens/splashScreen.dart';
 import 'package:flutter_guru/newCode/states/auth/login.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class _ApplicationBaseState extends State<ApplicationBase> {
           debugShowCheckedModeBanner: false,
           home: ChangeNotifierProvider<LoginState>(
             builder: (_ctx) => LoginState(),
-            child: SplashScreenPage(),
+            child:LoginPage()
           )),
     );
   }
