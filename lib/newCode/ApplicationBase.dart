@@ -21,10 +21,11 @@ class _ApplicationBaseState extends State<ApplicationBase> {
     return ChangeNotifierProvider<ApplicationGlobalState>(
       builder: (ctx) => ApplicationGlobalState(),
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
+        theme: ThemeData(primarySwatch: Colors.teal),
+        //  debugShowCheckedModeBanner: false,
           home: ChangeNotifierProvider<LoginState>(
             builder: (_ctx) => LoginState(),
-            child: SplashScreenPage(),
+            child:LoginPage()
           )),
     );
   }

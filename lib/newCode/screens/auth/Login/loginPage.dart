@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_guru/newCode/screens/Dashboard/dashboardPage.dart';
@@ -72,6 +74,24 @@ class _LoginPageState extends State<LoginPage>
                                 physics: NeverScrollableScrollPhysics(),
                                 controller: _loginPageControl,
                                 children: <Widget>[
+                                  RaisedButton(
+                                    child: Text('Ellam Konja Kalam'),
+                                    onPressed: () {
+                                      ApplicationGlobalState.of(context)
+                                              .mobileNumber =
+                                          LoginState.of(context).mobileNumber;
+                                      Navigator.pushReplacement(context,
+                                          MaterialPageRoute(
+                                        builder: (ctx) {
+                                          return ChangeNotifierProvider<
+                                              DashboardState>(
+                                            builder: (_ctx) => DashboardState(),
+                                            child: DashboardPage(),
+                                          );
+                                        },
+                                      ));
+                                    },
+                                  ),
                                   _buildPhoneNumberContent(context),
                                   _buildOtpContent(context)
                                 ],
@@ -223,12 +243,6 @@ class _LoginPageState extends State<LoginPage>
             ApplicationGlobalState.of(context).mobileNumber =
                 LoginState.of(context).mobileNumber;
 
-            _scaffoldKey.currentState.showSnackBar(
-              SnackBar(
-                content: Text('Validation Success'),
-                backgroundColor: HexColor("#314453"),
-              ),
-            );
             Navigator.pushReplacement(context, MaterialPageRoute(
               builder: (ctx) {
                 return ChangeNotifierProvider<DashboardState>(
@@ -438,4 +452,9 @@ class GetClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) {
     return true;
   }
+}
+
+class sms {
+  static const MethodChannel _channel = const MethodChannel('sms_autofill');
+  final StreamController<String> _code = StreamController.broadcast();
 }

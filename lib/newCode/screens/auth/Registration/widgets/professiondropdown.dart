@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/personalWidget.dart';
 
-class User extends StatefulWidget {
-  List<String> cities;
-    User({this.cities})
+class Profession extends StatefulWidget {
+  List<String> profession;
+    Profession({this.profession})
    {
 
    }
-  _UserState createState() => _UserState();
+  _ProfessionState createState() => _ProfessionState();
 }
 
-class _UserState extends State<User> {
+class _ProfessionState extends State<Profession> {
   var searchview = TextEditingController();
   bool firstSearch = true;
   String query = '';
-  List<String> cities;
-  List<String> filterList;
+  List<String> profession;
+  List<String> filter;
   @override
   void initState() {
     super.initState();
-    cities = widget.cities;
-    cities.sort();
+    profession = widget.profession;
+    profession.sort();
   }
 
   filterSearchList() {
@@ -57,7 +56,7 @@ class _UserState extends State<User> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Select your Cities',
+                'Choose your profession',
                 style: TextStyle(fontSize: 30),
               )
             ],
@@ -82,7 +81,7 @@ class _UserState extends State<User> {
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(15.0),
-          hintText: 'Enter your cities',
+          hintText: 'Select your profession',
           suffixIcon: IconButton(
               icon: Icon(
                 Icons.clear,
@@ -108,18 +107,18 @@ class _UserState extends State<User> {
   Widget createListView() {
     return new Flexible(
       child: ListView.builder(
-        itemCount: cities.length,
+        itemCount: profession.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
           onTap: () {
-              Navigator.pop(context,cities[index]);
+              Navigator.pop(context,profession[index]);
             },
             child: new ListTile(
               leading: Icon(
-                Icons.location_city,
+                Icons.person_pin,
               ),
               title: Text(
-                '${cities[index]}',
+                '${profession[index]}',
               ),
             ),
           );
@@ -129,11 +128,11 @@ class _UserState extends State<User> {
   }
 
   Widget performSearch() {
-    filterList = List<String>();
-    for (int i = 0; i < cities.length; i++) {
-      var item = cities[i];
+    filter = List<String>();
+    for (int i = 0; i < profession.length; i++) {
+      var item = profession[i];
       if (item.toLowerCase().contains(query.toLowerCase())) {
-        filterList.add(item);
+        filter.add(item);
       }
     }
     return createFilteredListView();
@@ -142,24 +141,24 @@ class _UserState extends State<User> {
   Widget createFilteredListView() {
     return new Flexible(
       child: ListView.builder(
-        itemCount: filterList.length,
+        itemCount: filter.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              Navigator.pop(context,filterList[index]);
+              Navigator.pop(context,filter[index]);
             },
             child: new ListTile(
               leading: Icon(
-                Icons.location_city,
+                Icons.person_pin,
               ),
               title: RichText(
                 text: TextSpan(
-                  text: filterList[index].substring(0, query.length),
+                  text: filter[index].substring(0, query.length),
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
-                        text: filterList[index].substring(query.length),
+                        text: filter[index].substring(query.length),
                         style: TextStyle(color: Colors.grey))
                   ],
                 ),
