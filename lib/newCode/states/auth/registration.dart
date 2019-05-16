@@ -34,7 +34,7 @@ class Registration_HouseData {
     own = rent = false;
     if (selection == 'own')
       own = true;
-    else
+    else if (selection == 'rent')
       rent = true;
   }
 }
@@ -49,6 +49,10 @@ class Registration_PurposeData {
   bool salary = false;
   bool others = false;
   String other = '';
+  clear()
+  {
+    investment = salary=others = false;
+  }
   select(String selection) {
     investment = salary = false;
     if (selection == 'investment')

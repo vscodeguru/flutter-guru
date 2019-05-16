@@ -3,13 +3,17 @@ import 'package:flutter_guru/utils/theme/theme_guru.dart';
 import '../../../../states/auth/registration.dart';
 import 'cardElementWidget.dart';
 
-class VehicleWidget extends StatelessWidget {
+class VehicleWidget extends StatefulWidget {
+  @override
+  _VehicleWidgetState createState() => _VehicleWidgetState();
+}
+
+class _VehicleWidgetState extends State<VehicleWidget> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: HexColor('#466e7a'),
       body: Container(
         decoration: new BoxDecoration(
@@ -97,18 +101,22 @@ class VehicleWidget extends StatelessWidget {
                         new CardElement(
                           'assets/car.png',
                           'Car',
-                          selected: RegistrationState.of(context).data.vehicle.car,
+                          selected:
+                              RegistrationState.of(context).data.vehicle.car,
                           onSelect: (selection) {
                             RegistrationState.of(context).data.vehicle.car =
                                 selection;
 
-                                RegistrationState.of(context).notify();
+                            RegistrationState.of(context).notify();
                           },
                         ),
                         new CardElement('assets/motorcycle.png', 'Bike',
-                        selected: RegistrationState.of(context).data.vehicle.bike,
-                            onSelect: (selection) {
-                          RegistrationState.of(context).data.vehicle.bike = selection;
+                            selected: RegistrationState.of(context)
+                                .data
+                                .vehicle
+                                .bike, onSelect: (selection) {
+                          RegistrationState.of(context).data.vehicle.bike =
+                              selection;
                         }),
                       ],
                     ),
@@ -126,8 +134,20 @@ class VehicleWidget extends StatelessWidget {
                     style: TextStyle(color: Colors.white, fontSize: 20)),
                 textColor: Colors.white,
                 onPressed: () {
-                  RegistrationState.of(context).currentPage++;
-                  RegistrationState.of(context).notify();
+                  if (RegistrationState.of(context).data.vehicle.bike ||
+                      RegistrationState.of(context).data.vehicle.car) {
+                    RegistrationState.of(context).currentPage++;
+                    RegistrationState.of(context).notify();
+                  } else
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text('Please choose Atleast One Vehicle'),
+                      action: SnackBarAction(
+                        label: 'Ok',
+                        onPressed: () {
+                          _scaffoldKey.currentState.hideCurrentSnackBar();
+                        },
+                      ),
+                    ));
                 },
               ),
             )

@@ -2,7 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/professiondropdown.dart';
 import 'package:flutter_guru/newCode/screens/auth/Registration/widgets/resultWidget.dart';
+import 'package:flutter_guru/widgets/searchableDropdown/searchableDropdown.dart';
 import '../../../../states/auth/registration.dart';
+
+class NoKeyboardEditableTextFocusNode extends FocusNode {
+  @override
+  bool consumeKeyboardToken() {
+    // prevents keyboard from showing on first focus
+    return false;
+  }
+}
 
 class PersonalWidget extends StatefulWidget {
   PersonalWidget({
@@ -17,12 +26,6 @@ class _PersonalWidgetState extends State<PersonalWidget> {
   bool _autoValidate = false;
   List<String> cities;
   List<String> profession;
-  List<String> employ = <String>[
-    'Employee',
-    'Goverment Employee',
-    'Self Employee',
-    'Business',
-  ];
   String dropdownValue = 'Salem';
   String dropdown = 'Employee';
   bool firstSearch = true;
@@ -35,6 +38,10 @@ class _PersonalWidgetState extends State<PersonalWidget> {
   final FocusNode fnCityFocus = FocusNode();
   final FocusNode fnProfessionFocus = FocusNode();
 
+  List<DropdownMenuItem<String>> items = [];
+  String selectedCity;
+  String selectedProfession;
+
   @override
   void initState() {
     super.initState();
@@ -46,6 +53,10 @@ class _PersonalWidgetState extends State<PersonalWidget> {
     profession = (profession == null)
         ? RegistrationState.of(context).getProfession()
         : profession;
+
+    if (selectedCity == null) selectedCity = cities[0];
+    if (selectedProfession == null) selectedProfession = profession[0];
+
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       body: Stack(
@@ -160,66 +171,51 @@ class _PersonalWidgetState extends State<PersonalWidget> {
                               Text(
                                 'City',
                               ),
-                              TextField(
-                                cursorColor: Colors.teal,
-                                focusNode: fnCityFocus,
-                                onSubmitted: (term) {
-                                  FocusScope.of(context)
-                                      .requestFocus(fnProfessionFocus);
-                                },
-                                controller: tecCityController,
-                                onTap: () {
-                                  Navigator.push<String>(context,
-                                      MaterialPageRoute(
-                                    builder: (ctx) {
-                                      return User(
-                                        cities: cities,
-                                      );
-                                    },
-                                  )).then((data) {
-                                    setState(() {
-                                      tecCityController.text = data;
-                                    });
+                              SearchableDropdown<String>(
+                                isExpanded: true,
+                                items: cities
+                                    .map<DropdownMenuItem<String>>(
+                                        (data) => DropdownMenuItem<String>(
+                                              child: new Text(data),
+                                              value: data,
+                                            ))
+                                    .toList(),
+                                value: selectedCity,
+                                hint: new Text('Select a City'),
+                                searchHint: new Text(
+                                  'Select One',
+                                  style: new TextStyle(fontSize: 20),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedCity = value;
                                   });
                                 },
-                                decoration: InputDecoration(
-                                  hintText: 'Enter your city',
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0),
-                                ),
                               ),
                               SizedBox(height: 25),
                               Text(
                                 'Profession',
                               ),
-                              TextField(
-                                cursorColor: Colors.teal,
-                                keyboardType: null,
-                                //  focusNode: fnCityFocus,
-                                onSubmitted: (term) {
-                                  FocusScope.of(context)
-                                      .requestFocus(fnProfessionFocus);
-                                },
-                                controller: tecProfessionController,
-                                onTap: () {
-                                  Navigator.push<String>(context,
-                                      MaterialPageRoute(
-                                    builder: (ctx) {
-                                      return Profession(
-                                        profession: profession,
-                                      );
-                                    },
-                                  )).then((data) {
-                                    setState(() {
-                                      tecProfessionController.text = data;
-                                    });
+                              SearchableDropdown<String>(
+                                isExpanded: true,
+                                items: profession
+                                    .map<DropdownMenuItem<String>>(
+                                        (data) => DropdownMenuItem<String>(
+                                              child: new Text(data),
+                                              value: data,
+                                            ))
+                                    .toList(),
+                                value: selectedProfession,
+                                hint: new Text('Select a Profession'),
+                                searchHint: new Text(
+                                  'Select One',
+                                  style: new TextStyle(fontSize: 20),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedProfession = value;
                                   });
                                 },
-                                decoration: InputDecoration(
-                                  hintText: 'Enter your profession',
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0),
-                                ),
                               ),
                             ],
                           ),

@@ -28,7 +28,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
         lastDate: DateTime(2035));
 
     if (picked != null && picked != _date) {
-      print('Date Selected: ${_date.toString()}');
+      
       setState(() {
         _date = picked;
         dateController.text =
@@ -41,11 +41,10 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
     final TimeOfDay picked =
         await showTimePicker(context: context, initialTime: _time);
     if (picked != null && picked != _time) {
-      //   print('Date Selected: ${_time.toString()}');
+      
       setState(() {
         _time = picked;
         timeController.text = _time.format(context);
-            
       });
     }
   }
@@ -58,6 +57,10 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
   }
 
   Widget build(BuildContext context) {
+    dateController.text =
+        "${_date.day.toString()}-${_date.month.toString().padLeft(2, '0')}-${_date.year.toString().padLeft(2, '0')}";
+    timeController.text = _time.format(context);
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
@@ -258,15 +261,14 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
               color: Colors.teal,
               textColor: Colors.white,
               onPressed: () {
-                
                 Navigator.push(context, MaterialPageRoute(
-            builder: (ctx) {
-              return ChangeNotifierProvider<DashboardState>(
-                builder: (_ctx) => DashboardState(),
-                child: DashboardPage(),
-              );
-            },
-          ));
+                  builder: (ctx) {
+                    return ChangeNotifierProvider<DashboardState>(
+                      builder: (_ctx) => DashboardState(),
+                      child: DashboardPage(),
+                    );
+                  },
+                ));
               },
             ),
           ],

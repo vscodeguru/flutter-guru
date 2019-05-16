@@ -5,8 +5,7 @@ import '../../../../states/auth/registration.dart';
 import 'package:provider/provider.dart';
 
 class PurposeWidget extends StatelessWidget {
-  String input = '';
-  var _inputController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -87,33 +86,37 @@ class PurposeWidget extends StatelessWidget {
                             new CardElement(
                               'assets/bank.png',
                               'Investment',
+                              key:UniqueKey(),
                               selected: RegistrationState.of(context)
                                   .data
                                   .purpose
                                   .investment,
                               onSelect: (selection) {
+                                RegistrationState.of(context).data.purpose.clear();
                                 RegistrationState.of(context)
                                     .data
                                     .purpose
                                     .investment = selection;
-                                RegistrationState.of(context).currentPage++;
-                                RegistrationState.of(context).notify();
+                                    RegistrationState.of(context).notify();
+
                               },
                             ),
                             new CardElement(
                               'assets/money.png',
                               'Salary',
+                              key:UniqueKey(),
                               selected: RegistrationState.of(context)
                                   .data
                                   .purpose
                                   .salary,
                               onSelect: (selection) {
+                                RegistrationState.of(context).data.purpose.clear();
                                 RegistrationState.of(context)
                                     .data
                                     .purpose
                                     .salary = selection;
-                                RegistrationState.of(context).currentPage++;
-                                RegistrationState.of(context).notify();
+                                    RegistrationState.of(context).notify();
+
                               },
                             ),
                           ],
@@ -127,18 +130,19 @@ class PurposeWidget extends StatelessWidget {
                             new CardElement(
                               'assets/cash.png',
                               'Others',
+                              key:UniqueKey(),
                               selected: RegistrationState.of(context)
                                   .data
                                   .purpose
                                   .others,
                               onSelect: (selection) {
+                                RegistrationState.of(context).data.purpose.clear();
                                 RegistrationState.of(context)
                                     .data
                                     .purpose
                                     .others = selection;
-                                RegistrationState.of(context).currentPage++;
-                                RegistrationState.of(context).notify();
-                              },
+                                    RegistrationState.of(context).notify();
+                             },
                             ),
                           ],
                         ),

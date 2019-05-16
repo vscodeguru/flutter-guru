@@ -4,10 +4,12 @@ import 'package:flutter_guru/utils/theme/theme_guru.dart';
 import '../../../../states/auth/registration.dart';
 import 'package:provider/provider.dart';
 
-class HouseWidget extends StatelessWidget {
-  String input = '';
-  var _inputController = TextEditingController();
+class HouseWidget extends StatefulWidget {
+  @override
+  _HouseWidgetState createState() => _HouseWidgetState();
+}
 
+class _HouseWidgetState extends State<HouseWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,23 +99,43 @@ class HouseWidget extends StatelessWidget {
                         new CardElement(
                           'assets/house.png',
                           'Own house',
+                          key:UniqueKey(),
                           selected:
                               RegistrationState.of(context).data.house.own,
                           onSelect: (selection) {
-                            RegistrationState.of(context).data.house.select('own');
-                            RegistrationState.of(context).currentPage++;
-                            RegistrationState.of(context).notify();
+                            setState(() {
+                              RegistrationState.of(context)
+                                  .data
+                                  .house
+                                  .select('');
+                              if (selection)
+                                RegistrationState.of(context)
+                                    .data
+                                    .house
+                                    .select('own');
+                              RegistrationState.of(context).notify();
+                            });
                           },
                         ),
                         new CardElement(
                           'assets/home.png',
                           'Rented house',
+                          key:UniqueKey(),
                           selected:
                               RegistrationState.of(context).data.house.rent,
                           onSelect: (selection) {
-                            RegistrationState.of(context).data.house.select('rent');
-                            RegistrationState.of(context).currentPage++;
-                            RegistrationState.of(context).notify();
+                            setState(() {
+                              RegistrationState.of(context)
+                                  .data
+                                  .house
+                                  .select('');
+                              if (selection)
+                                RegistrationState.of(context)
+                                    .data
+                                    .house
+                                    .select('rent');
+                              RegistrationState.of(context).notify();
+                            });
                           },
                         ),
                       ],
@@ -122,6 +144,33 @@ class HouseWidget extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: 50,
+              width: double.infinity, // match_parent
+              child: FlatButton(
+                color: Colors.teal,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                child: Text('Next',
+                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                textColor: Colors.white,
+                onPressed: () {
+                  if (RegistrationState.of(context).data.vehicle.bike ||
+                      RegistrationState.of(context).data.vehicle.car) {
+                    RegistrationState.of(context).currentPage++;
+                    RegistrationState.of(context).notify();
+                  } 
+                    // _scaffoldKey.currentState.showSnackBar(SnackBar(
+                    //   content: Text('Please choose Atleast One Vehicle'),
+                    //   action: SnackBarAction(
+                    //     label: 'Ok',
+                    //     onPressed: () {
+                    //       _scaffoldKey.currentState.hideCurrentSnackBar();
+                    //     },
+                    //   ),
+                    // ));
+                },
+              ),
+            )
           ],
         ),
       ),
