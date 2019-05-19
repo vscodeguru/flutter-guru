@@ -152,6 +152,25 @@ class PurposeWidget extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: 50,
+              width: double.infinity, // match_parent
+              child: FlatButton(
+                color: Colors.teal,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                child: Text('Next',
+                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                textColor: Colors.white,
+                onPressed: () {
+                  if (RegistrationState.of(context).data.purpose.investment ||
+                      RegistrationState.of(context).data.purpose.salary ||
+                      RegistrationState.of(context).data.purpose.others ) {
+                    RegistrationState.of(context).currentPage++;
+                    RegistrationState.of(context).notify();
+                  } 
+                },
+              ),
+            )
           ],
         ),
       ),

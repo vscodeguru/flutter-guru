@@ -72,23 +72,6 @@ class _LoginPageState extends State<LoginPage>
                                 physics: NeverScrollableScrollPhysics(),
                                 controller: _loginPageControl,
                                 children: <Widget>[
-                                  RaisedButton(
-                                    child: Text('Ellam Konja Kalam'),
-                                    onPressed: () {
-                                      ApplicationGlobalState.of(context)
-                                              .mobileNumber = '9715162434';
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(
-                                        builder: (ctx) {
-                                          return ChangeNotifierProvider<
-                                              DashboardState>(
-                                            builder: (_ctx) => DashboardState(),
-                                            child: DashboardPage(),
-                                          );
-                                        },
-                                      ));
-                                    },
-                                  ),
                                   _buildPhoneNumberContent(context),
                                   _buildOtpContent(context)
                                 ],

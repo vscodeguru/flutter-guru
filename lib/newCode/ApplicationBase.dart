@@ -19,10 +19,7 @@ class _ApplicationBaseState extends State<ApplicationBase> {
       child: MaterialApp(
         theme: ThemeData(primarySwatch: Colors.teal),
           debugShowCheckedModeBanner: false,
-          home: ChangeNotifierProvider<LoginState>(
-            builder: (_ctx) => LoginState(),
-            child:LoginPage()
-          )),
+          home: SplashScreenPage()),
     );
   }
 }

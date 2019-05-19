@@ -26,19 +26,15 @@ class _PersonalWidgetState extends State<PersonalWidget> {
   bool _autoValidate = false;
   List<String> cities;
   List<String> profession;
-  String dropdownValue = 'Salem';
-  String dropdown = 'Employee';
+
   bool firstSearch = true;
   var tecNameController = TextEditingController();
   var tecMobileController = TextEditingController();
-  var tecCityController = TextEditingController();
-  var tecProfessionController = TextEditingController();
   final FocusNode fnNameFocus = FocusNode();
   final FocusNode fnMobileFocus = FocusNode();
   final FocusNode fnCityFocus = FocusNode();
   final FocusNode fnProfessionFocus = FocusNode();
 
-  List<DropdownMenuItem<String>> items = [];
   String selectedCity;
   String selectedProfession;
 
@@ -56,6 +52,17 @@ class _PersonalWidgetState extends State<PersonalWidget> {
 
     if (selectedCity == null) selectedCity = cities[0];
     if (selectedProfession == null) selectedProfession = profession[0];
+
+    if (tecNameController.text == '')
+      tecNameController.text = RegistrationState.of(context).data.personal.name;
+    if (tecMobileController.text == '')
+      tecMobileController.text =
+          RegistrationState.of(context).data.personal.mobile;
+    if (selectedCity == 'Salem')
+      selectedCity = RegistrationState.of(context).data.personal.city;
+    if (selectedProfession == 'Employee')
+      selectedProfession =
+          RegistrationState.of(context).data.personal.profession;
 
     return Scaffold(
       resizeToAvoidBottomPadding: true,
@@ -268,8 +275,9 @@ class _PersonalWidgetState extends State<PersonalWidget> {
       RegistrationState.of(context).data.personal.name = tecNameController.text;
       RegistrationState.of(context).data.personal.mobile =
           tecMobileController.text;
-      RegistrationState.of(context).data.personal.city = dropdownValue;
-      RegistrationState.of(context).data.personal.profession = dropdown;
+      RegistrationState.of(context).data.personal.city = selectedCity;
+      RegistrationState.of(context).data.personal.profession =
+          selectedProfession;
       RegistrationState.of(context).currentPage++;
       RegistrationState.of(context).notify();
       form.save();

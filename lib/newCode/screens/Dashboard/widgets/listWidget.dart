@@ -27,14 +27,19 @@ class _ListWidgetState extends State<ListWidget> {
         backgroundColor: Colors.teal,
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(
+          Navigator.push<LeadsModel>(context, MaterialPageRoute(
             builder: (ctx) {
               return ChangeNotifierProvider<RegistrationState>(
                 builder: (_ctx) => RegistrationState(),
                 child: RegistrationPage(),
               );
             },
-          ));
+          )).then((data) {
+            if (data != null) {
+              DashboardState.of(context).data.leadsData.add(data);
+              DashboardState.of(context).notify();
+            }
+          });
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -102,117 +107,134 @@ class _ListWidgetState extends State<ListWidget> {
           ),
           Positioned.fill(
             top: 70,
-            child: ListView.builder(
+            child: (DashboardState.of(context).data.leadsData.length != 0) ? (ListView.builder(
               itemCount: DashboardState.of(context).data.leadsData.length,
               itemBuilder: (ctx, index) {
                 var data = DashboardState.of(context).data.leadsData[index];
-                return ExpansionTile(
-                  title: ListTile(
-                    contentPadding: EdgeInsets.all(0),
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      backgroundImage: AssetImage(data.avatar),
-                      radius: MediaQuery.of(context).size.width * 0.07,
-                    ),
-                    title: new Text(
-                      data.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      data.profession,
-                    ),
-                    trailing: Text('12:45 PM'),
+                return Dismissible(
+                  key: UniqueKey(),
+                  background: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(left: 20.0),
+                    color: Colors.redAccent,
+                    child: Icon(Icons.delete, color: Colors.white),
                   ),
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          FloatingActionButton(
-                              mini: true,
-                              heroTag: null,
-                              elevation: 6,
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.teal,
-                              child: Icon(Icons.phone),
-                              onPressed: () {
-                                luncherHelper()
-                                    .launchDialer(data.phoneNumber)
-                                    .then((data) {
-                                  if (!data) {
-                                    _scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text('Cannot launch Dialer.'),
-                                    ));
-                                  }
-                                });
-                              }),
-                          FloatingActionButton(
-                              mini: true,
-                              heroTag: null,
-                              elevation: 6,
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.teal,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 8, right: 4, top: 2, bottom: 10),
-                                child: Icon(
-                                  FontAwesomeIcons.whatsapp,
-                                  size: 30,
-                                ),
-                              ),
-                              onPressed: () {
-                                luncherHelper()
-                                    .launchWhatsapp(data.phoneNumber)
-                                    .then((data) {
-                                  if (!data) {
-                                    _scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text('Cannot launch WhatsApp.'),
-                                    ));
-                                  }
-                                });
-                              }),
-                          FloatingActionButton(
-                            mini: true,
-                            heroTag: null,
-                            elevation: 6,
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.teal,
-                            child: Icon(Icons.message),
-                            onPressed: () {
-                              luncherHelper()
-                                  .launchMessager(data.phoneNumber)
-                                  .then((data) {
-                                if (!data) {
-                                  _scaffoldKey.currentState
-                                      .showSnackBar(SnackBar(
-                                    content: Text('Cannot launch SMS Messaging Application.'),
-                                  ));
-                                }
-                              });
-                            },
-                          ),
-                          RaisedButton(
-                            child: Text('Show all Details'),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (ctx) {
-                                  return ListViewWidget(data);
-                                },
-                              ));
-                            },
-                          )
-                        ],
+                  direction: DismissDirection.startToEnd,
+                  onDismissed: (direction){
+                    DashboardState.of(context).data.leadsData.removeAt(index);
+                    DashboardState.of(context).notify();
+                    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text("Lead for ${data.name} is marked as Completed!")));
+                  },
+                  child: ExpansionTile(
+                    title: ListTile(
+                      contentPadding: EdgeInsets.all(0),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        backgroundImage: AssetImage('assets/300_2.jpg'),
+                        radius: MediaQuery.of(context).size.width * 0.07,
                       ),
+                      title: new Text(
+                        data.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        data.profession,
+                      ),
+                      trailing: Text('12:45 PM'),
                     ),
-                  ],
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            FloatingActionButton(
+                                mini: true,
+                                heroTag: null,
+                                elevation: 6,
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.teal,
+                                child: Icon(Icons.phone),
+                                onPressed: () {
+                                  luncherHelper()
+                                      .launchDialer(data.phoneNumber)
+                                      .then((data) {
+                                    if (!data) {
+                                      _scaffoldKey.currentState
+                                          .showSnackBar(SnackBar(
+                                        content: Text('Cannot launch Dialer.'),
+                                      ));
+                                    }
+                                  });
+                                }),
+                            FloatingActionButton(
+                                mini: true,
+                                heroTag: null,
+                                elevation: 6,
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.teal,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 8, right: 4, top: 2, bottom: 10),
+                                  child: Icon(
+                                    FontAwesomeIcons.whatsapp,
+                                    size: 30,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  luncherHelper()
+                                      .launchWhatsapp(data.phoneNumber)
+                                      .then((data) {
+                                    if (!data) {
+                                      _scaffoldKey.currentState
+                                          .showSnackBar(SnackBar(
+                                        content:
+                                            Text('Cannot launch WhatsApp.'),
+                                      ));
+                                    }
+                                  });
+                                }),
+                            FloatingActionButton(
+                              mini: true,
+                              heroTag: null,
+                              elevation: 6,
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.teal,
+                              child: Icon(Icons.message),
+                              onPressed: () {
+                                luncherHelper()
+                                    .launchMessager(data.phoneNumber)
+                                    .then((data) {
+                                  if (!data) {
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          'Cannot launch SMS Messaging Application.'),
+                                    ));
+                                  }
+                                });
+                              },
+                            ),
+                            RaisedButton(
+                              child: Text('Show all Details'),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (ctx) {
+                                    return ListViewWidget(data);
+                                  },
+                                ));
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
-            ),
+            )):Container(child: Center(child: Text('Leads Data is Empty'),),),
           ),
         ],
       ),

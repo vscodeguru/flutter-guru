@@ -29,7 +29,7 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
             children: <Widget>[
               CircleAvatar(
                 backgroundColor: Colors.white,
-                backgroundImage: AssetImage(widget.data.avatar),
+                backgroundImage: AssetImage('assets/300_2.jpg'),
                 radius: MediaQuery.of(context).size.width * 0.10,
               ),
               Column(

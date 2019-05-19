@@ -8,7 +8,7 @@ class DashboardModel {
 class LeadsModel {
   String name;
   String profession = 'Employee';
-  String avatar;
+  String avatar='assets/300_2.jpg';
   String phoneNumber = '123456798';
   String city = 'Salem';
   String time;
@@ -39,4 +39,8 @@ class DashboardState with ChangeNotifier {
 
     static DashboardState of(BuildContext context) =>
       Provider.of<DashboardState>(context);
+
+    notify(){
+      notifyListeners();
+    }
 }

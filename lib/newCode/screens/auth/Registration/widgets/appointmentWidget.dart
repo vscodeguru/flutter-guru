@@ -261,14 +261,22 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
               color: Colors.teal,
               textColor: Colors.white,
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (ctx) {
-                    return ChangeNotifierProvider<DashboardState>(
-                      builder: (_ctx) => DashboardState(),
-                      child: DashboardPage(),
-                    );
-                  },
-                ));
+                Navigator.of(context).pop();
+                LeadsModel data = LeadsModel();
+                data.name = RegistrationState.of(context).data.personal.name;
+                data.phoneNumber = RegistrationState.of(context).data.personal.mobile;
+                data.city = RegistrationState.of(context).data.personal.city;
+                data.profession = RegistrationState.of(context).data.personal.profession;
+
+                data.bikeOwned = RegistrationState.of(context).data.vehicle.bike ? 'Yes' : 'No';
+                data.carOwned = RegistrationState.of(context).data.vehicle.car ? 'Yes' : 'No';
+
+                data.houseType = RegistrationState.of(context).data.house.own ? 'Own House' : 'Rented House';
+
+                if(RegistrationState.of(context).data.purpose.investment) data.reason = 'Investment';
+                if(RegistrationState.of(context).data.purpose.salary) data.reason = 'Salaryy';
+                if(RegistrationState.of(context).data.purpose.others) data.reason = 'Other';
+                Navigator.of(context).pop<LeadsModel>(data);
               },
             ),
           ],

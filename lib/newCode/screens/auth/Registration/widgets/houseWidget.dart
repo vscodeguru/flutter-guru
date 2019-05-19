@@ -159,15 +159,6 @@ class _HouseWidgetState extends State<HouseWidget> {
                     RegistrationState.of(context).currentPage++;
                     RegistrationState.of(context).notify();
                   } 
-                    // _scaffoldKey.currentState.showSnackBar(SnackBar(
-                    //   content: Text('Please choose Atleast One Vehicle'),
-                    //   action: SnackBarAction(
-                    //     label: 'Ok',
-                    //     onPressed: () {
-                    //       _scaffoldKey.currentState.hideCurrentSnackBar();
-                    //     },
-                    //   ),
-                    // ));
                 },
               ),
             )

@@ -94,9 +94,9 @@ class RegistrationState with ChangeNotifier {
       'Jarkhand',
       'kozhikode',
       'Thiruvandram',
-      'kozhikode'
+      'Kozhikode'
     ];
-    cities.sort();
+    //cities.sort();
     return cities;
   }
 
@@ -108,7 +108,7 @@ class RegistrationState with ChangeNotifier {
       'Goverment Employee',
       'Self Employee'
     ];
-    profession.sort();
+    //profession.sort();
     return profession;
   }
 
