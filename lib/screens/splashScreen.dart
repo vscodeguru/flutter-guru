@@ -20,8 +20,7 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashScreenPageState extends State<SplashScreenPage> {
   Future<String> checkVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String url = "https://leads-api.302010.in/mobile/check-version/" +
-        packageInfo.version;
+    String url = "https://leads-api.302010.in/auth/check/version/" + packageInfo.version;
     try {
       var response = await http
           .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});

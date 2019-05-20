@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_guru/states/baseState.dart';
+import 'package:flutter_guru/states/dashboardState/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -14,8 +16,8 @@ class LoginState with ChangeNotifier {
       Provider.of<LoginState>(context);
 
   Future<String> generateOtp(String key) async {
-    String url = "http://192.168.0.115:2531/auth/send-otp/$mobileNumber/${Uri.encodeFull(key)}";
-    //String url = "https://leads-api.302010.in/mobile/request-otp/CUSTOMER_OTP/$mobileNumber/${Uri.encodeFull(key)}";
+    //String url =        "http://192.168.0.115:2531/auth/send-otp/$mobileNumber/${Uri.encodeFull(key)}";
+    String url = "https://leads-api.302010.in/auth/send-otp/$mobileNumber/${Uri.encodeFull(key)}";
     try {
       var response = await http
           .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
@@ -27,19 +29,19 @@ class LoginState with ChangeNotifier {
           mobileNumber = mobileNumber;
           return Future.value('success');
         }
-        return Future.value('failure');
+        return Future.value(responseJson['failure']['message']);
       } else {
         return Future.value(
             'Something went wrong. \nResponse Code : ${response.statusCode}');
       }
-    } on SocketException{
+    } on SocketException {
       return Future.value('Network Error..');
     }
   }
 
-  Future<String> validateOtp(String otp) async {
-    //String url = "https://leads-api.302010.in/auth/validate-otp/$mobileNumber/$otp";
-    String url = "http://192.168.0.115:2531/auth/validate-otp/$mobileNumber/$otp";
+  Future<Map<String, Object>> validateOtp(String otp) async {
+    String url = "https://leads-api.302010.in/auth/validate-otp/$mobileNumber/$otp";
+     //String url ="http://192.168.0.115:2531/auth/validate-otp/$mobileNumber/$otp";
 
     http.Response response = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
@@ -47,9 +49,12 @@ class LoginState with ChangeNotifier {
     print(responseBody);
     var responseJson = json.decode(responseBody);
     if (responseJson['response'] == "success") {
-      return Future.value('success');
+      return Future.value({
+        "response": responseJson['response'],
+        "data": LoggedInData.fromJson(responseJson)
+      });
     } else {
-      return Future.value('failure');
+      return Future.value({"response": responseJson['response']});
     }
   }
 }

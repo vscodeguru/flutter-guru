@@ -32,9 +32,8 @@ class DashboardState with ChangeNotifier {
 
   Future<bool> getLeadsData() async {
     List<LeadsModel> models = [LeadsModel(name: 'Owais',avatar: 'assets/user.png'),LeadsModel(name: 'Owais',avatar: 'assets/user.png')];
-    _data.leadsData = models;
-    return Future.value(true);
-
+    _data.leadsData += models;
+    return Future.delayed(const Duration(seconds: 2), () => true);
   }
 
     static DashboardState of(BuildContext context) =>

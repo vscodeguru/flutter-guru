@@ -213,9 +213,8 @@ class _LoginPageState extends State<LoginPage>
                 : (otpRegex.allMatches(smsCode).map((m) => m.group(4)).first);
       });
       LoginState.of(context).validateOtp(tfcOtp.text).then((data) {
-        if (data == 'success') {
-          ApplicationGlobalState.of(context).mobileNumber =
-              LoginState.of(context).mobileNumber;
+        if (data["response"] == "success") {
+          ApplicationGlobalState.of(context).setLoginData(data["data"]);
 
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (ctx) {
@@ -225,17 +224,10 @@ class _LoginPageState extends State<LoginPage>
               );
             },
           ));
-        } else if (data == 'failure') {
+        } else if (data["response"] == "failure") {
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(
               content: Text('Something went wrong, try again later..'),
-              backgroundColor: HexColor("#314453"),
-            ),
-          );
-        } else {
-          _scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text(data),
               backgroundColor: HexColor("#314453"),
             ),
           );
