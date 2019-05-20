@@ -1,6 +1,6 @@
 import 'package:url_launcher/url_launcher.dart';
 
-class luncherHelper {
+class LuncherHelper {
   Future<bool> launchWhatsapp(String mobileNo) async {
     var url = "whatsapp://send?phone=91$mobileNo";
 
