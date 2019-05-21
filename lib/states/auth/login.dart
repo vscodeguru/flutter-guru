@@ -17,7 +17,8 @@ class LoginState with ChangeNotifier {
 
   Future<String> generateOtp(String key) async {
     //String url =        "http://192.168.0.115:2531/auth/send-otp/$mobileNumber/${Uri.encodeFull(key)}";
-    String url = "https://leads-api.302010.in/auth/send-otp/$mobileNumber/${Uri.encodeFull(key)}";
+    String url =
+        "${ApplicationGlobalState.apiServerUri}/auth/send-otp/$mobileNumber/${Uri.encodeFull(key)}";
     try {
       var response = await http
           .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
@@ -40,8 +41,9 @@ class LoginState with ChangeNotifier {
   }
 
   Future<Map<String, Object>> validateOtp(String otp) async {
-    String url = "https://leads-api.302010.in/auth/validate-otp/$mobileNumber/$otp";
-     //String url ="http://192.168.0.115:2531/auth/validate-otp/$mobileNumber/$otp";
+    String url =
+        "${ApplicationGlobalState.apiServerUri}/auth/validate-otp/$mobileNumber/$otp";
+    //String url ="http://192.168.0.115:2531/auth/validate-otp/$mobileNumber/$otp";
 
     http.Response response = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
@@ -51,7 +53,7 @@ class LoginState with ChangeNotifier {
     if (responseJson['response'] == "success") {
       return Future.value({
         "response": responseJson['response'],
-        "data": LoggedInData.fromJson(responseJson)
+        "data": LoggedInData.fromJson(responseJson['success']['result'])
       });
     } else {
       return Future.value({"response": responseJson['response']});

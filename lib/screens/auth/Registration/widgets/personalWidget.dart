@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_guru/utils/theme/index.dart';
 import 'package:flutter_guru/widgets/searchableDropdown/searchableDropdown.dart';
 import 'package:flutter_guru/states/auth/registration.dart';
 
@@ -22,7 +23,7 @@ class PersonalWidget extends StatefulWidget {
 class _PersonalWidgetState extends State<PersonalWidget> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  List<String> cities;
+  List<String> cities = [];
   List<String> profession;
 
   bool firstSearch = true;
@@ -36,19 +37,40 @@ class _PersonalWidgetState extends State<PersonalWidget> {
   String selectedCity;
   String selectedProfession;
 
+  showErrorMessage(
+      {String message, Duration duration = const Duration(seconds: 5)}) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        backgroundColor: HexColor("#B00020"),
+        content: Text(message),
+        duration: duration,
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
   }
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Widget build(BuildContext context) {
-    cities =
-        (cities == null) ? RegistrationState.of(context).getCities() : cities;
+    if (cities.length == 0) {
+      RegistrationState.of(context).getCities().then((data) {
+        if (data == 'success') {
+          setState(() {
+            cities = RegistrationState.of(context).cities;
+            if (selectedCity == null) selectedCity = cities[0];
+          });
+        } else {
+          showErrorMessage(message: data);
+        }
+      });
+    }
     profession = (profession == null)
         ? RegistrationState.of(context).getProfession()
         : profession;
 
-    if (selectedCity == null) selectedCity = cities[0];
     if (selectedProfession == null) selectedProfession = profession[0];
 
     if (tecNameController.text == '')
@@ -63,6 +85,7 @@ class _PersonalWidgetState extends State<PersonalWidget> {
           RegistrationState.of(context).data.personal.profession;
 
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomPadding: true,
       body: Stack(
         children: <Widget>[

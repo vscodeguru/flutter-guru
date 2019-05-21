@@ -270,6 +270,9 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                 if(RegistrationState.of(context).data.purpose.investment) data.reason = 'Investment';
                 if(RegistrationState.of(context).data.purpose.salary) data.reason = 'Salaryy';
                 if(RegistrationState.of(context).data.purpose.others) data.reason = 'Other';
+
+                data.date = dateController.text;
+                data.time = timeController.text;
                 Navigator.of(context).pop<LeadsModel>(data);
               },
             ),

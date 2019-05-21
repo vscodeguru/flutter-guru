@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guru/screens/Dashboard/widgets/listViewWidget.dart';
 import 'package:flutter_guru/screens/auth/Registration/registrationPage.dart';
 import 'package:flutter_guru/states/auth/registration.dart';
+import 'package:flutter_guru/states/baseState.dart';
 import 'package:flutter_guru/states/dashboardState/dashboard.dart';
+import 'package:flutter_guru/utils/theme/index.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_guru/utils/launcher_helper.dart';
@@ -46,6 +48,57 @@ class _ListWidgetState extends State<ListWidget> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadData();
+    });
+  }
+
+  Future<void> loadData() async {
+    _scaffoldKey.currentState.hideCurrentSnackBar();
+    showLoadingMessage(message: 'Loading Data..');
+
+    String data = await DashboardState.of(context).getLeadsData();
+    if (data == 'success') {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text('Data Updated!'),
+      ));
+      DashboardState.of(context).notify();
+    } else {
+      showErrorMessage(message: data);
+    }
+  }
+
+  showLoadingMessage(
+      {String message, Duration duration = const Duration(minutes: 1)}) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Row(
+        children: <Widget>[
+          Container(height: 23, width: 23, child: CircularProgressIndicator()),
+          SizedBox(
+            width: 10,
+          ),
+          Text(message)
+        ],
+      ),
+      duration: duration,
+    ));
+  }
+
+  showErrorMessage(
+      {String message, Duration duration = const Duration(seconds: 5)}) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        backgroundColor: HexColor("#B00020"),
+        content: Text(message),
+        duration: duration,
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: doubleTap,
@@ -61,14 +114,22 @@ class _ListWidgetState extends State<ListWidget> {
             Navigator.push<LeadsModel>(context, MaterialPageRoute(
               builder: (ctx) {
                 return ChangeNotifierProvider<RegistrationState>(
-                  builder: (_ctx) => RegistrationState(),
+                  builder: (_ctx) => RegistrationState(
+                      apiKey: ApplicationGlobalState.of(context)
+                          .loggedInData
+                          .apiKey),
                   child: RegistrationPage(),
                 );
               },
-            )).then((data) {
+            )).then((data) async {
               if (data != null) {
-                DashboardState.of(context).data.leadsData.add(data);
-                DashboardState.of(context).notify();
+                showLoadingMessage(message: 'Saving lead Data..');
+                String result =
+                    await DashboardState.of(context).saveLeadData(data);
+                if (result == 'success')
+                  loadData();
+                else
+                  showErrorMessage(message: result);
               }
             });
           },
@@ -124,17 +185,7 @@ class _ListWidgetState extends State<ListWidget> {
             Expanded(
               child: RefreshIndicator(
                 key: _refreshIndicatorKey,
-                onRefresh: () async {
-                  await DashboardState.of(context).getLeadsData().then((data) {
-                    if (data) {
-                      _scaffoldKey.currentState.hideCurrentSnackBar();
-                      _scaffoldKey.currentState.showSnackBar(SnackBar(
-                        content: Text('Data Updated!'),
-                      ));
-                    }
-                  });
-                  await DashboardState.of(context).notify();
-                },
+                onRefresh: () => loadData(),
                 child: (DashboardState.of(context).data.leadsData.length != 0)
                     ? (ListView.builder(
                         itemCount:
@@ -167,7 +218,8 @@ class _ListWidgetState extends State<ListWidget> {
                                 contentPadding: EdgeInsets.all(0),
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.white,
-                                  backgroundImage: AssetImage('assets/user.png'),
+                                  backgroundImage:
+                                      AssetImage('assets/user.png'),
                                   radius:
                                       MediaQuery.of(context).size.width * 0.07,
                                 ),
@@ -228,7 +280,8 @@ class _ListWidgetState extends State<ListWidget> {
                                           ),
                                           onPressed: () {
                                             LuncherHelper()
-                                                .launchWhatsapp(data.phoneNumber)
+                                                .launchWhatsapp(
+                                                    data.phoneNumber)
                                                 .then((data) {
                                               if (!data) {
                                                 _scaffoldKey.currentState

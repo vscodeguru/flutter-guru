@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+
+import '../baseState.dart';
 
 class RegistrationModel {
   RegistrationPersonalData _personal;
@@ -76,28 +81,32 @@ class RegistrationState with ChangeNotifier {
   RegistrationModel get data =>
       _data; // This is equalent to {get; private set;}
 
-  RegistrationState() {
+  String apiKey;
+  RegistrationState({this.apiKey}) {
     _data = RegistrationModel();
   }
+  List<String> cities;
+  Future<String> getCities() async{
+    cities = [];
+    String url = "${ApplicationGlobalState.apiServerUri}/common/city";
+    //String url ="http://192.168.0.115:2531/auth/validate-otp/$mobileNumber/$otp";
 
-  List<String> getCities() {
-    var cities = new List<String>();
-    cities = [
-      'Salem',
-      'Coimbatore',
-      'Chennai',
-      'Trichy',
-      'Bangalore',
-      'Kerala',
-      'Kanyakumari',
-      'Tirupur',
-      'Jarkhand',
-      'kozhikode',
-      'Thiruvandram',
-      'Kozhikode'
-    ];
-    //cities.sort();
-    return cities;
+    http.Response response = await http.get(Uri.encodeFull(url),
+        headers: {"Accept": "application/json", "X-API-KEY": apiKey});
+    String responseBody = response.body;
+    print(responseBody);
+    var responseJson = json.decode(responseBody);
+    if (responseJson['response'] == "success") {
+      
+
+      var results = (responseJson['success']['result']) as List<dynamic>;
+      results.forEach((_result) {
+        cities.add(_result['districtname']);
+      });
+      return Future.value('success');
+    } else {
+      return Future.value(responseJson['failure']['message']);
+    }
   }
 
   List<String> getProfession() {

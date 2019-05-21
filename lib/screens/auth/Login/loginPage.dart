@@ -16,8 +16,7 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage>
-    with SingleTickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage> {
   Color pageThemeColor = HexColor("#314453");
   final PageController _loginPageControl = new PageController();
 
@@ -31,6 +30,7 @@ class _LoginPageState extends State<LoginPage>
   TextEditingController tfcOtp = TextEditingController();
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,10 +218,7 @@ class _LoginPageState extends State<LoginPage>
 
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (ctx) {
-              return ChangeNotifierProvider<DashboardState>(
-                builder: (_ctx) => DashboardState(),
-                child: DashboardPage(),
-              );
+              return DashboardPage();
             },
           ));
         } else if (data["response"] == "failure") {

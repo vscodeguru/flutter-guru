@@ -12,11 +12,11 @@ class ListViewWidget extends StatefulWidget {
 }
 
 class _ListViewWidgetState extends State<ListViewWidget> {
-GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key:_scaffoldKey,
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Lead Details'),
         backgroundColor: Colors.teal,
@@ -49,12 +49,16 @@ GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
                     padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
                     child: Text(widget.data.phoneNumber),
                   ),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+                    child: Text('Appointment On : ${widget.data.date} - ${widget.data.time}'),
+                  ),
                 ],
               ),
             ],
           ),
-          
-Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               FloatingActionButton(
@@ -65,7 +69,9 @@ Row(
                   backgroundColor: Colors.teal,
                   child: Icon(Icons.phone),
                   onPressed: () {
-                    LuncherHelper().launchDialer(widget.data.phoneNumber).then((data) {
+                    LuncherHelper()
+                        .launchDialer(widget.data.phoneNumber)
+                        .then((data) {
                       if (!data) {
                         _scaffoldKey.currentState.showSnackBar(SnackBar(
                           content: Text('Cannot launch Dialer.'),
@@ -106,7 +112,9 @@ Row(
                 backgroundColor: Colors.teal,
                 child: Icon(Icons.message),
                 onPressed: () {
-                  LuncherHelper().launchMessager(widget.data.phoneNumber).then((data) {
+                  LuncherHelper()
+                      .launchMessager(widget.data.phoneNumber)
+                      .then((data) {
                     if (!data) {
                       _scaffoldKey.currentState.showSnackBar(SnackBar(
                         content:
@@ -118,7 +126,6 @@ Row(
               ),
             ],
           ),
-          
           SizedBox(
             height: 10,
           ),
@@ -194,7 +201,8 @@ Row(
                                 Text('Car : ' + widget.data.carOwned),
                                 Container(
                                   padding: EdgeInsets.only(left: 10),
-                                  child: Text('Bike : ' + widget.data.bikeOwned),
+                                  child:
+                                      Text('Bike : ' + widget.data.bikeOwned),
                                 ),
                               ],
                             ),

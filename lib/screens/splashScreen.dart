@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guru/states/auth/login.dart';
 import 'package:flutter_guru/screens/auth/Login/loginPage.dart';
+import 'package:flutter_guru/states/baseState.dart';
+import 'package:flutter_guru/states/dashboardState/dashboard.dart';
 import 'package:package_info/package_info.dart';
 
 import 'package:flutter_guru/utils/theme/index.dart';
@@ -12,6 +14,8 @@ import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:launch_review/launch_review.dart';
 
+import 'package:flutter_guru/screens/Dashboard/dashboardPage.dart';
+
 class SplashScreenPage extends StatefulWidget {
   @override
   _SplashScreenPageState createState() => _SplashScreenPageState();
@@ -20,7 +24,8 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashScreenPageState extends State<SplashScreenPage> {
   Future<String> checkVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String url = "https://leads-api.302010.in/auth/check/version/" + packageInfo.version;
+    String url = "${ApplicationGlobalState.apiServerUri}/auth/check/version/" +
+        packageInfo.version;
     try {
       var response = await http
           .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
@@ -46,16 +51,25 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   String msg;
   @override
   Widget build(BuildContext context) {
-    checkVersion().then((data) {
+    checkVersion().then((data) async {
       if (data == 'success') {
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (ctx) {
-            return ChangeNotifierProvider<LoginState>(
-              builder: (_ctx) => LoginState(),
-              child: LoginPage(),
-            );
-          },
-        ));
+        await ApplicationGlobalState.of(context).checkLoginData();
+        if (ApplicationGlobalState.of(context).loggedInData != null) {
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (ctx) {
+              return DashboardPage();
+            },
+          ));
+        } else {
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (ctx) {
+              return ChangeNotifierProvider<LoginState>(
+                builder: (_ctx) => LoginState(),
+                child: LoginPage(),
+              );
+            },
+          ));
+        }
       } else if (data == 'failure') {
         showDialog(
           context: context,
@@ -77,7 +91,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             );
           },
         );
-        
       } else {
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(data),
