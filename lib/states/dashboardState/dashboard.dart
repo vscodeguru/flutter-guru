@@ -21,6 +21,7 @@ class LeadsModel {
   String bikeOwned = 'Yes';
   String houseType = 'Own House';
   String reason = 'Investment';
+  int appointmentId = 0;
   LeadsModel({this.name, this.avatar, this.time});
 
   factory LeadsModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +36,7 @@ class LeadsModel {
     data.bikeOwned = json['is_two_wheeler_owned'] ? 'Yes' : 'No'; // personal
     data.date = json['appointment_date']; // personal
     data.time = json['appointment_time']; // personal
+    data.appointmentId = json['lead_appointment_sysid']; // personal
     return data;
   }
 }
@@ -70,6 +72,22 @@ class DashboardState with ChangeNotifier {
       return Future.value(responseJson['failure']['message']);
     }
   }
+
+Future<String> completeAppointment(int id) async {
+    String url = "${ApplicationGlobalState.apiServerUri}/lead/complete/$id";
+
+    http.Response response = await http.get(Uri.encodeFull(url),
+        headers: {"Accept": "application/json", "X-API-KEY": apiKey});
+    String responseBody = response.body;
+    print(responseBody);
+    var responseJson = json.decode(responseBody);
+    if (responseJson['response'] == "success") {
+      return Future.value('success');
+    } else {
+      return Future.value(responseJson['failure']['message']);
+    }
+  }
+
 
   Future<String> saveLeadData(LeadsModel data) async {
     String url = "${ApplicationGlobalState.apiServerUri}/lead/save";

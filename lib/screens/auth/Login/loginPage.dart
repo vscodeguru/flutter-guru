@@ -292,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
           height: MediaQuery.of(context).size.height * 0.25,
         ),
         Text(
-          'Enter OTP Code ',
+          'OTP Code ',
           style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -304,6 +304,7 @@ class _LoginPageState extends State<LoginPage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: TextFormField(
+            enabled: false,
             validator: validateOTP,
             controller: tfcOtp,
             maxLength: 6,
@@ -313,19 +314,7 @@ class _LoginPageState extends State<LoginPage> {
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(13.0),
-              hintText: 'Enter OTP Code',
-              suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.refresh,
-                    color: pageThemeColor,
-                  ),
-                  tooltip: 'Resend OTP',
-                  onPressed: () {
-                    requestOtp();
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
-                      content: Text('ReSend OTP'),
-                    ));
-                  }),
+              hintText: 'OTP Code',
               border: OutlineInputBorder(
                   borderSide: BorderSide(color: pageThemeColor),
                   borderRadius: BorderRadius.all(
@@ -365,10 +354,15 @@ class _LoginPageState extends State<LoginPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40.0),
               ),
-              child: Text('Login'),
+              child: Text('Resend OTP'),
               textColor: Colors.white,
               color: HexColor("#314453"),
-              onPressed: () {},
+              onPressed: () {
+                requestOtp();
+                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                  content: Text('ReSend OTP'),
+                ));
+              },
             ),
           ],
         ),

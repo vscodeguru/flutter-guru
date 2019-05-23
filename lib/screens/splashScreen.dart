@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_guru/states/auth/login.dart';
 import 'package:flutter_guru/screens/auth/Login/loginPage.dart';
 import 'package:flutter_guru/states/baseState.dart';
@@ -43,65 +44,74 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             'Something went wrong. \nResponse Code : ${response.statusCode}');
       }
     } catch (e) {
-      return Future.value('Network Error..');
+      return Future.value('Network Error..' + e.toString());
     }
   }
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String msg;
+
   @override
-  Widget build(BuildContext context) {
-    checkVersion().then((data) async {
-      if (data == 'success') {
-        await ApplicationGlobalState.of(context).checkLoginData();
-        if (ApplicationGlobalState.of(context).loggedInData != null) {
-          Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (ctx) {
-              return DashboardPage();
-            },
-          ));
-        } else {
-          Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (ctx) {
-              return ChangeNotifierProvider<LoginState>(
-                builder: (_ctx) => LoginState(),
-                child: LoginPage(),
+  void initState() {
+
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkVersion().then((data) async {
+        if (data == 'success') {
+          await ApplicationGlobalState.of(context).checkLoginData();
+          if (ApplicationGlobalState.of(context).loggedInData != null) {
+            Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (ctx) {
+                return DashboardPage();
+              },
+            ));
+          } else {
+            Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (ctx) {
+                return ChangeNotifierProvider<LoginState>(
+                  builder: (_ctx) => LoginState(),
+                  child: LoginPage(),
+                );
+              },
+            ));
+          }
+        } else if (data == 'failure') {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: new Text("Notification"),
+                content: new Text("Critical Update available, please update."),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: new Text("Update"),
+                    onPressed: () {
+                      LaunchReview.launch();
+                    },
+                  ),
+                ],
               );
             },
+          );
+        } else {
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text(data),
+            duration: Duration(minutes: 1),
           ));
-        }
-      } else if (data == 'failure') {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            // return object of type Dialog
-            return AlertDialog(
-              title: new Text("Notification"),
-              content: new Text("Critical Update available, please update."),
-              actions: <Widget>[
-                // usually buttons at the bottom of the dialog
-                new FlatButton(
-                  child: new Text("Update"),
-                  onPressed: () {
-                    LaunchReview.launch();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(data),
-          duration: Duration(minutes: 1),
-        ));
 
-        setState(() {
-          msg = ('Error : ' + data);
-        });
-      }
+          setState(() {
+            msg = ('Error : ' + data);
+          });
+        }
+      });
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HexColor('#1a6d76'),
       key: _scaffoldKey,

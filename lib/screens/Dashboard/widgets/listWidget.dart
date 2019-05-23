@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_guru/screens/Dashboard/widgets/listViewWidget.dart';
 import 'package:flutter_guru/screens/auth/Registration/registrationPage.dart';
 import 'package:flutter_guru/states/auth/registration.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_guru/utils/theme/index.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_guru/utils/launcher_helper.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ListWidget extends StatefulWidget {
   const ListWidget({Key key}) : super(key: key);
@@ -157,7 +159,7 @@ class _ListWidgetState extends State<ListWidget> {
                       child: Column(
                         children: <Widget>[
                           SizedBox(
-                            height: 40,
+                            height: 29,
                           ),
                           Row(
                             children: <Widget>[
@@ -170,8 +172,47 @@ class _ListWidgetState extends State<ListWidget> {
                                   ),
                                 ),
                               ),
+                              IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Icon(
+                                  Icons.power_settings_new,
+                                ),
+                                color: Colors.white,
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      // return object of type Dialog
+                                      return AlertDialog(
+                                        title: new Text("Confirmation"),
+                                        content: new Text(
+                                            "You will be logged out and the application will close, are you sure?"),
+                                        actions: <Widget>[
+                                          new FlatButton(
+                                            child: new Text("Cancel"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          new FlatButton(
+                                            child: new Text("Logout and Exit"),
+                                            onPressed: () {
+                                              ApplicationGlobalState.of(context)
+                                                  .setLoginData(null);
+                                              SystemChannels.platform
+                                                  .invokeMethod(
+                                                      'SystemNavigator.pop');
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                               SizedBox(
-                                width: 10,
+                                width: 5,
                               )
                             ],
                           ),
@@ -193,26 +234,36 @@ class _ListWidgetState extends State<ListWidget> {
                         itemBuilder: (ctx, index) {
                           var data =
                               DashboardState.of(context).data.leadsData[index];
-                          return Dismissible(
+                          return Slidable(
+                            actionPane: SlidableScrollActionPane(),
+                            actions: <Widget>[
+                              IconSlideAction(
+                                caption: 'Completed',
+                                color: Colors.greenAccent,
+                                icon: Icons.done,
+                                onTap: () async {
+                                  String _data = await DashboardState.of(
+                                          context)
+                                      .completeAppointment(data.appointmentId);
+
+                                  if (_data == 'success') {
+                                    Scaffold.of(ctx).hideCurrentSnackBar();
+                                    Scaffold.of(ctx).showSnackBar(SnackBar(
+                                        content: Text(
+                                            "Lead for ${data.name} is being marked as Completed!")));
+                                    await DashboardState.of(context)
+                                        .getLeadsData();
+                                    DashboardState.of(context).notify();
+                                    Scaffold.of(ctx).hideCurrentSnackBar();
+                                    Scaffold.of(ctx).showSnackBar(SnackBar(
+                                        content: Text(
+                                            "Lead for ${data.name} is marked as Completed!")));
+                                  } else
+                                    showErrorMessage(message: _data);
+                                },
+                              ),
+                            ],
                             key: UniqueKey(),
-                            background: Container(
-                              alignment: Alignment.centerLeft,
-                              padding: EdgeInsets.only(left: 20.0),
-                              color: Colors.redAccent,
-                              child: Icon(Icons.delete, color: Colors.white),
-                            ),
-                            direction: DismissDirection.startToEnd,
-                            onDismissed: (direction) async {
-                              DashboardState.of(context)
-                                  .data
-                                  .leadsData
-                                  .removeAt(index);
-                              DashboardState.of(context).notify();
-                              Scaffold.of(ctx).hideCurrentSnackBar();
-                              Scaffold.of(ctx).showSnackBar(SnackBar(
-                                  content: Text(
-                                      "Lead for ${data.name} is marked as Completed!")));
-                            },
                             child: ExpansionTile(
                               title: ListTile(
                                 contentPadding: EdgeInsets.all(0),
@@ -358,3 +409,5 @@ class _ListWidgetState extends State<ListWidget> {
     );
   }
 }
+
+_showSnackBar(String s) {}

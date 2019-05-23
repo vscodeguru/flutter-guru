@@ -268,7 +268,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                 data.houseType = RegistrationState.of(context).data.house.own ? 'Own House' : 'Rented House';
 
                 if(RegistrationState.of(context).data.purpose.investment) data.reason = 'Investment';
-                if(RegistrationState.of(context).data.purpose.salary) data.reason = 'Salaryy';
+                if(RegistrationState.of(context).data.purpose.salary) data.reason = 'Salary';
                 if(RegistrationState.of(context).data.purpose.others) data.reason = 'Other';
 
                 data.date = dateController.text;

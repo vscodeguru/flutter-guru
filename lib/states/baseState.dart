@@ -37,9 +37,10 @@ class LoggedInData {
 class ApplicationGlobalState with ChangeNotifier {
   RegistrationState registrationState;
   LoggedInData loggedInData;
-  static String apiServerUri = 'http://192.168.0.111:2531';
+  //static String apiServerUri = 'http://192.168.0.111:2531';
+  static String apiServerUri = 'https://leads-api.302010.in';
 
-  setLoginData(LoggedInData _data) async {
+  Future<void> setLoginData(LoggedInData _data) async {
     Directory dataDir = await pathProvider.getApplicationDocumentsDirectory();
     if (_data != null) {
       File('${dataDir.path}/auth.dat')
