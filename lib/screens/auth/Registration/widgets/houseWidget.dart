@@ -9,9 +9,11 @@ class HouseWidget extends StatefulWidget {
 }
 
 class _HouseWidgetState extends State<HouseWidget> {
+  GlobalKey<ScaffoldState> _scaffoldKey= GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key:_scaffoldKey,
       body: Container(
         decoration: new BoxDecoration(
           image: new DecorationImage(
@@ -82,7 +84,7 @@ class _HouseWidgetState extends State<HouseWidget> {
                     padding: const EdgeInsets.only(top: 60),
                     child: Center(
                       child: Text(
-                        'What type of Owner you are?',
+                        'What kind of house do you live in?',
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
@@ -98,7 +100,7 @@ class _HouseWidgetState extends State<HouseWidget> {
                         new CardElement(
                           'assets/house.png',
                           'Own house',
-                          key:UniqueKey(),
+                          key: UniqueKey(),
                           selected:
                               RegistrationState.of(context).data.house.own,
                           onSelect: (selection) {
@@ -119,7 +121,7 @@ class _HouseWidgetState extends State<HouseWidget> {
                         new CardElement(
                           'assets/home.png',
                           'Rented house',
-                          key:UniqueKey(),
+                          key: UniqueKey(),
                           selected:
                               RegistrationState.of(context).data.house.rent,
                           onSelect: (selection) {
@@ -153,11 +155,21 @@ class _HouseWidgetState extends State<HouseWidget> {
                     style: TextStyle(color: Colors.white, fontSize: 20)),
                 textColor: Colors.white,
                 onPressed: () {
-                  if (RegistrationState.of(context).data.vehicle.bike ||
-                      RegistrationState.of(context).data.vehicle.car) {
+                  if (RegistrationState.of(context).data.house.own ||
+                      RegistrationState.of(context).data.house.rent) {
                     RegistrationState.of(context).currentPage++;
                     RegistrationState.of(context).notify();
-                  } 
+                  } else
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text('Please make a selection..'),
+                      duration: Duration(seconds: 2),
+                      action: SnackBarAction(
+                        label: 'Ok',
+                        onPressed: () {
+                          _scaffoldKey.currentState.hideCurrentSnackBar();
+                        },
+                      ),
+                    ));
                 },
               ),
             )

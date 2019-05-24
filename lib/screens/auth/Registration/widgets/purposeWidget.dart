@@ -3,13 +3,12 @@ import 'package:flutter_guru/screens/auth/Registration/widgets/cardElementWidget
 import 'package:flutter_guru/utils/theme/index.dart';
 import 'package:flutter_guru/states/auth/registration.dart';
 
-
 class PurposeWidget extends StatelessWidget {
-  
-
   @override
   Widget build(BuildContext context) {
+    GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         decoration: new BoxDecoration(
           image: new DecorationImage(
@@ -86,37 +85,41 @@ class PurposeWidget extends StatelessWidget {
                             new CardElement(
                               'assets/bank.png',
                               'Investment',
-                              key:UniqueKey(),
+                              key: UniqueKey(),
                               selected: RegistrationState.of(context)
                                   .data
                                   .purpose
                                   .investment,
                               onSelect: (selection) {
-                                RegistrationState.of(context).data.purpose.clear();
+                                RegistrationState.of(context)
+                                    .data
+                                    .purpose
+                                    .clear();
                                 RegistrationState.of(context)
                                     .data
                                     .purpose
                                     .investment = selection;
-                                    RegistrationState.of(context).notify();
-
+                                RegistrationState.of(context).notify();
                               },
                             ),
                             new CardElement(
                               'assets/money.png',
-                              'Salary',
-                              key:UniqueKey(),
+                              'Savings',
+                              key: UniqueKey(),
                               selected: RegistrationState.of(context)
                                   .data
                                   .purpose
-                                  .salary,
+                                  .savings,
                               onSelect: (selection) {
-                                RegistrationState.of(context).data.purpose.clear();
                                 RegistrationState.of(context)
                                     .data
                                     .purpose
-                                    .salary = selection;
-                                    RegistrationState.of(context).notify();
-
+                                    .clear();
+                                RegistrationState.of(context)
+                                    .data
+                                    .purpose
+                                    .savings = selection;
+                                RegistrationState.of(context).notify();
                               },
                             ),
                           ],
@@ -130,19 +133,22 @@ class PurposeWidget extends StatelessWidget {
                             new CardElement(
                               'assets/cash.png',
                               'Others',
-                              key:UniqueKey(),
+                              key: UniqueKey(),
                               selected: RegistrationState.of(context)
                                   .data
                                   .purpose
                                   .others,
                               onSelect: (selection) {
-                                RegistrationState.of(context).data.purpose.clear();
+                                RegistrationState.of(context)
+                                    .data
+                                    .purpose
+                                    .clear();
                                 RegistrationState.of(context)
                                     .data
                                     .purpose
                                     .others = selection;
-                                    RegistrationState.of(context).notify();
-                             },
+                                RegistrationState.of(context).notify();
+                              },
                             ),
                           ],
                         ),
@@ -163,11 +169,21 @@ class PurposeWidget extends StatelessWidget {
                 textColor: Colors.white,
                 onPressed: () {
                   if (RegistrationState.of(context).data.purpose.investment ||
-                      RegistrationState.of(context).data.purpose.salary ||
-                      RegistrationState.of(context).data.purpose.others ) {
+                      RegistrationState.of(context).data.purpose.savings ||
+                      RegistrationState.of(context).data.purpose.others) {
                     RegistrationState.of(context).currentPage++;
                     RegistrationState.of(context).notify();
-                  } 
+                  } else
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text('Please make a selection..'),
+                      duration: Duration(seconds: 2),
+                      action: SnackBarAction(
+                        label: 'Ok',
+                        onPressed: () {
+                          _scaffoldKey.currentState.hideCurrentSnackBar();
+                        },
+                      ),
+                    ));
                 },
               ),
             )

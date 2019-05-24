@@ -51,19 +51,19 @@ class RegistrationVechicleData {
 
 class RegistrationPurposeData {
   bool investment = false;
-  bool salary = false;
+  bool savings = false;
   bool others = false;
   String other = '';
   clear()
   {
-    investment = salary=others = false;
+    investment = savings=others = false;
   }
   select(String selection) {
-    investment = salary = false;
+    investment = savings = false;
     if (selection == 'investment')
       investment = true;
     else
-      salary = true;
+      savings = true;
   }
 }
 

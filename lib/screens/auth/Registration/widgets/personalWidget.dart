@@ -89,195 +89,196 @@ class _PersonalWidgetState extends State<PersonalWidget> {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: true,
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new AssetImage("assets/Noel.jpg"),
-                fit: BoxFit.cover,
+      body: SingleChildScrollView(
+
+        child: Stack(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  image: new AssetImage("assets/Noel.jpg"),
+                  fit: BoxFit.cover,
+                ),
               ),
+              child: (cities.length == 0) ? LoadingIndicator():buildMainContent(context),
             ),
-            child: (cities.length == 0) ? LoadingIndicator():buildMainContent(context),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.78,
-                left: MediaQuery.of(context).size.width * 0.43),
-            child: FloatingActionButton(
-              elevation: 6,
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.teal,
-              child: Icon(Icons.arrow_forward),
-              onPressed: () {
-                validateInputs();
-              },
-            ),
-          )
-        ],
+            Container(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.78,
+                  left: MediaQuery.of(context).size.width * 0.43),
+              child: FloatingActionButton(
+                elevation: 6,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.teal,
+                child: Icon(Icons.arrow_forward),
+                onPressed: () {
+                  validateInputs();
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  SingleChildScrollView buildMainContent(BuildContext context) {
-    return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 120.0),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Form(
-                    key: formKey,
-                    autovalidate: _autoValidate,
-                    child: Container(
-                      width: double.infinity,
-                      height: 460,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(0.0, 10.0),
-                              blurRadius: 5),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 16.0, right: 16.0, top: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'User Details',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              'Name',
-                            ),
-                            TextFormField(
-                              cursorColor: Colors.teal,
-                              autovalidate: _autoValidate,
-                              validator: validateName,
-                              keyboardType: TextInputType.text,
-                              buildCounter: (BuildContext context,
-                                      {int currentLength,
-                                      int maxLength,
-                                      bool isFocused}) =>
-                                  null,
-                              maxLength: 25,
-                              controller: tecNameController,
-                              focusNode: fnNameFocus,
-                              onFieldSubmitted: (term) {
-                                FocusScope.of(context)
-                                    .requestFocus(fnMobileFocus);
-                              },
-                              textInputAction: TextInputAction.next,
-                              decoration: InputDecoration(
-                                hintText: 'Enter your Name',
-                                hintStyle: TextStyle(
-                                    color: Colors.grey, fontSize: 12.0),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              'Mobile',
-                            ),
-                            TextFormField(
-                              cursorColor: Colors.teal,
-                              autovalidate: _autoValidate,
-                              validator: validateMobile,
-                              controller: tecMobileController,
-                              buildCounter: (BuildContext context,
-                                      {int currentLength,
-                                      int maxLength,
-                                      bool isFocused}) =>
-                                  null,
-                              maxLength: 10,
-                              inputFormatters: [
-                                WhitelistingTextInputFormatter.digitsOnly,
-                              ],
-                              keyboardType: TextInputType.phone,
-                              onFieldSubmitted: (term) {
-                                FocusScope.of(context)
-                                    .requestFocus(fnCityFocus);
-                              },
-                              focusNode: fnMobileFocus,
-                              textInputAction: TextInputAction.next,
-                              decoration: InputDecoration(
-                                hintText: 'Enter your Mobile Number',
-                                hintStyle: TextStyle(
-                                    color: Colors.grey, fontSize: 12.0),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              'City',
-                            ),
-                            SearchableDropdown<String>(
-                              isExpanded: true,
-                              items: cities
-                                  .map<DropdownMenuItem<String>>(
-                                      (data) => DropdownMenuItem<String>(
-                                            child: new Text(data),
-                                            value: data,
-                                          ))
-                                  .toList(),
-                              value: selectedCity,
-                              hint: new Text('Select a City'),
-                              searchHint: new Text(
-                                'Select One',
-                                style: new TextStyle(fontSize: 20),
-                              ),
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedCity = value;
-                                });
-                              },
-                            ),
-                            SizedBox(height: 25),
-                            Text(
-                              'Profession',
-                            ),
-                            SearchableDropdown<String>(
-                              isExpanded: true,
-                              items: profession
-                                  .map<DropdownMenuItem<String>>(
-                                      (data) => DropdownMenuItem<String>(
-                                            child: new Text(data),
-                                            value: data,
-                                          ))
-                                  .toList(),
-                              value: selectedProfession,
-                              hint: new Text('Select a Profession'),
-                              searchHint: new Text(
-                                'Select One',
-                                style: new TextStyle(fontSize: 20),
-                              ),
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedProfession = value;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+  Padding buildMainContent(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 120.0),
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 10,
+          ),
+          Form(
+            key: formKey,
+            autovalidate: _autoValidate,
+            child: Container(
+              width: double.infinity,
+              height: 460,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(0.0, 10.0),
+                      blurRadius: 5),
                 ],
               ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: 16.0, right: 16.0, top: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'User Details',
+                      style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Name',
+                    ),
+                    TextFormField(
+                      cursorColor: Colors.teal,
+                      autovalidate: _autoValidate,
+                      validator: validateName,
+                      keyboardType: TextInputType.text,
+                      buildCounter: (BuildContext context,
+                              {int currentLength,
+                              int maxLength,
+                              bool isFocused}) =>
+                          null,
+                      maxLength: 25,
+                      controller: tecNameController,
+                      focusNode: fnNameFocus,
+                      onFieldSubmitted: (term) {
+                        FocusScope.of(context)
+                            .requestFocus(fnMobileFocus);
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your Name',
+                        hintStyle: TextStyle(
+                            color: Colors.grey, fontSize: 12.0),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      'Mobile',
+                    ),
+                    TextFormField(
+                      cursorColor: Colors.teal,
+                      autovalidate: _autoValidate,
+                      validator: validateMobile,
+                      controller: tecMobileController,
+                      buildCounter: (BuildContext context,
+                              {int currentLength,
+                              int maxLength,
+                              bool isFocused}) =>
+                          null,
+                      maxLength: 10,
+                      inputFormatters: [
+                        WhitelistingTextInputFormatter.digitsOnly,
+                      ],
+                      keyboardType: TextInputType.phone,
+                      onFieldSubmitted: (term) {
+                        FocusScope.of(context)
+                            .requestFocus(fnCityFocus);
+                      },
+                      focusNode: fnMobileFocus,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your Mobile Number',
+                        hintStyle: TextStyle(
+                            color: Colors.grey, fontSize: 12.0),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'City',
+                    ),
+                    SearchableDropdown<String>(
+                      isExpanded: true,
+                      items: cities
+                          .map<DropdownMenuItem<String>>(
+                              (data) => DropdownMenuItem<String>(
+                                    child: new Text(data),
+                                    value: data,
+                                  ))
+                          .toList(),
+                      value: selectedCity,
+                      hint: new Text('Select a City'),
+                      searchHint: new Text(
+                        'Select One',
+                        style: new TextStyle(fontSize: 20),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCity = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 25),
+                    Text(
+                      'Profession',
+                    ),
+                    SearchableDropdown<String>(
+                      isExpanded: true,
+                      items: profession
+                          .map<DropdownMenuItem<String>>(
+                              (data) => DropdownMenuItem<String>(
+                                    child: new Text(data),
+                                    value: data,
+                                  ))
+                          .toList(),
+                      value: selectedProfession,
+                      hint: new Text('Select a Profession'),
+                      searchHint: new Text(
+                        'Select One',
+                        style: new TextStyle(fontSize: 20),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedProfession = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 
   String validateName(String value) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_guru/states/dashboardState/dashboard.dart';
 import 'package:flutter_guru/states/auth/registration.dart';
+import 'package:intl/intl.dart';
 
 import 'package:flutter_guru/utils/theme/index.dart';
 
@@ -15,6 +16,7 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
 
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
+  DateTime _dateTime = new DateTime.now();
 
   selectedDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -24,11 +26,10 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
         lastDate: DateTime(2035));
 
     if (picked != null && picked != _date) {
-      
       setState(() {
         _date = picked;
-        dateController.text =
-            "${_date.day.toString()}-${_date.month.toString().padLeft(2, '0')}-${_date.year.toString().padLeft(2, '0')}";
+        _dateTime = DateTime(
+            _date.year, _date.month, _date.day, _time.hour, _time.minute);
       });
     }
   }
@@ -37,10 +38,10 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
     final TimeOfDay picked =
         await showTimePicker(context: context, initialTime: _time);
     if (picked != null && picked != _time) {
-      
       setState(() {
         _time = picked;
-        timeController.text = _time.format(context);
+        _dateTime = DateTime(
+            _date.year, _date.month, _date.day, _time.hour, _time.minute);
       });
     }
   }
@@ -51,9 +52,8 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
   }
 
   Widget build(BuildContext context) {
-    dateController.text =
-        "${_date.day.toString()}-${_date.month.toString().padLeft(2, '0')}-${_date.year.toString().padLeft(2, '0')}";
-    timeController.text = _time.format(context);
+    dateController.text = DateFormat.yMMMMd().format(_dateTime);
+    timeController.text = DateFormat.jm().format(_dateTime);
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -258,21 +258,32 @@ class _AppointmentWidgetState extends State<AppointmentWidget> {
                 Navigator.of(context).pop();
                 LeadsModel data = LeadsModel();
                 data.name = RegistrationState.of(context).data.personal.name;
-                data.phoneNumber = RegistrationState.of(context).data.personal.mobile;
+                data.phoneNumber =
+                    RegistrationState.of(context).data.personal.mobile;
                 data.city = RegistrationState.of(context).data.personal.city;
-                data.profession = RegistrationState.of(context).data.personal.profession;
+                data.profession =
+                    RegistrationState.of(context).data.personal.profession;
 
-                data.bikeOwned = RegistrationState.of(context).data.vehicle.bike ? 'Yes' : 'No';
-                data.carOwned = RegistrationState.of(context).data.vehicle.car ? 'Yes' : 'No';
+                data.bikeOwned = RegistrationState.of(context).data.vehicle.bike
+                    ? 'Yes'
+                    : 'No';
+                data.carOwned = RegistrationState.of(context).data.vehicle.car
+                    ? 'Yes'
+                    : 'No';
 
-                data.houseType = RegistrationState.of(context).data.house.own ? 'Own House' : 'Rented House';
+                data.houseType = RegistrationState.of(context).data.house.own
+                    ? 'Own House'
+                    : 'Rented House';
 
-                if(RegistrationState.of(context).data.purpose.investment) data.reason = 'Investment';
-                if(RegistrationState.of(context).data.purpose.salary) data.reason = 'Salary';
-                if(RegistrationState.of(context).data.purpose.others) data.reason = 'Other';
+                if (RegistrationState.of(context).data.purpose.investment)
+                  data.reason = 'Investment';
+                if (RegistrationState.of(context).data.purpose.savings)
+                  data.reason = 'Savings';
+                if (RegistrationState.of(context).data.purpose.others)
+                  data.reason = 'Other';
 
-                data.date = dateController.text;
-                data.time = timeController.text;
+                data.date = DateFormat('dd-MM-yyyy').format(_dateTime);
+                data.time = DateFormat.jm().format(_dateTime);
                 Navigator.of(context).pop<LeadsModel>(data);
               },
             ),

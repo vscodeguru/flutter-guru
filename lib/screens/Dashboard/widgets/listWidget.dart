@@ -66,15 +66,18 @@ class _ListWidgetState extends State<ListWidget> {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text('Data Updated!'),
+        duration: Duration(milliseconds: 750),
       ));
       DashboardState.of(context).notify();
     } else {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
       showErrorMessage(message: data);
     }
   }
 
   showLoadingMessage(
       {String message, Duration duration = const Duration(minutes: 1)}) {
+    _scaffoldKey.currentState.hideCurrentSnackBar();
     _scaffoldKey.currentState.showSnackBar(SnackBar(
       content: Row(
         children: <Widget>[
@@ -91,6 +94,7 @@ class _ListWidgetState extends State<ListWidget> {
 
   showErrorMessage(
       {String message, Duration duration = const Duration(seconds: 5)}) {
+    _scaffoldKey.currentState.hideCurrentSnackBar();
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
         backgroundColor: HexColor("#B00020"),
@@ -239,25 +243,26 @@ class _ListWidgetState extends State<ListWidget> {
                             actions: <Widget>[
                               IconSlideAction(
                                 caption: 'Completed',
-                                color: Colors.greenAccent,
+                                color: Colors.teal,
                                 icon: Icons.done,
                                 onTap: () async {
+                                  showLoadingMessage(
+                                      message:
+                                          'Lead for ${data.name} is being marked as Completed!');
                                   String _data = await DashboardState.of(
                                           context)
                                       .completeAppointment(data.appointmentId);
 
                                   if (_data == 'success') {
-                                    Scaffold.of(ctx).hideCurrentSnackBar();
-                                    Scaffold.of(ctx).showSnackBar(SnackBar(
-                                        content: Text(
-                                            "Lead for ${data.name} is being marked as Completed!")));
                                     await DashboardState.of(context)
                                         .getLeadsData();
                                     DashboardState.of(context).notify();
                                     Scaffold.of(ctx).hideCurrentSnackBar();
                                     Scaffold.of(ctx).showSnackBar(SnackBar(
-                                        content: Text(
-                                            "Lead for ${data.name} is marked as Completed!")));
+                                      content: Text(
+                                          "Lead for ${data.name} is marked as Completed!"),
+                                      duration: Duration(milliseconds: 700),
+                                    ));
                                   } else
                                     showErrorMessage(message: _data);
                                 },
